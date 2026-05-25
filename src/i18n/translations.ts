@@ -1,4 +1,4 @@
-{
+const translations = {
   "en": {
     "nav.home": "Home",
     "nav.projects": "Projects",
@@ -111,4 +111,6 @@
     "security.retry": "Reintentar",
     "security.contact": "Contactar"
   }
-}
+};
+
+export default translations;
