@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero';
+import Projects from '../components/sections/Projects';
+import TechStack from '../components/sections/TechStack';
+import Coaching from '../components/sections/Coaching';
+import Contact from '../components/sections/Contact';
+---
+
+<BaseLayout>
+  <Hero client:only="react" />
+  <Projects client:only="react" />
+  <TechStack client:only="react" />
+  <Coaching client:only="react" />
+  <Contact client:only="react" />
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+import GlowBackground from '../components/ui/GlowBackground';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
+import ProtectionLayer from '../components/security/ProtectionLayer';
+import LenisProvider from '../components/layout/LenisProvider';
+import { I18nProvider } from '../i18n/context';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Gabriél Vazquez — Ingeniero Informático & Coach Ontológico. Portafolio profesional de desarrollo web, SEO, y coaching ontológico." />
+    <meta name="keywords" content="desarrollador web, coach ontológico, wordpress, SEO, venezuela, portafolio" />
+    <meta name="author" content="Gabriél Vazquez" />
+    <meta property="og:title" content="Gabriél Vazquez — Desarrollador Web & Coach Ontológico" />
+    <meta property="og:description" content="Webmaster con 7+ años creando ecosistemas digitales de alto impacto." />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+    <title>Gabriél Vazquez — Desarrollador Web & Coach Ontológico</title>
+  </head>
+  <body class="antialiased">
+    <I18nProvider client:only="react">
+      <GlowBackground client:only="react" />
+      <LenisProvider client:only="react">
+        <Navbar client:only="react" />
+        <main>
+          <slot />
+        </main>
+        <Footer client:only="react" />
+      </LenisProvider>
+      <ProtectionLayer client:only="react" />
+    </I18nProvider>
+  </body>
+</html>
