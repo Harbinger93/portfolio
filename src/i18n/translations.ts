@@ -4,21 +4,21 @@ const en = {
   "nav.skills": "Skills",
   "nav.coaching": "About",
   "nav.contact": "Contact",
-  
+
   "hero.greeting": "Hi, I'm",
-  "hero.name": "Gabriél",
-  "hero.title": "Full Stack Developer.",
+  "hero.name": "Gabriel",
+  "hero.title": "Front-End Developer.",
   "hero.subtitle": "Webmaster with 7+ years crafting high-impact digital ecosystems and scalable systems.",
   "hero.cta.projects": "View Projects",
   "hero.cta.contact": "Let's Talk",
-  
+
   "hero.badge1": "Years Experience",
   "hero.badge2": "Machine Learning",
   "hero.badge3": "Backend, Security & Data",
 
   "projects.title": "Gallery of systems ready to scale",
   "projects.subtitle": "Projects & Systems",
-  
+
   "projects.messenger.title": "Mobile Messaging App",
   "projects.messenger.desc": "Cross-platform chat app with real-time sync, pushing the limits of scalable architectures.",
   "projects.whatsapp.title": "WhatsApp & Telegram Bots",
@@ -34,7 +34,7 @@ const en = {
 
   "techstack.title": "Technologies ordered by specialty and current focus",
   "techstack.subtitle": "Stack & Tools",
-  
+
   "techstack.frontend.title": "Frontend",
   "techstack.frontend.items": "Creating interactive, fast, and accessible user interfaces.",
   "techstack.backend.title": "Backend",
@@ -50,7 +50,7 @@ const en = {
 
   "coaching.title": "Beyond the code, this is how I work",
   "coaching.subtitle": "Work Ethic",
-  
+
   "about.card1.title": "Responsible",
   "about.card1.desc": "I take ownership of every project and ensure delivery on time.",
   "about.card2.title": "Accurate",
@@ -76,9 +76,16 @@ const en = {
   "contact.location": "Caracas, Venezuela",
   "contact.email_label": "Email",
   "contact.instagram": "Contact via Instagram",
-  
+
   "footer.rights": "All rights reserved.",
   "footer.built": "Built with",
+
+  "toast.rightclick": "Right click is disabled",
+  "security.title": "Access Denied",
+  "security.subtitle": "Developer Tools Detected",
+  "security.message": "For security and privacy reasons, inspecting the source code is disabled on this site. If you are interested in the code, please contact me directly.",
+  "security.retry": "Close & Retry",
+  "security.contact": "Contact Developer"
 };
 
 const es = {
@@ -87,21 +94,21 @@ const es = {
   "nav.skills": "Habilidades",
   "nav.coaching": "Sobre mí",
   "nav.contact": "Contacto",
-  
+
   "hero.greeting": "Hola, soy",
-  "hero.name": "Gabriél",
-  "hero.title": "Desarrollador\nFull Stack.",
+  "hero.name": "Gabriel",
+  "hero.title": "Desarrollador\nFront-End.",
   "hero.subtitle": "Webmaster con más de 7 años creando ecosistemas digitales de alto impacto y sistemas escalables.",
   "hero.cta.projects": "Ver proyectos",
   "hero.cta.contact": "Hablemos",
-  
+
   "hero.badge1": "Años de experiencia",
   "hero.badge2": "Machine Learning",
   "hero.badge3": "Backend, Seguridad y Datos",
 
   "projects.title": "Galería de sistemas listos para escalar",
   "projects.subtitle": "Proyectos y Sistemas",
-  
+
   "projects.messenger.title": "App móvil de mensajería",
   "projects.messenger.desc": "Chat multiplataforma con sincronización en tiempo real.",
   "projects.whatsapp.title": "Bots de WhatsApp y Telegram",
@@ -117,7 +124,7 @@ const es = {
 
   "techstack.title": "Tecnologías ordenadas por especialidad y foco actual",
   "techstack.subtitle": "Stack y Herramientas",
-  
+
   "techstack.frontend.title": "Frontend",
   "techstack.frontend.items": "Creación de interfaces de usuario interactivas, rápidas y accesibles.",
   "techstack.backend.title": "Backend",
@@ -133,7 +140,7 @@ const es = {
 
   "coaching.title": "Más allá del código, así trabajo",
   "coaching.subtitle": "Ética de trabajo",
-  
+
   "about.card1.title": "Responsable",
   "about.card1.desc": "Tomo control de cada proyecto y aseguro su entrega a tiempo.",
   "about.card2.title": "Certero",
@@ -162,6 +169,13 @@ const es = {
 
   "footer.rights": "Todos los derechos reservados.",
   "footer.built": "Hecho con",
+
+  "toast.rightclick": "El clic derecho está desactivado",
+  "security.title": "Acceso Denegado",
+  "security.subtitle": "Developer Tools Detectado",
+  "security.message": "Por motivos de seguridad y privacidad, la inspección del código fuente está deshabilitada en este sitio. Si te interesa el código, contáctame directamente.",
+  "security.retry": "Cerrar y Reintentar",
+  "security.contact": "Contactar Desarrollador"
 };
 
 const translations = { en, es };

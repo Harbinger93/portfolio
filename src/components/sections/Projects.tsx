@@ -33,7 +33,7 @@ export default function Projects() {
           <p className="text-[10px] font-bold text-[var(--accent-primary)] uppercase tracking-widest mb-3">
             {t('projects.subtitle')}
           </p>
-          <h2 className="text-3xl md:text-5xl font-bold text-[var(--text-primary)] mb-12 max-w-lg leading-tight">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-12 max-w-lg leading-tight">
             {t('projects.title')}
           </h2>
         </ScrollReveal>

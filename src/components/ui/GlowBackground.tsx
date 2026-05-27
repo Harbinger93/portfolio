@@ -43,7 +43,9 @@ export default function GlowBackground() {
         grad.addColorStop(0, c.color);
         grad.addColorStop(1, 'transparent');
         ctx!.fillStyle = grad;
-        ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
+        
+        // Optimize fillRect to only draw the circle's bounding box
+        ctx!.fillRect(cx - r, cy - r, r * 2, r * 2);
       });
 
       animId = requestAnimationFrame(draw);

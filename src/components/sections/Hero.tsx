@@ -1,6 +1,7 @@
 import { useI18n } from '../../i18n/context';
 import ScrollReveal from '../ui/ScrollReveal';
 import AuroraBackground from '../ui/AuroraBackground';
+import { GooeyInput } from '../ui/gooey-input';
 
 export default function Hero() {
   const { t } = useI18n();
@@ -27,7 +28,7 @@ export default function Hero() {
 
         {/* Main Title */}
         <ScrollReveal direction="up" delay={0.2}>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-[1.1] text-[var(--text-primary)]">
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-[1.1] text-[var(--text-primary)]">
             <span className="block text-gradient">
               {t('hero.title')}
             </span>
@@ -59,7 +60,7 @@ export default function Hero() {
 
         {/* Badges / Stats below */}
         <ScrollReveal direction="up" delay={0.5}>
-          <div className="flex flex-wrap justify-center gap-4 text-xs md:text-sm">
+          <div className="flex flex-wrap justify-center gap-4 text-xs md:text-sm mb-16">
             <div className="px-4 py-2 rounded-xl glass border border-[var(--glass-border)] text-[var(--text-secondary)] flex items-center gap-2">
               <span className="font-bold text-[var(--text-primary)]">7+</span> {t('hero.badge1')}
             </div>
@@ -72,7 +73,13 @@ export default function Hero() {
           </div>
         </ScrollReveal>
 
+        <ScrollReveal direction="up" delay={0.6}>
+          <div className="flex justify-center mb-10 relative z-50">
+            <GooeyInput placeholder="Search projects..." />
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
 }
+

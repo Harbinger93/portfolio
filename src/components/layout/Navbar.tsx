@@ -39,11 +39,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 pt-4 px-4 pointer-events-none flex justify-center">
       <div 
-        className={`pointer-events-auto relative w-full max-w-4xl rounded-full transition-all duration-500 flex items-center justify-between px-6 h-16 ${
-          scrolled || menuOpen
-            ? 'glass shadow-lg border border-glass-border bg-[var(--glass-bg)]'
-            : 'bg-transparent'
-        }`}
+        className={`pointer-events-auto relative w-full max-w-4xl rounded-full transition-all duration-500 flex items-center justify-between px-6 h-16 glass shadow-lg border border-glass-border bg-[var(--glass-bg)]`}
       >
         <button
           onClick={() => scrollTo('home')}

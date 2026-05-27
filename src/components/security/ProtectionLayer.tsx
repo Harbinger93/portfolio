@@ -32,7 +32,7 @@ export default function ProtectionLayer() {
     <>
       {toast.show && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 glass px-6 py-3 rounded-xl text-sm text-slate-150 border border-glass-border backdrop-blur-xl animate-[fadeIn_0.3s_ease]">
-          {toast.message}
+          {t(toast.message)}
         </div>
       )}
 

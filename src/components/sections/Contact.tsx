@@ -16,7 +16,7 @@ export default function Contact() {
           <p className="text-[10px] font-bold text-[var(--accent-primary)] uppercase tracking-widest mb-3">
             {t('contact.subtitle')}
           </p>
-          <h2 className="text-4xl md:text-6xl font-bold text-[var(--text-primary)] mb-10 leading-tight">
+          <h2 className="text-4xl md:text-6xl font-extrabold text-[var(--text-primary)] mb-10 leading-tight">
             {t('contact.title')}
           </h2>
         </ScrollReveal>
