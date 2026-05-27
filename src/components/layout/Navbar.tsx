@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useI18n } from '../i18n/context';
-import { Languages } from 'lucide-react';
+import { useI18n } from '../../i18n/context';
+import { useTheme } from '../../utils/theme';
+import { Languages, Sun, Moon, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const sections = ['home', 'projects', 'skills', 'coaching', 'contact'];
 
 export default function Navbar() {
   const { t, locale, setLocale } = useI18n();
+  const { theme, toggleTheme } = useTheme();
   const [active, setActive] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,19 +37,25 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-        scrolled
-          ? 'glass border-b border-glass-border'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 pt-4 px-4 pointer-events-none flex justify-center">
+      <div 
+        className={`pointer-events-auto relative w-full max-w-4xl rounded-full transition-all duration-500 flex items-center justify-between px-6 h-16 ${
+          scrolled || menuOpen
+            ? 'glass shadow-lg border border-glass-border bg-[var(--glass-bg)]'
+            : 'bg-transparent'
+        }`}
+      >
         <button
           onClick={() => scrollTo('home')}
-          className="text-lg font-light tracking-wider text-slate-150 hover:text-ice-300 transition-colors"
+          className="flex items-center justify-center shrink-0"
+          aria-label="Home"
         >
-          GV
+          <img
+            src="/avatar.png"
+            alt="GV"
+            className="w-10 h-10 rounded-full object-cover border-2 border-glass-border hover:border-[var(--accent-primary)] transition-colors"
+            onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=GV&background=0D8ABC&color=fff'; }}
+          />
         </button>
 
         <div className="hidden md:flex items-center gap-8">
@@ -54,76 +63,95 @@ export default function Navbar() {
             <button
               key={s}
               onClick={() => scrollTo(s)}
-              className={`text-xs uppercase tracking-[0.2em] transition-all duration-300 ${
+              className={`text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${
                 active === s
-                  ? 'text-ice-300'
-                  : 'text-slate-500 hover:text-slate-300'
+                  ? 'text-[var(--accent-primary)]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               {t(`nav.${s}`)}
             </button>
           ))}
+        </div>
 
+        <div className="hidden md:flex items-center gap-4 border-l border-glass-border pl-4 ml-4">
           <button
             onClick={() => setLocale(locale === 'es' ? 'en' : 'es')}
-            className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-500 hover:text-slate-300 transition-all duration-300 ml-4 pl-4 border-l border-glass-border"
+            className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            aria-label="Toggle language"
           >
-            <Languages className="w-3.5 h-3.5" />
+            <Languages className="w-4 h-4" />
             {locale === 'es' ? 'EN' : 'ES'}
+          </button>
+          
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full hover:bg-glass-hover text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
         </div>
 
-        <button
-          className="md:hidden text-slate-300"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <div className="w-5 flex flex-col gap-1">
-            <span
-              className={`block h-px bg-current transition-all duration-300 ${
-                menuOpen ? 'rotate-45 translate-y-[3px]' : ''
-              }`}
-            />
-            <span
-              className={`block h-px bg-current transition-all duration-300 ${
-                menuOpen ? 'opacity-0' : ''
-              }`}
-            />
-            <span
-              className={`block h-px bg-current transition-all duration-300 ${
-                menuOpen ? '-rotate-45 -translate-y-[3px]' : ''
-              }`}
-            />
-          </div>
-        </button>
-      </div>
-
-      {menuOpen && (
-        <div className="md:hidden glass border-b border-glass-border">
-          <div className="flex flex-col px-6 py-4 gap-4">
-            {sections.map((s) => (
-              <button
-                key={s}
-                onClick={() => scrollTo(s)}
-                className={`text-sm uppercase tracking-[0.2em] text-left transition-all ${
-                  active === s ? 'text-ice-300' : 'text-slate-500'
-                }`}
-              >
-                {t(`nav.${s}`)}
-              </button>
-            ))}
-            <button
-              onClick={() => {
-                setLocale(locale === 'es' ? 'en' : 'es');
-                setMenuOpen(false);
-              }}
-              className="text-sm uppercase tracking-wider text-slate-500 text-left pt-2 border-t border-glass-border"
-            >
-              {locale === 'es' ? 'English' : 'Español'}
-            </button>
-          </div>
+        {/* Mobile controls */}
+        <div className="flex items-center gap-4 md:hidden">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
+          >
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
+          <button
+            className="text-[var(--text-primary)]"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
-      )}
+
+        {/* Mobile Dropdown */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-20 left-0 right-0 glass rounded-2xl border border-glass-border overflow-hidden shadow-xl"
+            >
+              <div className="flex flex-col p-4 gap-2">
+                {sections.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => scrollTo(s)}
+                    className={`p-4 text-sm font-medium uppercase tracking-widest text-center rounded-xl transition-colors ${
+                      active === s 
+                        ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]' 
+                        : 'text-[var(--text-secondary)] hover:bg-glass-hover'
+                    }`}
+                  >
+                    {t(`nav.${s}`)}
+                  </button>
+                ))}
+                
+                <div className="h-px bg-glass-border my-2 mx-4" />
+                
+                <button
+                  onClick={() => {
+                    setLocale(locale === 'es' ? 'en' : 'es');
+                    setMenuOpen(false);
+                  }}
+                  className="p-4 flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                >
+                  <Languages className="w-4 h-4" />
+                  {locale === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </nav>
   );
 }

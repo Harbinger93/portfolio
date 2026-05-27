@@ -1,62 +1,90 @@
 export const projects = {
   en: [
     {
-      id: 'iesa',
-      icon: 'GraduationCap',
-      titleKey: 'projects.iesa.title',
-      descKey: 'projects.iesa.desc',
-      tags: ['WordPress', 'SEO', 'Google Analytics', 'Payment Gateways'],
+      id: 'messenger',
+      icon: 'MessageSquare',
+      titleKey: 'projects.messenger.title',
+      descKey: 'projects.messenger.desc',
+      tags: ['Flutter', 'React', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
     },
     {
-      id: 'gonext',
+      id: 'whatsapp',
+      icon: 'MessageCircle',
+      titleKey: 'projects.whatsapp.title',
+      descKey: 'projects.whatsapp.desc',
+      tags: ['Node.js', 'Python', 'WhatsApp API', 'Telegram'],
+    },
+    {
+      id: 'accounting',
+      icon: 'Calculator',
+      titleKey: 'projects.accounting.title',
+      descKey: 'projects.accounting.desc',
+      tags: ['React', 'Tailwind CSS', 'JavaScript'],
+    },
+    {
+      id: 'web',
+      icon: 'Layout',
+      titleKey: 'projects.web.title',
+      descKey: 'projects.web.desc',
+      tags: ['React', 'TypeScript', 'Tailwind', 'Next.js'],
+    },
+    {
+      id: 'docker',
+      icon: 'Container',
+      titleKey: 'projects.docker.title',
+      descKey: 'projects.docker.desc',
+      tags: ['Python/Django', 'PostgreSQL', 'NGINX', 'Redis'],
+    },
+    {
+      id: 'ecommerce',
       icon: 'ShoppingCart',
-      titleKey: 'projects.gonext.title',
-      descKey: 'projects.gonext.desc',
-      tags: ['WooCommerce', 'UX Design', 'Responsive', 'Conversion'],
-    },
-    {
-      id: 'mkt',
-      icon: 'Server',
-      titleKey: 'projects.mkt.title',
-      descKey: 'projects.mkt.desc',
-      tags: ['cPanel', 'phpMyAdmin', 'HTML5/CSS3', 'JavaScript'],
-    },
-    {
-      id: 'mp',
-      icon: 'Shield',
-      titleKey: 'projects.mp.title',
-      descKey: 'projects.mp.desc',
-      tags: ['WordPress', 'CMS', 'Security', 'Institutional'],
+      titleKey: 'projects.ecommerce.title',
+      descKey: 'projects.ecommerce.desc',
+      tags: ['Next.js', 'Stripe', 'Supabase', 'Tailwind'],
     },
   ],
   es: [
     {
-      id: 'iesa',
-      icon: 'GraduationCap',
-      titleKey: 'projects.iesa.title',
-      descKey: 'projects.iesa.desc',
-      tags: ['WordPress', 'SEO', 'Google Analytics', 'Pasarelas de Pago'],
+      id: 'messenger',
+      icon: 'MessageSquare',
+      titleKey: 'projects.messenger.title',
+      descKey: 'projects.messenger.desc',
+      tags: ['Flutter', 'React', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
     },
     {
-      id: 'gonext',
+      id: 'whatsapp',
+      icon: 'MessageCircle',
+      titleKey: 'projects.whatsapp.title',
+      descKey: 'projects.whatsapp.desc',
+      tags: ['Node.js', 'Python', 'WhatsApp API', 'Telegram'],
+    },
+    {
+      id: 'accounting',
+      icon: 'Calculator',
+      titleKey: 'projects.accounting.title',
+      descKey: 'projects.accounting.desc',
+      tags: ['React', 'Tailwind CSS', 'JavaScript'],
+    },
+    {
+      id: 'web',
+      icon: 'Layout',
+      titleKey: 'projects.web.title',
+      descKey: 'projects.web.desc',
+      tags: ['React', 'TypeScript', 'Tailwind', 'Next.js'],
+    },
+    {
+      id: 'docker',
+      icon: 'Container',
+      titleKey: 'projects.docker.title',
+      descKey: 'projects.docker.desc',
+      tags: ['Python/Django', 'PostgreSQL', 'NGINX', 'Redis'],
+    },
+    {
+      id: 'ecommerce',
       icon: 'ShoppingCart',
-      titleKey: 'projects.gonext.title',
-      descKey: 'projects.gonext.desc',
-      tags: ['WooCommerce', 'Diseño UX', 'Responsive', 'Conversión'],
-    },
-    {
-      id: 'mkt',
-      icon: 'Server',
-      titleKey: 'projects.mkt.title',
-      descKey: 'projects.mkt.desc',
-      tags: ['cPanel', 'phpMyAdmin', 'HTML5/CSS3', 'JavaScript'],
-    },
-    {
-      id: 'mp',
-      icon: 'Shield',
-      titleKey: 'projects.mp.title',
-      descKey: 'projects.mp.desc',
-      tags: ['WordPress', 'CMS', 'Seguridad', 'Institucional'],
+      titleKey: 'projects.ecommerce.title',
+      descKey: 'projects.ecommerce.desc',
+      tags: ['Next.js', 'Stripe', 'Supabase', 'Tailwind'],
     },
   ],
 };
@@ -64,61 +92,97 @@ export const projects = {
 export const techStack = {
   en: [
     {
-      id: 'cms',
-      titleKey: 'techstack.cms.title',
-      itemsKey: 'techstack.cms.items',
-      percentage: 90,
-      color: 'bg-ice-300',
+      id: 'frontend',
+      titleKey: 'techstack.frontend.title',
+      itemsKey: 'techstack.frontend.items',
+      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript']
     },
     {
-      id: 'seo',
-      titleKey: 'techstack.seo.title',
-      itemsKey: 'techstack.seo.items',
-      percentage: 85,
-      color: 'bg-steel-400',
+      id: 'backend',
+      titleKey: 'techstack.backend.title',
+      itemsKey: 'techstack.backend.items',
+      tags: ['Node.js', 'Python', 'Django', 'Express', 'Astro']
+    },
+    {
+      id: 'database',
+      titleKey: 'techstack.database.title',
+      itemsKey: 'techstack.database.items',
+      tags: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis']
     },
     {
       id: 'devops',
       titleKey: 'techstack.devops.title',
       itemsKey: 'techstack.devops.items',
-      percentage: 80,
-      color: 'bg-blue-accent',
+      tags: ['Docker', 'AWS', 'Linux', 'Git', 'CI/CD']
     },
+    {
+      id: 'security',
+      titleKey: 'techstack.security.title',
+      itemsKey: 'techstack.security.items',
+      tags: ['Web Security', 'SSL/TLS', 'Auth']
+    },
+    {
+      id: 'data',
+      titleKey: 'techstack.data.title',
+      itemsKey: 'techstack.data.items',
+      tags: ['Machine Learning', 'Data Analysis']
+    }
   ],
   es: [
     {
-      id: 'cms',
-      titleKey: 'techstack.cms.title',
-      itemsKey: 'techstack.cms.items',
-      percentage: 90,
-      color: 'bg-ice-300',
+      id: 'frontend',
+      titleKey: 'techstack.frontend.title',
+      itemsKey: 'techstack.frontend.items',
+      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript']
     },
     {
-      id: 'seo',
-      titleKey: 'techstack.seo.title',
-      itemsKey: 'techstack.seo.items',
-      percentage: 85,
-      color: 'bg-steel-400',
+      id: 'backend',
+      titleKey: 'techstack.backend.title',
+      itemsKey: 'techstack.backend.items',
+      tags: ['Node.js', 'Python', 'Django', 'Express', 'Astro']
+    },
+    {
+      id: 'database',
+      titleKey: 'techstack.database.title',
+      itemsKey: 'techstack.database.items',
+      tags: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis']
     },
     {
       id: 'devops',
       titleKey: 'techstack.devops.title',
       itemsKey: 'techstack.devops.items',
-      percentage: 80,
-      color: 'bg-blue-accent',
+      tags: ['Docker', 'AWS', 'Linux', 'Git', 'CI/CD']
     },
+    {
+      id: 'security',
+      titleKey: 'techstack.security.title',
+      itemsKey: 'techstack.security.items',
+      tags: ['Seguridad Web', 'SSL/TLS', 'Auth']
+    },
+    {
+      id: 'data',
+      titleKey: 'techstack.data.title',
+      itemsKey: 'techstack.data.items',
+      tags: ['Machine Learning', 'Análisis de Datos']
+    }
   ],
 };
 
-export const stats = {
+export const aboutCards = {
   en: [
-    { value: '7+', labelKey: 'hero.stats.years' },
-    { value: '50+', labelKey: 'hero.stats.projects' },
-    { value: '100%', labelKey: 'hero.stats.satisfaction' },
+    { titleKey: 'about.card1.title', descKey: 'about.card1.desc', icon: 'CheckCircle' },
+    { titleKey: 'about.card2.title', descKey: 'about.card2.desc', icon: 'Target' },
+    { titleKey: 'about.card3.title', descKey: 'about.card3.desc', icon: 'Users' },
+    { titleKey: 'about.card4.title', descKey: 'about.card4.desc', icon: 'ThumbsUp' },
+    { titleKey: 'about.card5.title', descKey: 'about.card5.desc', icon: 'Calendar' },
+    { titleKey: 'about.card6.title', descKey: 'about.card6.desc', icon: 'TrendingUp' },
   ],
   es: [
-    { value: '7+', labelKey: 'hero.stats.years' },
-    { value: '50+', labelKey: 'hero.stats.projects' },
-    { value: '100%', labelKey: 'hero.stats.satisfaction' },
-  ],
+    { titleKey: 'about.card1.title', descKey: 'about.card1.desc', icon: 'CheckCircle' },
+    { titleKey: 'about.card2.title', descKey: 'about.card2.desc', icon: 'Target' },
+    { titleKey: 'about.card3.title', descKey: 'about.card3.desc', icon: 'Users' },
+    { titleKey: 'about.card4.title', descKey: 'about.card4.desc', icon: 'ThumbsUp' },
+    { titleKey: 'about.card5.title', descKey: 'about.card5.desc', icon: 'Calendar' },
+    { titleKey: 'about.card6.title', descKey: 'about.card6.desc', icon: 'TrendingUp' },
+  ]
 };

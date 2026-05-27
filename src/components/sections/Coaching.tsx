@@ -1,40 +1,53 @@
-import { useI18n } from '../i18n/context';
+import { useI18n } from '../../i18n/context';
 import ScrollReveal from '../ui/ScrollReveal';
-import { Quote } from 'lucide-react';
+import { aboutCards } from '../../config/data';
+import { CheckCircle, Target, Users, ThumbsUp, Calendar, TrendingUp, type LucideIcon } from 'lucide-react';
+
+const iconMap: Record<string, LucideIcon> = {
+  CheckCircle,
+  Target,
+  Users,
+  ThumbsUp,
+  Calendar,
+  TrendingUp,
+};
 
 export default function Coaching() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const currentCards = aboutCards[locale];
 
   return (
-    <section id="coaching" className="py-24 relative z-10">
+    <section id="coaching" className="py-24 relative z-10 bg-[var(--bg-secondary)]">
       <div className="max-w-6xl mx-auto px-6">
         <ScrollReveal direction="up">
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500 mb-2">
+          <p className="text-[10px] font-bold text-[var(--accent-primary)] uppercase tracking-widest mb-3">
             {t('coaching.subtitle')}
           </p>
-          <h2 className="text-3xl md:text-4xl font-light text-slate-150 mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold text-[var(--text-primary)] mb-16 leading-tight max-w-xl">
             {t('coaching.title')}
           </h2>
         </ScrollReveal>
 
-        <ScrollReveal direction="up" delay={0.2}>
-          <div className="max-w-3xl mx-auto">
-            <div className="relative glass rounded-2xl p-8 md:p-10 border-l-2 border-ice-300/30">
-              <Quote className="absolute top-6 right-6 w-8 h-8 text-ice-300/10" />
-              <p className="text-sm md:text-base text-slate-300 leading-relaxed">
-                {t('coaching.desc')}
-              </p>
-              <div className="mt-6 pt-6 border-t border-glass-border">
-                <p className="text-xs uppercase tracking-wider text-ice-300">
-                  INDELSER — 2021
-                </p>
-                <p className="text-[10px] text-slate-600 mt-1">
-                  Certified Ontological Coach
-                </p>
-              </div>
-            </div>
-          </div>
-        </ScrollReveal>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {currentCards.map((card, i) => {
+            const Icon = iconMap[card.icon] || CheckCircle;
+            return (
+              <ScrollReveal key={card.titleKey} direction="up" delay={i * 0.1}>
+                <div className="p-6 rounded-2xl glass hover:border-[var(--accent-primary)] transition-colors group h-full">
+                  <div className="w-12 h-12 rounded-xl bg-[var(--bg-primary)] border border-[var(--glass-border)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <Icon className="w-6 h-6 text-[var(--accent-primary)]" />
+                  </div>
+                  <h3 className="text-lg font-bold text-[var(--text-primary)] mb-3">
+                    {t(card.titleKey)}
+                  </h3>
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                    {t(card.descKey)}
+                  </p>
+                </div>
+              </ScrollReveal>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

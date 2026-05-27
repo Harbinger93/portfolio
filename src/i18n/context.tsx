@@ -1,33 +1,31 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { useState, useEffect } from 'react';
 import translations from './translations';
 
 type Locale = 'es' | 'en';
 
-interface I18nContextType {
-  locale: Locale;
-  setLocale: (locale: Locale) => void;
-  t: (key: string) => string;
-}
+let currentLocale: Locale = 'es';
+const listeners = new Set<(locale: Locale) => void>();
 
-const I18nContext = createContext<I18nContextType | null>(null);
+export function useI18n() {
+  const [locale, setLocaleState] = useState<Locale>(currentLocale);
 
-export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>('es');
+  useEffect(() => {
+    listeners.add(setLocaleState);
+    return () => {
+      listeners.delete(setLocaleState);
+    };
+  }, []);
+
+  const setLocale = (newLocale: Locale) => {
+    currentLocale = newLocale;
+    listeners.forEach((listener) => listener(newLocale));
+  };
 
   const t = (key: string): string => {
     const value = (translations[locale] as Record<string, string>)[key];
     return value ?? key;
   };
 
-  return (
-    <I18nContext.Provider value={{ locale, setLocale, t }}>
-      {children}
-    </I18nContext.Provider>
-  );
+  return { locale, setLocale, t };
 }
 
-export function useI18n() {
-  const ctx = useContext(I18nContext);
-  if (!ctx) throw new Error('useI18n must be used within I18nProvider');
-  return ctx;
-}

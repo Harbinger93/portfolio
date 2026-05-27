@@ -5,7 +5,7 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import ProtectionLayer from '../components/security/ProtectionLayer';
 import LenisProvider from '../components/layout/LenisProvider';
-import { I18nProvider } from '../i18n/context';
+
 ---
 
 <!doctype html>
@@ -23,18 +23,26 @@ import { I18nProvider } from '../i18n/context';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
     <title>Gabriél Vazquez — Desarrollador Web & Coach Ontológico</title>
+    <script is:inline>
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.add('light');
+      } else if (savedTheme === 'dark') {
+        // do nothing, dark is default
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.classList.add('light');
+      }
+    </script>
   </head>
   <body class="antialiased">
-    <I18nProvider client:only="react">
-      <GlowBackground client:only="react" />
-      <LenisProvider client:only="react">
-        <Navbar client:only="react" />
-        <main>
-          <slot />
-        </main>
-        <Footer client:only="react" />
-      </LenisProvider>
-      <ProtectionLayer client:only="react" />
-    </I18nProvider>
+    <GlowBackground client:only="react" />
+    <LenisProvider client:only="react">
+      <Navbar client:only="react" />
+      <main>
+        <slot />
+      </main>
+      <Footer client:only="react" />
+    </LenisProvider>
+    <ProtectionLayer client:only="react" />
   </body>
 </html>

@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from 'react';
-import { setupSecurity } from '../utils/security';
-import { useI18n } from '../i18n/context';
+import { setupSecurity } from '../../utils/security';
+import { useI18n } from '../../i18n/context';
 
 export default function ProtectionLayer() {
   const { t } = useI18n();

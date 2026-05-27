@@ -1,4 +1,4 @@
-import { useI18n } from '../i18n/context';
+import { useI18n } from '../../i18n/context';
 import { Heart } from 'lucide-react';
 
 export default function Footer() {
