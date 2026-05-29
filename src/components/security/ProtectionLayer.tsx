@@ -47,7 +47,7 @@ export default function ProtectionLayer() {
               {t('security.subtitle')}
             </p>
             <p className="text-slate-400 text-sm leading-relaxed mb-8">
-              {t('security.message')}
+              Si llegaste aquí es porque te intera saber como está desarrollado el sitio, si quieres saber más escribeme.
             </p>
             <div className="flex gap-4 justify-center">
               <button
@@ -56,12 +56,15 @@ export default function ProtectionLayer() {
               >
                 {t('security.retry')}
               </button>
-              <a
-                href="mailto:dev.gabo23@gmail.com"
+              <button
+                onClick={() => {
+                  setDevToolsDetected(false);
+                  window.dispatchEvent(new CustomEvent('open-whatsapp'));
+                }}
                 className="px-6 py-2.5 text-sm rounded-lg bg-ice-300/10 border border-ice-300/20 text-ice-300 hover:bg-ice-300/20 transition-all duration-300"
               >
                 {t('security.contact')}
-              </a>
+              </button>
             </div>
           </div>
         </div>

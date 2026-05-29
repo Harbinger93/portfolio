@@ -8,6 +8,8 @@ export const projects = {
       tags: ['Flutter', 'React', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
       imageUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'whatsapp',
@@ -17,6 +19,8 @@ export const projects = {
       tags: ['Node.js', 'Python', 'WhatsApp API', 'Telegram'],
       imageUrl: 'https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'accounting',
@@ -26,6 +30,8 @@ export const projects = {
       tags: ['React', 'Tailwind CSS', 'JavaScript'],
       imageUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop',
       isDashboard: true,
+      images: ['https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'web',
@@ -35,6 +41,8 @@ export const projects = {
       tags: ['React', 'TypeScript', 'Tailwind', 'Next.js'],
       imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'docker',
@@ -44,6 +52,8 @@ export const projects = {
       tags: ['Python/Django', 'PostgreSQL', 'NGINX', 'Redis'],
       imageUrl: 'https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'ecommerce',
@@ -53,6 +63,8 @@ export const projects = {
       tags: ['Next.js', 'Stripe', 'Supabase', 'Tailwind'],
       imageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
   ],
   es: [
@@ -64,6 +76,8 @@ export const projects = {
       tags: ['Flutter', 'React', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
       imageUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'whatsapp',
@@ -73,6 +87,8 @@ export const projects = {
       tags: ['Node.js', 'Python', 'WhatsApp API', 'Telegram'],
       imageUrl: 'https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'accounting',
@@ -82,6 +98,8 @@ export const projects = {
       tags: ['React', 'Tailwind CSS', 'JavaScript'],
       imageUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop',
       isDashboard: true,
+      images: ['https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'web',
@@ -91,6 +109,8 @@ export const projects = {
       tags: ['React', 'TypeScript', 'Tailwind', 'Next.js'],
       imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'docker',
@@ -100,6 +120,8 @@ export const projects = {
       tags: ['Python/Django', 'PostgreSQL', 'NGINX', 'Redis'],
       imageUrl: 'https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
     {
       id: 'ecommerce',
@@ -109,6 +131,8 @@ export const projects = {
       tags: ['Next.js', 'Stripe', 'Supabase', 'Tailwind'],
       imageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1000&auto=format&fit=crop',
       isDashboard: false,
+      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      url: '#'
     },
   ],
 };

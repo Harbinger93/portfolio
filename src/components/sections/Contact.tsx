@@ -1,15 +1,19 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useI18n } from '../../i18n/context';
 import ScrollReveal from '../ui/ScrollReveal';
 import { Send, CheckCircle2, AlertCircle, Linkedin, Instagram, Dribbble } from 'lucide-react';
+import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+import DOMPurify from 'isomorphic-dompurify';
 
 // Form validation schema
 const contactSchema = z.object({
-  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
+  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, 'El nombre solo puede contener letras'),
   email: z.string().email('Correo electrónico no válido'),
+  phone: z.string({ required_error: 'Teléfono es requerido' }).min(5, 'Teléfono no válido'),
   message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
 });
 
@@ -23,6 +27,7 @@ export default function Contact() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     reset,
   } = useForm<ContactFormData>({
@@ -32,10 +37,41 @@ export default function Contact() {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     setSubmitStatus('idle');
-    // Simulate API call (replace with real endpoint later)
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Form submitted:', data);
+      // Sanitización del mensaje contra XSS
+      const sanitizedMessage = DOMPurify.sanitize(data.message);
+      
+      // Intentamos extraer el código de país del teléfono
+      let countryCode = 'Desconocido';
+      try {
+        const parsed = parsePhoneNumber(data.phone);
+        if (parsed?.country) {
+          countryCode = parsed.country;
+        }
+      } catch (e) {
+        // Ignorar error de parseo si ocurre
+      }
+
+      await fetch('https://script.google.com/macros/s/AKfycbxzY-w231HVLeFS4o3YFyl8Wokc0UWwgz7GjZTq2to59U5pHNhmo6RDchwE-IUUNnNMew/exec', {
+        method: 'POST',
+        mode: 'no-cors', // Evita problemas de CORS con Google Scripts
+        headers: {
+          'Content-Type': 'text/plain', // Usamos text/plain para evitar el preflight de CORS
+        },
+        body: JSON.stringify({
+          nombre: data.name,
+          email: data.email,
+          telefono: data.phone,
+          pais: countryCode,
+          mensaje: sanitizedMessage,
+          fecha: new Date().toLocaleString()
+        }),
+      });
+
+      const whatsappMessage = `Hola Gabriel, mi nombre es ${data.name} desde el país (${countryCode}). Te escribo desde tu portfolio.\n\n${sanitizedMessage}\n\nMi correo es: ${data.email}\nMi número es: ${data.phone}`;
+      const whatsappUrl = `https://wa.me/584120113404?text=${encodeURIComponent(whatsappMessage)}`;
+      window.open(whatsappUrl, '_blank');
+
       setSubmitStatus('success');
       reset();
       setTimeout(() => setSubmitStatus('idle'), 5000);
@@ -104,6 +140,30 @@ export default function Contact() {
                   {errors.email && (
                     <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
                       <AlertCircle className="w-3 h-3" /> {errors.email.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Phone Field */}
+                <div className="space-y-2">
+                  <label htmlFor="phone" className="text-sm font-medium text-[var(--text-secondary)]">
+                    Teléfono
+                  </label>
+                  <Controller
+                    name="phone"
+                    control={control}
+                    render={({ field }) => (
+                      <PhoneInput
+                        {...field}
+                        defaultCountry="VE"
+                        disabled={isSubmitting}
+                        className={`w-full px-4 py-3.5 rounded-xl bg-[#ebf3ff] text-black placeholder-slate-500 border-none focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all disabled:opacity-50`}
+                      />
+                    )}
+                  />
+                  {errors.phone && (
+                    <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                      <AlertCircle className="w-3 h-3" /> {errors.phone.message}
                     </p>
                   )}
                 </div>

@@ -53,7 +53,7 @@ html.light {
 }
 
 html {
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -123,6 +123,29 @@ body {
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
+/* React Phone Number Input Overrides */
+.PhoneInput {
+  display: flex;
+  align-items: center;
+}
+.PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: black;
+  outline: none;
+}
+.PhoneInputCountry {
+  margin-right: 0.75rem;
+  padding-right: 0.75rem;
+  border-right: 1px solid rgba(0,0,0,0.1);
+}
+.PhoneInputCountrySelectArrow {
+  opacity: 0.5;
+  margin-left: 0.25rem;
+}
+
 /* ── Animated conic border ────────────────────────────── */
 @keyframes spin-border {
   from {
@@ -153,12 +176,12 @@ body {
   height: 200%;
   background: conic-gradient(
     from 0deg,
-    transparent 20%,
-    var(--grad-from) 40%,
-    var(--grad-to) 60%,
-    transparent 80%
+    transparent 0%,
+    transparent 80%,
+    var(--grad-from) 95%,
+    var(--grad-to) 100%
   );
-  animation: spin-border 4s linear infinite;
+  animation: spin-border 8s linear infinite;
   z-index: -2;
 }
 

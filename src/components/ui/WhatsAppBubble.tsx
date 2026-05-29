@@ -40,6 +40,12 @@ export default function WhatsAppBubble() {
     }
   }, [isOpen, showGreeting]);
 
+  useEffect(() => {
+    const handleOpenWa = () => setIsOpen(true);
+    window.addEventListener('open-whatsapp', handleOpenWa);
+    return () => window.removeEventListener('open-whatsapp', handleOpenWa);
+  }, []);
+
   const onSubmit = (data: WaFormData) => {
     const text = `Hola Gabriel! Soy ${data.name} (${data.email}).%0A%0A${data.message}`;
     const url = `https://wa.me/584120113404?text=${text}`;

@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useI18n } from '../../i18n/context';
 import ScrollReveal from '../ui/ScrollReveal';
-import GlassCard from '../ui/GlassCard';
+import ProjectModal from '../ui/ProjectModal';
 import { projects } from '../../config/data';
 import {
   MessageSquare,
@@ -24,7 +25,8 @@ const iconMap: Record<string, LucideIcon> = {
 
 export default function Projects() {
   const { t, locale } = useI18n();
-  const currentProjects = projects[locale];
+  const currentProjects = projects[locale as keyof typeof projects] || projects['en'];
+  const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
   return (
     <section id="projects" className="py-24 relative z-10">
@@ -46,11 +48,12 @@ export default function Projects() {
             return (
               <motion.div 
                 key={project.id} 
-                className={isFeatured ? `md:col-span-2 animated-border` : "col-span-1"}
+                className={`cursor-pointer ${isFeatured ? 'md:col-span-2 animated-border' : 'col-span-1'}`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                onClick={() => setSelectedProject(project)}
               >
                 <div className={`h-full group overflow-hidden p-0 rounded-2xl flex flex-col glass ${isFeatured ? 'md:flex-row bg-[var(--bg-primary)]' : ''}`}>
                   
@@ -69,6 +72,7 @@ export default function Projects() {
                       <img 
                         src={project.imageUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'} 
                         alt={t(project.titleKey)}
+                        loading={isFeatured ? "eager" : "lazy"}
                         className={`w-full h-full object-cover object-top transition-all ease-in-out ${project.isDashboard ? 'duration-[4000ms]' : 'duration-[3000ms]'} group-hover/image:object-bottom`}
                       />
                     </div>
@@ -84,7 +88,7 @@ export default function Projects() {
                       </div>
                     )}
                     
-                    <h3 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mb-3">
+                    <h3 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent-primary)] transition-colors">
                       {t(project.titleKey)}
                     </h3>
                     
@@ -96,7 +100,7 @@ export default function Projects() {
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-3 py-1 text-[11px] font-medium rounded-full bg-[var(--glass-bg)] text-[var(--text-primary)] border border-[var(--glass-border)]"
+                          className="px-3 py-1 text-[11px] font-medium rounded-full bg-[var(--glass-bg)] text-[var(--text-primary)] border border-[var(--glass-border)] group-hover:border-[var(--glass-hover)] transition-colors"
                         >
                           {tag}
                         </span>
@@ -109,6 +113,13 @@ export default function Projects() {
           })}
         </div>
       </div>
+      
+      {/* Project Modal */}
+      <ProjectModal 
+        project={selectedProject} 
+        isOpen={!!selectedProject} 
+        onClose={() => setSelectedProject(null)} 
+      />
     </section>
   );
 }
