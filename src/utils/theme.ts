@@ -8,15 +8,11 @@ const listeners = new Set<(theme: Theme) => void>();
 // Initialize theme from localStorage or default to dark
 if (typeof window !== 'undefined') {
   const savedTheme = localStorage.getItem('theme') as Theme;
-  if (savedTheme === 'light' || savedTheme === 'dark') {
-    currentTheme = savedTheme;
-  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+  if (savedTheme === 'light') {
     currentTheme = 'light';
-  }
-  
-  if (currentTheme === 'light') {
     document.documentElement.classList.add('light');
   }
+  // Dark is the default – no extra action needed
 }
 
 export function useTheme() {

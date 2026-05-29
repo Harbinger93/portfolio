@@ -123,27 +123,106 @@ body {
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
-/* React Phone Number Input Overrides */
-.PhoneInput {
+/* ── React Phone Number Input – dark variant (Contact form) ─── */
+.phone-input-dark {
   display: flex;
   align-items: center;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.PhoneInputInput {
+.phone-input-dark:focus-within {
+  border-color: rgba(0,242,254,0.5);
+  box-shadow: 0 0 0 3px rgba(0,242,254,0.10);
+}
+.phone-input-dark .PhoneInputCountry {
+  margin-right: 0.75rem;
+  padding-right: 0.75rem;
+  border-right: 1px solid rgba(255,255,255,0.10);
+}
+.phone-input-dark .PhoneInputCountrySelect {
+  background: transparent;
+  color: var(--text-primary);
+  border: none;
+  outline: none;
+}
+.phone-input-dark .PhoneInputCountrySelectArrow {
+  color: var(--text-secondary);
+  margin-left: 0.25rem;
+}
+.phone-input-dark .PhoneInputInput {
   flex: 1;
   min-width: 0;
   background: transparent;
   border: none;
-  color: black;
+  color: var(--text-primary);
+  font-size: 0.875rem;
   outline: none;
 }
-.PhoneInputCountry {
-  margin-right: 0.75rem;
-  padding-right: 0.75rem;
-  border-right: 1px solid rgba(0,0,0,0.1);
-}
-.PhoneInputCountrySelectArrow {
+.phone-input-dark .PhoneInputInput::placeholder {
+  color: var(--text-secondary);
   opacity: 0.5;
+}
+
+/* ── React Phone Number Input – dark variant (WhatsApp bubble) ─ */
+.phone-input-wa {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.10);
+  transition: border-color 0.2s;
+}
+.phone-input-wa:focus-within {
+  border-color: #25D366;
+  box-shadow: 0 0 0 2px rgba(37,211,102,0.15);
+}
+.phone-input-wa .PhoneInputCountry {
+  margin-right: 0.5rem;
+  padding-right: 0.5rem;
+  border-right: 1px solid rgba(255,255,255,0.10);
+}
+.phone-input-wa .PhoneInputCountrySelect {
+  background: transparent;
+  color: #fff;
+  border: none;
+  outline: none;
+}
+.phone-input-wa .PhoneInputCountrySelectArrow {
+  color: rgba(255,255,255,0.5);
   margin-left: 0.25rem;
+}
+.phone-input-wa .PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 0.75rem;
+  outline: none;
+}
+.phone-input-wa .PhoneInputInput::placeholder {
+  color: rgba(255,255,255,0.4);
+}
+
+/* ── Light mode phone input overrides ─── */
+.light .phone-input-dark {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.12);
+}
+.light .phone-input-dark .PhoneInputInput {
+  color: var(--text-primary);
+}
+.light .phone-input-dark .PhoneInputCountrySelect {
+  color: var(--text-primary);
+}
+.light .phone-input-dark:focus-within {
+  border-color: var(--accent-primary);
 }
 
 /* ── Animated conic border ────────────────────────────── */

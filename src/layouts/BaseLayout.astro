@@ -20,20 +20,17 @@ import WhatsAppBubble from "../components/ui/WhatsAppBubble";
     <meta property="og:title" content="Gabriel Vazquez | Desarrollador Web & Coach Ontológico" />
     <meta property="og:description" content="Desarrollador front-end con 7+ años creando ecosistemas digitales de alto impacto." />
     <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#050505" />
+    <link rel="preload" href="/avatar.png" as="image" />
+    <link rel="preload" href="/avatar-nav.png" as="image" />
     <link rel="stylesheet" href="/fonts/inter.css" />
     <title>Gabriel Vazquez | Desarrollador Web front-end</title>
     <script is:inline>
       const savedTheme = localStorage.getItem("theme");
       if (savedTheme === "light") {
         document.documentElement.classList.add("light");
-      } else if (savedTheme === "dark") {
-        // do nothing, dark is default
-      } else if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: light)").matches
-      ) {
-        document.documentElement.classList.add("light");
       }
+      // Dark mode is the default — no need to do anything for dark
     </script>
   </head>
   <body class="antialiased">

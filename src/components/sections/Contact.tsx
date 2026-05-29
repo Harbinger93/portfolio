@@ -114,7 +114,11 @@ export default function Contact() {
                     type="text"
                     id="name"
                     disabled={isSubmitting}
-                    className={`w-full px-4 py-3.5 rounded-xl bg-[#ebf3ff] text-black placeholder-slate-500 border-none focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all disabled:opacity-50`}
+                    onKeyDown={(e) => {
+                      // Block digits and common special chars in name field
+                      if (/[0-9<>{}[\]\\\/;:"|,]/.test(e.key)) e.preventDefault();
+                    }}
+                    className={`w-full px-4 py-3.5 rounded-xl bg-white/5 text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 border border-white/10 focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all disabled:opacity-50`}
                     placeholder="Gabriel J. Vazquez"
                   />
                   {errors.name && (
@@ -134,7 +138,7 @@ export default function Contact() {
                     type="email"
                     id="email"
                     disabled={isSubmitting}
-                    className={`w-full px-4 py-3.5 rounded-xl bg-[#ebf3ff] text-black placeholder-slate-500 border-none focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all disabled:opacity-50`}
+                    className={`w-full px-4 py-3.5 rounded-xl bg-white/5 text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 border border-white/10 focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all disabled:opacity-50`}
                     placeholder="gjvo93@gmail.com"
                   />
                   {errors.email && (
@@ -145,7 +149,7 @@ export default function Contact() {
                 </div>
 
                 {/* Phone Field */}
-                <div className="space-y-2">
+                <div className="space-y-2 md:col-span-2">
                   <label htmlFor="phone" className="text-sm font-medium text-[var(--text-secondary)]">
                     Teléfono
                   </label>
@@ -157,7 +161,7 @@ export default function Contact() {
                         {...field}
                         defaultCountry="VE"
                         disabled={isSubmitting}
-                        className={`w-full px-4 py-3.5 rounded-xl bg-[#ebf3ff] text-black placeholder-slate-500 border-none focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all disabled:opacity-50`}
+                        className="phone-input-dark"
                       />
                     )}
                   />
