@@ -6,15 +6,15 @@ const en = {
   "nav.contact": "Contact",
 
   "hero.greeting": "Hi, I'm",
-  "hero.name": "Gabriel",
-  "hero.title": "Front-End Developer.",
-  "hero.subtitle": "Webmaster with 7+ years crafting high-impact digital ecosystems and scalable systems.",
+  "hero.name": "Gabriel Vazquez",
+  "hero.title": "IT Engineer.",
+  "hero.subtitle": "Software Engineer with 7+ years crafting high-impact digital ecosystems and scalable systems.",
   "hero.cta.projects": "View Projects",
   "hero.cta.contact": "Let's Talk",
 
   "hero.badge1": "Years Experience",
   "hero.badge2": "Machine Learning",
-  "hero.badge3": "Backend, Security & Data",
+  "hero.badge3": "Dev front-end",
 
   "projects.title": "Gallery of systems ready to scale",
   "projects.subtitle": "Projects & Systems",
@@ -49,7 +49,7 @@ const en = {
   "techstack.data.items": "Extracting insights and implementing AI-driven features.",
 
   "coaching.title": "Beyond the code, this is how I work",
-  "coaching.subtitle": "Work Ethic",
+  "coaching.subtitle": "Certified Ontological Coach (INDELSER 2021)",
 
   "about.card1.title": "Responsible",
   "about.card1.desc": "I take ownership of every project and ensure delivery on time.",
@@ -96,15 +96,15 @@ const es = {
   "nav.contact": "Contacto",
 
   "hero.greeting": "Hola, soy",
-  "hero.name": "Gabriel",
-  "hero.title": "Desarrollador\nFront-End.",
-  "hero.subtitle": "Webmaster con más de 7 años creando ecosistemas digitales de alto impacto y sistemas escalables.",
+  "hero.name": "Gabriel Vazquez",
+  "hero.title": "Ingeniero en Informática.",
+  "hero.subtitle": "Ingeniero de Software con más de 7 años creando ecosistemas digitales de alto impacto y sistemas escalables.",
   "hero.cta.projects": "Ver proyectos",
   "hero.cta.contact": "Hablemos",
 
   "hero.badge1": "Años de experiencia",
   "hero.badge2": "Machine Learning",
-  "hero.badge3": "Backend, Seguridad y Datos",
+  "hero.badge3": "Dev front-end",
 
   "projects.title": "Galería de sistemas listos para escalar",
   "projects.subtitle": "Proyectos y Sistemas",
@@ -139,7 +139,7 @@ const es = {
   "techstack.data.items": "Extracción de insights e implementación de modelos de IA.",
 
   "coaching.title": "Más allá del código, así trabajo",
-  "coaching.subtitle": "Ética de trabajo",
+  "coaching.subtitle": "Coach Ontológico Certificado (INDELSER 2021)",
 
   "about.card1.title": "Responsable",
   "about.card1.desc": "Tomo control de cada proyecto y aseguro su entrega a tiempo.",

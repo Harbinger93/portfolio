@@ -30,7 +30,7 @@ export default function Projects() {
     <section id="projects" className="py-24 relative z-10">
       <div className="max-w-5xl mx-auto px-6">
         <ScrollReveal direction="up">
-          <p className="text-[10px] font-bold text-[var(--accent-primary)] uppercase tracking-widest mb-3">
+          <p className="text-[10px] font-bold text-gradient uppercase tracking-widest mb-3">
             {t('projects.subtitle')}
           </p>
           <h2 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-12 max-w-lg leading-tight">
@@ -46,25 +46,31 @@ export default function Projects() {
             return (
               <motion.div 
                 key={project.id} 
-                className={isFeatured ? "md:col-span-2" : "col-span-1"}
+                className={isFeatured ? `md:col-span-2 animated-border` : "col-span-1"}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className={`h-full group overflow-hidden p-0 rounded-2xl flex flex-col glass ${isFeatured ? 'md:flex-row' : ''}`}>
+                <div className={`h-full group overflow-hidden p-0 rounded-2xl flex flex-col glass ${isFeatured ? 'md:flex-row bg-[var(--bg-primary)]' : ''}`}>
                   
-                  {/* Fake Image Area */}
-                  <div className={`relative bg-[var(--bg-secondary)] ${isFeatured ? 'md:w-1/2 min-h-[250px]' : 'h-48'} overflow-hidden border-b md:border-b-0 border-[var(--glass-border)] flex items-center justify-center p-6`}>
-                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-secondary)]/10 to-transparent"></div>
-                    {/* Abstract placeholder visual */}
-                    <div className="w-full h-full border border-[var(--glass-border)] rounded-xl bg-[var(--bg-tertiary)]/50 shadow-2xl overflow-hidden relative">
-                       <div className="absolute top-0 left-0 w-full h-8 bg-[var(--bg-primary)]/80 flex items-center px-3 gap-1.5 border-b border-[var(--glass-border)]">
-                          <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
-                          <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
-                          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
-                       </div>
-                       <div className="mt-12 mx-4 h-24 rounded-lg bg-gradient-to-r from-[var(--glass-bg)] to-transparent border border-[var(--glass-border)]"></div>
+                  {/* Real Image Area with Hover Scroll */}
+                  <div className={`relative bg-[var(--bg-secondary)] ${isFeatured ? 'md:w-1/2 min-h-[250px]' : 'h-64'} overflow-hidden border-b md:border-b-0 border-[var(--glass-border)] group/image block`}>
+                    
+                    {/* Browser Mockup Header */}
+                    <div className="absolute top-0 left-0 w-full h-8 bg-[var(--bg-primary)]/90 backdrop-blur-md flex items-center px-3 gap-1.5 border-b border-[var(--glass-border)] z-10">
+                      <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+                    </div>
+                    
+                    {/* Image with hover scroll (using object-position) */}
+                    <div className="w-full h-full pt-8 relative overflow-hidden">
+                      <img 
+                        src={project.imageUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'} 
+                        alt={t(project.titleKey)}
+                        className={`w-full h-full object-cover object-top transition-all ease-in-out ${project.isDashboard ? 'duration-[4000ms]' : 'duration-[3000ms]'} group-hover/image:object-bottom`}
+                      />
                     </div>
                   </div>
 

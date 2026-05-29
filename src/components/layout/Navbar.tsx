@@ -43,15 +43,18 @@ export default function Navbar() {
       >
         <button
           onClick={() => scrollTo('home')}
-          className="flex items-center justify-center shrink-0"
+          className="flex items-center justify-center shrink-0 gap-3 group"
           aria-label="Home"
         >
           <img
-            src="/avatar.png"
+            src="/avatar-nav.png"
             alt="GV"
-            className="w-10 h-10 rounded-full object-cover border-2 border-glass-border hover:border-[var(--accent-primary)] transition-colors"
+            className="w-10 h-10 rounded-full object-cover border-2 border-glass-border group-hover:border-[var(--accent-primary)] transition-colors"
             onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=GV&background=0D8ABC&color=fff'; }}
           />
+          <span className="font-semibold text-sm tracking-wider text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors">
+            Gabriel Vazquez
+          </span>
         </button>
 
         <div className="hidden md:flex items-center gap-8">

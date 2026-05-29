@@ -6,6 +6,8 @@ export const projects = {
       titleKey: 'projects.messenger.title',
       descKey: 'projects.messenger.desc',
       tags: ['Flutter', 'React', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
+      imageUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
     {
       id: 'whatsapp',
@@ -13,6 +15,8 @@ export const projects = {
       titleKey: 'projects.whatsapp.title',
       descKey: 'projects.whatsapp.desc',
       tags: ['Node.js', 'Python', 'WhatsApp API', 'Telegram'],
+      imageUrl: 'https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
     {
       id: 'accounting',
@@ -20,6 +24,8 @@ export const projects = {
       titleKey: 'projects.accounting.title',
       descKey: 'projects.accounting.desc',
       tags: ['React', 'Tailwind CSS', 'JavaScript'],
+      imageUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: true,
     },
     {
       id: 'web',
@@ -27,6 +33,8 @@ export const projects = {
       titleKey: 'projects.web.title',
       descKey: 'projects.web.desc',
       tags: ['React', 'TypeScript', 'Tailwind', 'Next.js'],
+      imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
     {
       id: 'docker',
@@ -34,6 +42,8 @@ export const projects = {
       titleKey: 'projects.docker.title',
       descKey: 'projects.docker.desc',
       tags: ['Python/Django', 'PostgreSQL', 'NGINX', 'Redis'],
+      imageUrl: 'https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
     {
       id: 'ecommerce',
@@ -41,6 +51,8 @@ export const projects = {
       titleKey: 'projects.ecommerce.title',
       descKey: 'projects.ecommerce.desc',
       tags: ['Next.js', 'Stripe', 'Supabase', 'Tailwind'],
+      imageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
   ],
   es: [
@@ -50,6 +62,8 @@ export const projects = {
       titleKey: 'projects.messenger.title',
       descKey: 'projects.messenger.desc',
       tags: ['Flutter', 'React', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
+      imageUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
     {
       id: 'whatsapp',
@@ -57,6 +71,8 @@ export const projects = {
       titleKey: 'projects.whatsapp.title',
       descKey: 'projects.whatsapp.desc',
       tags: ['Node.js', 'Python', 'WhatsApp API', 'Telegram'],
+      imageUrl: 'https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
     {
       id: 'accounting',
@@ -64,6 +80,8 @@ export const projects = {
       titleKey: 'projects.accounting.title',
       descKey: 'projects.accounting.desc',
       tags: ['React', 'Tailwind CSS', 'JavaScript'],
+      imageUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: true,
     },
     {
       id: 'web',
@@ -71,6 +89,8 @@ export const projects = {
       titleKey: 'projects.web.title',
       descKey: 'projects.web.desc',
       tags: ['React', 'TypeScript', 'Tailwind', 'Next.js'],
+      imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
     {
       id: 'docker',
@@ -78,6 +98,8 @@ export const projects = {
       titleKey: 'projects.docker.title',
       descKey: 'projects.docker.desc',
       tags: ['Python/Django', 'PostgreSQL', 'NGINX', 'Redis'],
+      imageUrl: 'https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
     {
       id: 'ecommerce',
@@ -85,6 +107,8 @@ export const projects = {
       titleKey: 'projects.ecommerce.title',
       descKey: 'projects.ecommerce.desc',
       tags: ['Next.js', 'Stripe', 'Supabase', 'Tailwind'],
+      imageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1000&auto=format&fit=crop',
+      isDashboard: false,
     },
   ],
 };
@@ -95,37 +119,43 @@ export const techStack = {
       id: 'frontend',
       titleKey: 'techstack.frontend.title',
       itemsKey: 'techstack.frontend.items',
-      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript']
+      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript'],
+      percentage: 95
     },
     {
       id: 'backend',
       titleKey: 'techstack.backend.title',
       itemsKey: 'techstack.backend.items',
-      tags: ['Node.js', 'Python', 'Django', 'Express', 'Astro']
+      tags: ['Node.js', 'Python', 'Django', 'Express', 'Astro'],
+      percentage: 90
     },
     {
       id: 'database',
       titleKey: 'techstack.database.title',
       itemsKey: 'techstack.database.items',
-      tags: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis']
+      tags: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis'],
+      percentage: 85
     },
     {
       id: 'devops',
       titleKey: 'techstack.devops.title',
       itemsKey: 'techstack.devops.items',
-      tags: ['Docker', 'AWS', 'Linux', 'Git', 'CI/CD']
+      tags: ['Docker', 'AWS', 'Linux', 'Git', 'CI/CD'],
+      percentage: 88
     },
     {
       id: 'security',
       titleKey: 'techstack.security.title',
       itemsKey: 'techstack.security.items',
-      tags: ['Web Security', 'SSL/TLS', 'Auth']
+      tags: ['Web Security', 'SSL/TLS', 'Auth'],
+      percentage: 80
     },
     {
       id: 'data',
       titleKey: 'techstack.data.title',
       itemsKey: 'techstack.data.items',
-      tags: ['Machine Learning', 'Data Analysis']
+      tags: ['Machine Learning', 'Data Analysis'],
+      percentage: 75
     }
   ],
   es: [
@@ -133,37 +163,43 @@ export const techStack = {
       id: 'frontend',
       titleKey: 'techstack.frontend.title',
       itemsKey: 'techstack.frontend.items',
-      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript']
+      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript'],
+      percentage: 95
     },
     {
       id: 'backend',
       titleKey: 'techstack.backend.title',
       itemsKey: 'techstack.backend.items',
-      tags: ['Node.js', 'Python', 'Django', 'Express', 'Astro']
+      tags: ['Node.js', 'Python', 'Django', 'Express', 'Astro'],
+      percentage: 90
     },
     {
       id: 'database',
       titleKey: 'techstack.database.title',
       itemsKey: 'techstack.database.items',
-      tags: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis']
+      tags: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis'],
+      percentage: 85
     },
     {
       id: 'devops',
       titleKey: 'techstack.devops.title',
       itemsKey: 'techstack.devops.items',
-      tags: ['Docker', 'AWS', 'Linux', 'Git', 'CI/CD']
+      tags: ['Docker', 'AWS', 'Linux', 'Git', 'CI/CD'],
+      percentage: 88
     },
     {
       id: 'security',
       titleKey: 'techstack.security.title',
       itemsKey: 'techstack.security.items',
-      tags: ['Seguridad Web', 'SSL/TLS', 'Auth']
+      tags: ['Seguridad Web', 'SSL/TLS', 'Auth'],
+      percentage: 80
     },
     {
       id: 'data',
       titleKey: 'techstack.data.title',
       itemsKey: 'techstack.data.items',
-      tags: ['Machine Learning', 'Análisis de Datos']
+      tags: ['Machine Learning', 'Análisis de Datos'],
+      percentage: 75
     }
   ],
 };
