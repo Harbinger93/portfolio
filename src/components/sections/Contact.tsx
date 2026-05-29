@@ -100,7 +100,7 @@ export default function Contact() {
         </ScrollReveal>
 
         <ScrollReveal direction="up" delay={0.2}>
-          <div className="glass p-8 md:p-10 rounded-3xl border border-[var(--glass-border)] bg-[#0a0a0a]/50">
+          <div className="glass p-8 md:p-10 rounded-3xl border border-[var(--glass-border)] bg-[var(--bg-primary)]/30">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -118,7 +118,7 @@ export default function Contact() {
                       // Block digits and common special chars in name field
                       if (/[0-9<>{}[\]\\\/;:"|,]/.test(e.key)) e.preventDefault();
                     }}
-                    className={`w-full px-4 py-3.5 rounded-xl bg-white/5 text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 border border-white/10 focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all disabled:opacity-50`}
+                    className="form-input"
                     placeholder="Gabriel J. Vazquez"
                   />
                   {errors.name && (
@@ -138,7 +138,7 @@ export default function Contact() {
                     type="email"
                     id="email"
                     disabled={isSubmitting}
-                    className={`w-full px-4 py-3.5 rounded-xl bg-white/5 text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 border border-white/10 focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all disabled:opacity-50`}
+                    className="form-input"
                     placeholder="gjvo93@gmail.com"
                   />
                   {errors.email && (
@@ -183,8 +183,8 @@ export default function Contact() {
                   id="message"
                   rows={5}
                   disabled={isSubmitting}
-                  className={`w-full px-4 py-4 rounded-xl bg-black/40 border border-white/5 text-[var(--text-primary)] focus:outline-none focus:border-white/20 transition-colors resize-none disabled:opacity-50`}
-                  placeholder="Tell me about your project..."
+                  className="form-input resize-none"
+                  placeholder={t('contact.messagePlaceholder')}
                 />
                 {errors.message && (
                   <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">

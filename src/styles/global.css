@@ -123,6 +123,43 @@ body {
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
+/* ── Adaptive form input (works in both dark and light mode) ─── */
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--form-input-bg, rgba(255,255,255,0.06));
+  color: var(--text-primary);
+  border: 1px solid var(--form-input-border, rgba(255,255,255,0.12));
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+.form-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(0,242,254,0.10);
+}
+.form-input:disabled {
+  opacity: 0.5;
+}
+
+/* Light mode overrides */
+.light .form-input {
+  --form-input-bg: rgba(0,0,0,0.05);
+  --form-input-border: rgba(0,0,0,0.15);
+}
+
+/* ── Native <select> color-scheme fix (country dropdown) ─── */
+.PhoneInputCountrySelect {
+  color-scheme: dark;
+}
+.light .PhoneInputCountrySelect {
+  color-scheme: light;
+}
+
 /* ── React Phone Number Input – dark variant (Contact form) ─── */
 .phone-input-dark {
   display: flex;
@@ -164,7 +201,13 @@ body {
 }
 .phone-input-dark .PhoneInputInput::placeholder {
   color: var(--text-secondary);
-  opacity: 0.5;
+  opacity: 0.6;
+}
+
+/* Light mode for phone-input-dark */
+.light .phone-input-dark {
+  --form-input-bg: rgba(0,0,0,0.05);
+  --form-input-border: rgba(0,0,0,0.15);
 }
 
 /* ── React Phone Number Input – dark variant (WhatsApp bubble) ─ */
