@@ -77,7 +77,7 @@ export default function WhatsAppBubble() {
 
   // Input class reused across fields
   const inputCls =
-    'w-full text-xs px-3 py-2 rounded-lg bg-white/10 border border-white/10 focus:ring-1 focus:ring-[#25D366] text-white placeholder-white/40 outline-none transition-all';
+    'w-full text-xs px-3 py-2 rounded-lg bg-[var(--bg-primary)] border border-[var(--glass-border)] focus:ring-1 focus:ring-[#25D366] text-[var(--text-primary)] placeholder-[var(--text-secondary)] outline-none transition-all';
 
   return (
     <div className="fixed bottom-6 left-6 z-50 pointer-events-auto flex flex-col items-start">
@@ -87,8 +87,8 @@ export default function WhatsAppBubble() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="mb-4 w-80 max-w-[calc(100vw-3rem)] rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col"
-            style={{ background: 'rgba(10,10,10,0.95)', backdropFilter: 'blur(20px)' }}
+            className="mb-4 w-80 max-w-[calc(100vw-3rem)] rounded-2xl border border-[var(--glass-border)] shadow-2xl overflow-hidden flex flex-col bg-[var(--bg-secondary)]/95 backdrop-blur-xl"
+            style={{}}
           >
             {/* Header */}
             <div className="bg-[#075E54] p-4 flex items-center justify-between text-white">
@@ -114,10 +114,10 @@ export default function WhatsAppBubble() {
             <div className="p-4 min-h-[160px] flex flex-col gap-3 overflow-y-auto max-h-[70vh]">
               {/* Typing indicator */}
               {isTyping && (
-                <div className="bg-white/10 p-3 rounded-2xl rounded-tl-sm w-fit text-sm shadow-sm flex gap-1 items-center">
-                  <div className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                <div className="bg-[var(--bg-primary)] border border-[var(--glass-border)] p-3 rounded-2xl rounded-tl-sm w-fit text-sm shadow-sm flex gap-1 items-center">
+                  <div className="w-1.5 h-1.5 bg-[var(--text-secondary)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-1.5 h-1.5 bg-[var(--text-secondary)] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-1.5 h-1.5 bg-[var(--text-secondary)] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               )}
 
@@ -126,7 +126,7 @@ export default function WhatsAppBubble() {
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="bg-white/10 text-white p-3 rounded-2xl rounded-tl-sm w-11/12 text-xs shadow-sm leading-relaxed"
+                  className="bg-[var(--bg-primary)] border border-[var(--glass-border)] text-[var(--text-primary)] p-3 rounded-2xl rounded-tl-sm w-11/12 text-xs shadow-sm leading-relaxed"
                 >
                   {greetingText}
                 </motion.div>

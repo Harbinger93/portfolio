@@ -298,8 +298,8 @@ body {
   height: 200%;
   background: conic-gradient(
     from 0deg,
-    transparent 0%,
-    transparent 80%,
+    var(--glass-border) 0%,
+    var(--glass-border) 80%,
     var(--grad-from) 95%,
     var(--grad-to) 100%
   );

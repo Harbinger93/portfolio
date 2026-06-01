@@ -3,7 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/sections/Hero';
 import Projects from '../components/sections/Projects';
 import TechStack from '../components/sections/TechStack';
+import Services from '../components/sections/Services';
 import Coaching from '../components/sections/Coaching';
+import Testimonials from '../components/sections/Testimonials';
 import Contact from '../components/sections/Contact';
 ---
 
@@ -11,6 +13,8 @@ import Contact from '../components/sections/Contact';
   <Hero client:only="react" />
   <Projects client:only="react" />
   <TechStack client:only="react" />
+  <Services client:only="react" />
   <Coaching client:only="react" />
+  <Testimonials client:only="react" />
   <Contact client:only="react" />
 </BaseLayout>

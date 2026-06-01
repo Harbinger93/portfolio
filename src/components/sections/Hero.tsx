@@ -95,7 +95,7 @@ export default function Hero() {
             />
           </ScrollReveal>
           {/* Decorative sphere behind avatar */}
-          <div className="absolute bottom-10 md:bottom-20 left-1/2 transform -translate-x-1/2 w-32 h-32 md:w-64 md:h-64 rounded-full bg-black/50 blur-xl border border-white/5 z-10 shadow-inner mix-blend-overlay"></div>
+          <div className="absolute bottom-10 md:bottom-20 left-1/2 transform -translate-x-1/2 w-32 h-32 md:w-64 md:h-64 rounded-full bg-[var(--accent-primary)]/20 blur-xl border border-[var(--glass-border)] z-10 shadow-inner mix-blend-overlay"></div>
         </div>
 
         {/* Project search bar inside Hero */}

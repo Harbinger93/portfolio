@@ -47,7 +47,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/60 dark:bg-black/80 backdrop-blur-md"
         >
           <motion.div
             initial={{ y: 50, opacity: 0, scale: 0.95 }}
@@ -68,7 +68,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-sm transition-colors z-10"
+                className="absolute top-4 right-4 p-2 rounded-full bg-[var(--bg-primary)]/80 hover:bg-[var(--bg-primary)] text-[var(--text-primary)] backdrop-blur-sm transition-colors z-10 shadow-sm border border-[var(--glass-border)]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -78,13 +78,13 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 <>
                   <button
                     onClick={handlePrev}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[var(--bg-primary)]/70 hover:bg-[var(--bg-primary)] text-[var(--text-primary)] backdrop-blur-sm transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-sm border border-[var(--glass-border)]"
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </button>
                   <button
                     onClick={handleNext}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[var(--bg-primary)]/70 hover:bg-[var(--bg-primary)] text-[var(--text-primary)] backdrop-blur-sm transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-sm border border-[var(--glass-border)]"
                   >
                     <ChevronRight className="w-6 h-6" />
                   </button>
