@@ -61,7 +61,7 @@ body {
   color: var(--text-primary);
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .text-gradient {
@@ -85,7 +85,7 @@ body {
   backdrop-filter: blur(24px); /* Increased blur for stronger glassmorphism */
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-hover {
@@ -156,8 +156,16 @@ body {
 .PhoneInputCountrySelect {
   color-scheme: dark;
 }
+.PhoneInputCountrySelect option {
+  background-color: #0a0a0a !important; /* Force dark background */
+  color: #ffffff !important;
+}
 .light .PhoneInputCountrySelect {
   color-scheme: light;
+}
+.light .PhoneInputCountrySelect option {
+  background-color: #ffffff !important;
+  color: #000000 !important;
 }
 
 /* ── React Phone Number Input – dark variant (Contact form) ─── */

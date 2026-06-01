@@ -8,9 +8,9 @@ const processSteps = [
     title: "Análisis del Problema",
     description: "Todo comienza entendiendo tu visión. ¿Qué te frena? Analizamos tus procesos actuales y descubrimos el cuello de botella que impide tu crecimiento.",
     icon: Lightbulb,
-    color: "text-amber-400",
-    bg: "bg-amber-400/10",
-    border: "border-amber-400/20"
+    color: "text-blue-400",
+    bg: "bg-blue-400/10",
+    border: "border-blue-400/20"
   },
   {
     id: 2,
@@ -26,9 +26,9 @@ const processSteps = [
     title: "Despliegue y Resultados",
     description: "Lanzamos tu plataforma con los más altos estándares de rendimiento y seguridad. Tu problema inicial se convierte en tu mayor ventaja competitiva.",
     icon: Rocket,
-    color: "text-emerald-400",
-    bg: "bg-emerald-400/10",
-    border: "border-emerald-400/20"
+    color: "text-purple-400",
+    bg: "bg-purple-400/10",
+    border: "border-purple-400/20"
   }
 ];
 

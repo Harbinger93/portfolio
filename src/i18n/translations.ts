@@ -51,8 +51,8 @@ const en = {
   "coaching.title": "Beyond the code, this is how I work",
   "coaching.subtitle": "Certified Ontological Coach (INDELSER 2021)",
 
-  "about.card1.title": "Responsible",
-  "about.card1.desc": "I take ownership of every project and ensure delivery on time.",
+  "about.card1.title": "Results-Oriented",
+  "about.card1.desc": "I focus on delivering tangible value and ensuring projects meet their goals.",
   "about.card2.title": "Accurate",
   "about.card2.desc": "I write clean, optimized code that directly solves the problem.",
   "about.card3.title": "Empathetic",
@@ -142,8 +142,8 @@ const es = {
   "coaching.title": "Más allá del código, así trabajo",
   "coaching.subtitle": "Coach Ontológico Certificado (INDELSER 2021)",
 
-  "about.card1.title": "Responsable",
-  "about.card1.desc": "Tomo control de cada proyecto y aseguro su entrega a tiempo.",
+  "about.card1.title": "Orientado a resultados",
+  "about.card1.desc": "Me enfoco en entregar valor tangible y asegurar que los proyectos cumplan sus objetivos.",
   "about.card2.title": "Certero",
   "about.card2.desc": "Escribo código limpio y optimizado que resuelve el problema.",
   "about.card3.title": "Empático",

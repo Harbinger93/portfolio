@@ -100,8 +100,11 @@ export default function Contact() {
         </ScrollReveal>
 
         <ScrollReveal direction="up" delay={0.2}>
-          <div className="glass p-8 md:p-10 rounded-3xl border border-[var(--glass-border)] bg-[var(--bg-primary)]/30">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <div className="glass p-8 md:p-10 rounded-3xl border border-[var(--glass-border)] hover:border-[var(--accent-primary)]/30 transition-colors duration-500 bg-[var(--bg-primary)]/40 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
+            {/* Subtle inner glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[var(--accent-primary)]/50 to-transparent"></div>
+            
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 relative z-10">
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Name Field */}
@@ -198,7 +201,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#0d0d0d] border border-white/5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[#151515] hover:shadow-[0_0_20px_rgba(255,255,255,0.03)] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-primary text-white font-semibold shadow-lg hover:shadow-[0_0_24px_rgba(0,242,254,0.4)] hover:scale-[1.02] transition-all duration-300 disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-white/20"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
