@@ -21,6 +21,17 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
 
     requestAnimationFrame(raf);
 
+    // Scroll to hash anchor on initial page load if present
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hash = window.location.hash;
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          lenis.scrollTo(element, { offset: -80, duration: 1.5, immediate: false });
+        }
+      }, 400); // Small delay to allow the page and elements to settle in the DOM
+    }
+
     return () => {
       lenis.destroy();
     };
@@ -28,3 +39,4 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
 
   return <>{children}</>;
 }
+

@@ -127,7 +127,7 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-20 left-0 right-0 bg-[#0a0a0a] rounded-2xl border border-glass-border overflow-hidden shadow-2xl"
+              className="absolute top-20 left-0 right-0 bg-[var(--bg-secondary)] backdrop-blur-xl rounded-2xl border border-glass-border overflow-hidden shadow-2xl"
             >
               <div className="flex flex-col p-4 gap-2">
                 {sections.map((s) => (
