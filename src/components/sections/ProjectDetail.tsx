@@ -54,7 +54,7 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
   };
 
   return (
-    <section className="pt-40 pb-24 relative z-10 min-h-screen">
+    <section className="pt-40 pb-24 relative z-10 min-h-screen overflow-hidden">
       {/* Dynamic Background Glows */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--accent-primary)]/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[var(--accent-secondary)]/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
@@ -260,15 +260,15 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
 
         {/* Project Navigation Footer */}
         <ScrollReveal direction="up" delay={0.1}>
-          <div className="border-t border-glass-border mt-16 pt-10 flex items-center justify-between gap-4">
+          <div className="border-t border-glass-border mt-16 pt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6 sm:gap-4">
             <a
               href={`/projects/${prevProject.id}`}
-              className="group flex flex-col items-start gap-1 text-left max-w-[45%]"
+              className="group flex flex-col items-start gap-1 text-left w-full sm:max-w-[45%]"
             >
               <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--text-secondary)]">
                 {locale === 'es' ? '← Anterior' : '← Previous'}
               </span>
-              <span className="text-xs md:text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors truncate max-w-xs block">
+              <span className="text-xs md:text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors truncate w-full block">
                 {t(prevProject.titleKey)}
               </span>
             </a>
@@ -277,12 +277,12 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
 
             <a
               href={`/projects/${nextProject.id}`}
-              className="group flex flex-col items-end gap-1 text-right max-w-[45%]"
+              className="group flex flex-col items-end gap-1 text-right w-full sm:max-w-[45%]"
             >
               <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--text-secondary)]">
                 {locale === 'es' ? 'Siguiente →' : 'Next →'}
               </span>
-              <span className="text-xs md:text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-secondary)] transition-colors truncate max-w-xs block">
+              <span className="text-xs md:text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-secondary)] transition-colors truncate w-full block">
                 {t(nextProject.titleKey)}
               </span>
             </a>
