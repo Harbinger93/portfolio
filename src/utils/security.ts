@@ -4,6 +4,10 @@ export function setupSecurity(toastCallback: (msg: string) => void) {
   const threshold = 160;
 
   function detectDevTools() {
+    // Devtools size checks are not applicable on mobile viewports due to toolbar/address bar dimensions
+    const isMobile = typeof navigator !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) return false;
+
     const widthThreshold = window.outerWidth - window.innerWidth > threshold;
     const heightThreshold = window.outerHeight - window.innerHeight > threshold;
     return widthThreshold || heightThreshold;

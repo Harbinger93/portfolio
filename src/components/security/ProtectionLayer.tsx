@@ -47,7 +47,7 @@ export default function ProtectionLayer() {
               {t('security.subtitle')}
             </p>
             <p className="text-slate-400 text-sm leading-relaxed mb-8">
-              Si llegaste aquí es porque te intera saber como está desarrollado el sitio, si quieres saber más escribeme.
+              Si llegaste aquí es porque te interesa saber cómo está desarrollado el sitio. Si quieres saber más, escríbeme.
             </p>
             <div className="flex gap-4 justify-center">
               <button
