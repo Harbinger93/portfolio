@@ -3,7 +3,7 @@ import { useI18n } from '../../i18n/context';
 import { projects } from '../../config/data';
 import TechIcon from '../ui/TechIcon';
 import ScrollReveal from '../ui/ScrollReveal';
-import { ArrowLeft, ExternalLink, Globe, LayoutGrid } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Globe, LayoutGrid, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Backlight } from '../ui/backlight';
 import { RainbowButton } from '../ui/rainbow-button';
@@ -12,9 +12,23 @@ interface ProjectDetailProps {
   id: string;
 }
 
+const getShortTitle = (id: string) => {
+  const shortNames: Record<string, string> = {
+    'ga4-portal': 'GA4 Portal',
+    'adiwapp': 'Adiwapp',
+    'koyobo': 'Koyobo',
+    'intranet': 'Intranet',
+    'somosmigrantes': 'SomosMigrantes',
+    'iesa': 'IESA',
+    'simpletv': 'SimpleTV'
+  };
+  return shortNames[id] || id;
+};
+
 export default function ProjectDetail({ id }: ProjectDetailProps) {
   const { t, locale } = useI18n();
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
 
   // Get project list based on current locale
   const currentProjects = projects[locale as keyof typeof projects] || projects['en'];
@@ -54,7 +68,7 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
   };
 
   return (
-    <section className="pt-40 pb-24 relative z-10 min-h-screen overflow-hidden">
+    <section className="pt-40 pb-24 relative z-10 min-h-screen overflow-clip">
       {/* Dynamic Background Glows */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--accent-primary)]/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[var(--accent-secondary)]/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
@@ -111,7 +125,7 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
                   </div>
 
                   {/* Display active media */}
-                  <div className="flex-1 w-full relative overflow-hidden bg-[#0a0a0b]">
+                  <div className="flex-1 w-full relative overflow-hidden bg-[#0a0a0b] hover:overflow-y-auto scroll-smooth custom-scrollbar">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={activeMediaIndex}
@@ -119,7 +133,7 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.25 }}
-                        className="w-full h-full"
+                        className="w-full h-full animate-[fadeIn_0.3s_ease]"
                       >
                         {isVideo(activeMedia) ? (
                           <video
@@ -135,7 +149,8 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
                           <img
                             src={activeMedia}
                             alt={t(project.titleKey)}
-                            className="w-full h-full object-cover object-top"
+                            className="w-full min-h-full h-auto object-cover object-top block cursor-zoom-in"
+                            onClick={() => setIsZoomOpen(true)}
                           />
                         )}
                       </motion.div>
@@ -260,36 +275,70 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
 
         {/* Project Navigation Footer */}
         <ScrollReveal direction="up" delay={0.1}>
-          <div className="border-t border-glass-border mt-16 pt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6 sm:gap-4">
+          <div className="border-t border-glass-border mt-16 pt-10 flex flex-row items-center justify-between gap-4">
             <a
               href={`/projects/${prevProject.id}`}
-              className="group flex flex-col items-start gap-1 text-left w-full sm:max-w-[45%]"
+              className="group flex flex-col items-start gap-1 text-left w-full max-w-[45%]"
             >
               <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--text-secondary)]">
                 {locale === 'es' ? '← Anterior' : '← Previous'}
               </span>
-              <span className="text-xs md:text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors truncate w-full block">
-                {t(prevProject.titleKey)}
+              <span className="text-xs sm:text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors truncate w-full block">
+                {getShortTitle(prevProject.id)}
               </span>
             </a>
 
-            <div className="h-8 w-[1px] bg-glass-border hidden sm:block"></div>
+            <div className="h-8 w-[1px] bg-glass-border shrink-0"></div>
 
             <a
               href={`/projects/${nextProject.id}`}
-              className="group flex flex-col items-end gap-1 text-right w-full sm:max-w-[45%]"
+              className="group flex flex-col items-end gap-1 text-right w-full max-w-[45%]"
             >
               <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--text-secondary)]">
                 {locale === 'es' ? 'Siguiente →' : 'Next →'}
               </span>
-              <span className="text-xs md:text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-secondary)] transition-colors truncate w-full block">
-                {t(nextProject.titleKey)}
+              <span className="text-xs sm:text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-secondary)] transition-colors truncate w-full block">
+                {getShortTitle(nextProject.id)}
               </span>
             </a>
           </div>
         </ScrollReveal>
 
       </div>
+
+      {/* Image Zoom Modal */}
+      <AnimatePresence>
+        {isZoomOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsZoomOpen(false)}
+            className="fixed inset-0 bg-black/95 backdrop-blur-md z-[100] flex items-center justify-center p-4 md:p-10 cursor-zoom-out"
+          >
+            <button
+              onClick={() => setIsZoomOpen(false)}
+              className="absolute top-6 right-6 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer z-[110]"
+              aria-label="Close zoom"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl max-h-[85vh] overflow-y-auto rounded-lg bg-[var(--bg-secondary)] border border-glass-border p-2 custom-scrollbar cursor-default"
+            >
+              <img
+                src={activeMedia}
+                alt="Zoomed project view"
+                className="w-full h-auto rounded-md"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

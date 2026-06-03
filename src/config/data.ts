@@ -29,6 +29,18 @@ import migracionFaq from '../img/Migracion/Preguntas-Frecuentes-Extranjería-Esp
 import migracionTestimonios from '../img/Migracion/Testimonios-de-Clientes-SomosMigrantes-ComoTu.webp';
 import migracionContacto from '../img/Migracion/Contacto-Asesoría-de-Extranjería-SomosMigrantes-ComoTu.webp';
 
+import iesaHome from '../img/IESA/IESA-Escuela-de-Gerencia-home.png';
+import iesaCursos from '../img/IESA/Cursos-y-Programas-IESA-Escuela-de-Gerencia.png';
+import iesaMaestria from '../img/IESA/Maestria-en-Administración-IESA-Escuela-de-Gerencia.png';
+import iesaProfesores from '../img/IESA/Profesores-IESA-Escuela-de-Gerencia.png';
+import iesaProfesor from '../img/IESA/Pagina-profesor-IESA-Escuela-de-Gerencia.png';
+
+import simpletvRecarga from '../img/SimpleTV/Email-RECARGA.png';
+import simpletvBienvenida from '../img/SimpleTV/Email-Bienvenida.png';
+import simpletvFibra from '../img/SimpleTV/Oferta Simplefibra - El doble de velocidad.png';
+import simpletvBdv from '../img/SimpleTV/Promo BDV - 1.png';
+import simpletvD2d from '../img/SimpleTV/Door to door.png';
+
 export const projects = {
   en: [
     {
@@ -94,6 +106,32 @@ export const projects = {
       imageUrl: migracionMain,
       isDashboard: false,
       images: [migracionMain, migracionTramites, migracionFaq, migracionTestimonios, migracionContacto],
+      url: '#'
+    },
+    {
+      id: 'iesa',
+      icon: 'Globe',
+      titleKey: 'projects.iesa.title',
+      descKey: 'projects.iesa.shortDesc',
+      fullDescKey: 'projects.iesa.desc',
+      solutionKey: 'projects.iesa.solution',
+      tags: ['WordPress', 'PHP', 'JavaScript', 'CSS3', 'SEO', 'Performance'],
+      imageUrl: iesaHome,
+      isDashboard: false,
+      images: [iesaHome, iesaCursos, iesaMaestria, iesaProfesores, iesaProfesor],
+      url: '#'
+    },
+    {
+      id: 'simpletv',
+      icon: 'Mail',
+      titleKey: 'projects.simpletv.title',
+      descKey: 'projects.simpletv.shortDesc',
+      fullDescKey: 'projects.simpletv.desc',
+      solutionKey: 'projects.simpletv.solution',
+      tags: ['HTML5', 'CSS', 'Email Design', 'MJML', 'Responsiveness', 'Email Marketing'],
+      imageUrl: simpletvRecarga,
+      isDashboard: false,
+      images: [simpletvRecarga, simpletvBienvenida, simpletvFibra, simpletvBdv, simpletvD2d],
       url: '#'
     }
   ],
@@ -161,6 +199,32 @@ export const projects = {
       imageUrl: migracionMain,
       isDashboard: false,
       images: [migracionMain, migracionTramites, migracionFaq, migracionTestimonios, migracionContacto],
+      url: '#'
+    },
+    {
+      id: 'iesa',
+      icon: 'Globe',
+      titleKey: 'projects.iesa.title',
+      descKey: 'projects.iesa.shortDesc',
+      fullDescKey: 'projects.iesa.desc',
+      solutionKey: 'projects.iesa.solution',
+      tags: ['WordPress', 'PHP', 'JavaScript', 'CSS3', 'SEO', 'Performance'],
+      imageUrl: iesaHome,
+      isDashboard: false,
+      images: [iesaHome, iesaCursos, iesaMaestria, iesaProfesores, iesaProfesor],
+      url: '#'
+    },
+    {
+      id: 'simpletv',
+      icon: 'Mail',
+      titleKey: 'projects.simpletv.title',
+      descKey: 'projects.simpletv.shortDesc',
+      fullDescKey: 'projects.simpletv.desc',
+      solutionKey: 'projects.simpletv.solution',
+      tags: ['HTML5', 'CSS', 'Email Design', 'MJML', 'Responsiveness', 'Email Marketing'],
+      imageUrl: simpletvRecarga,
+      isDashboard: false,
+      images: [simpletvRecarga, simpletvBienvenida, simpletvFibra, simpletvBdv, simpletvD2d],
       url: '#'
     }
   ]
