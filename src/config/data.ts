@@ -34,12 +34,27 @@ import iesaCursos from '../img/IESA/Cursos-y-Programas-IESA-Escuela-de-Gerencia.
 import iesaMaestria from '../img/IESA/Maestria-en-Administración-IESA-Escuela-de-Gerencia.png';
 import iesaProfesores from '../img/IESA/Profesores-IESA-Escuela-de-Gerencia.png';
 import iesaProfesor from '../img/IESA/Pagina-profesor-IESA-Escuela-de-Gerencia.png';
+import iesaCaptura from '../img/IESA/Captura de pantalla 2026-06-03 151502.png';
+import iesaClub from '../img/IESA/Club-de-políticas-y-asuntos-públicos-IESA-Escuela-de-Gerencia.png';
+import iesaEspecializacion from '../img/IESA/Especialización-en-Gerencia-de-Operaciones-IESA-Escuela-de-Gerencia.png';
+import iesaInCompany from '../img/IESA/In-Company-IESA-Escuela-de-Gerencia.png';
+import iesaFinanzas from '../img/IESA/Maestria-en-Finanzas-IESA-Escuela-de-Gerencia.png';
+import iesaGerenciaPublica from '../img/IESA/Maestría-en-Gerencia-Pública-IESA-Escuela-de-Gerencia.png';
+import iesaMercadeo from '../img/IESA/Maestría-en-Mercadeo-IESA-Escuela-de-Gerencia.png';
+import iesaNexus from '../img/IESA/nexus-IESA-Escuela-de-gerencia.png';
+import iesaPlantillaEmail from '../img/IESA/plantilla-email.png';
+import iesaServiciosCarrera from '../img/IESA/Servicios-de-carrera-IESA-Escuela-de-Gerencia.png';
+import iesaSostenibilidad from '../img/IESA/Sostenibilidad-en-Acción-IESA-Escuela-de-Gerencia.png';
 
 import simpletvRecarga from '../img/SimpleTV/Email-RECARGA.png';
 import simpletvBienvenida from '../img/SimpleTV/Email-Bienvenida.png';
 import simpletvFibra from '../img/SimpleTV/Oferta Simplefibra - El doble de velocidad.png';
 import simpletvBdv from '../img/SimpleTV/Promo BDV - 1.png';
 import simpletvD2d from '../img/SimpleTV/Door to door.png';
+import simpletvEmailD1 from '../img/SimpleTV/Email D-1.png';
+import simpletvEmailD3 from '../img/SimpleTV/Email D-3.png';
+import simpletvBienvenida02 from '../img/SimpleTV/Email-Bienvenida-02.png';
+import simpletvCompliance from '../img/SimpleTV/Email-Compliance.png';
 
 export const projects = {
   en: [
@@ -118,7 +133,24 @@ export const projects = {
       tags: ['WordPress', 'PHP', 'JavaScript', 'CSS3', 'SEO', 'Performance'],
       imageUrl: iesaHome,
       isDashboard: false,
-      images: [iesaHome, iesaCursos, iesaMaestria, iesaProfesores, iesaProfesor],
+      images: [
+        iesaHome,
+        iesaCursos,
+        iesaMaestria,
+        iesaProfesores,
+        iesaProfesor,
+        iesaCaptura,
+        iesaClub,
+        iesaEspecializacion,
+        iesaInCompany,
+        iesaFinanzas,
+        iesaGerenciaPublica,
+        iesaMercadeo,
+        iesaNexus,
+        iesaPlantillaEmail,
+        iesaServiciosCarrera,
+        iesaSostenibilidad
+      ],
       url: '#'
     },
     {
@@ -131,7 +163,17 @@ export const projects = {
       tags: ['HTML5', 'CSS', 'Email Design', 'MJML', 'Responsiveness', 'Email Marketing'],
       imageUrl: simpletvRecarga,
       isDashboard: false,
-      images: [simpletvRecarga, simpletvBienvenida, simpletvFibra, simpletvBdv, simpletvD2d],
+      images: [
+        simpletvRecarga,
+        simpletvBienvenida,
+        simpletvFibra,
+        simpletvBdv,
+        simpletvD2d,
+        simpletvEmailD1,
+        simpletvEmailD3,
+        simpletvBienvenida02,
+        simpletvCompliance
+      ],
       url: '#'
     }
   ],
@@ -211,7 +253,24 @@ export const projects = {
       tags: ['WordPress', 'PHP', 'JavaScript', 'CSS3', 'SEO', 'Performance'],
       imageUrl: iesaHome,
       isDashboard: false,
-      images: [iesaHome, iesaCursos, iesaMaestria, iesaProfesores, iesaProfesor],
+      images: [
+        iesaHome,
+        iesaCursos,
+        iesaMaestria,
+        iesaProfesores,
+        iesaProfesor,
+        iesaCaptura,
+        iesaClub,
+        iesaEspecializacion,
+        iesaInCompany,
+        iesaFinanzas,
+        iesaGerenciaPublica,
+        iesaMercadeo,
+        iesaNexus,
+        iesaPlantillaEmail,
+        iesaServiciosCarrera,
+        iesaSostenibilidad
+      ],
       url: '#'
     },
     {
@@ -224,7 +283,17 @@ export const projects = {
       tags: ['HTML5', 'CSS', 'Email Design', 'MJML', 'Responsiveness', 'Email Marketing'],
       imageUrl: simpletvRecarga,
       isDashboard: false,
-      images: [simpletvRecarga, simpletvBienvenida, simpletvFibra, simpletvBdv, simpletvD2d],
+      images: [
+        simpletvRecarga,
+        simpletvBienvenida,
+        simpletvFibra,
+        simpletvBdv,
+        simpletvD2d,
+        simpletvEmailD1,
+        simpletvEmailD3,
+        simpletvBienvenida02,
+        simpletvCompliance
+      ],
       url: '#'
     }
   ]
