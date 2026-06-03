@@ -46,6 +46,23 @@ import iesaPlantillaEmail from '../img/IESA/plantilla-email.webp';
 import iesaServiciosCarrera from '../img/IESA/Servicios-de-carrera-IESA-Escuela-de-Gerencia.webp';
 import iesaSostenibilidad from '../img/IESA/Sostenibilidad-en-Acción-IESA-Escuela-de-Gerencia.webp';
 
+import iesaHomeThumb from '../img/IESA/IESA-Escuela-de-Gerencia-home-thumb.webp';
+import iesaCursosThumb from '../img/IESA/Cursos-y-Programas-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaMaestriaThumb from '../img/IESA/Maestria-en-Administración-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaProfesoresThumb from '../img/IESA/Profesores-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaProfesorThumb from '../img/IESA/Pagina-profesor-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaCapturaThumb from '../img/IESA/Captura de pantalla 2026-06-03 151502-thumb.webp';
+import iesaClubThumb from '../img/IESA/Club-de-políticas-y-asuntos-públicos-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaEspecializacionThumb from '../img/IESA/Especialización-en-Gerencia-de-Operaciones-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaInCompanyThumb from '../img/IESA/In-Company-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaFinanzasThumb from '../img/IESA/Maestria-en-Finanzas-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaGerenciaPublicaThumb from '../img/IESA/Maestría-en-Gerencia-Pública-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaMercadeoThumb from '../img/IESA/Maestría-en-Mercadeo-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaNexusThumb from '../img/IESA/nexus-IESA-Escuela-de-gerencia-thumb.webp';
+import iesaPlantillaEmailThumb from '../img/IESA/plantilla-email-thumb.webp';
+import iesaServiciosCarreraThumb from '../img/IESA/Servicios-de-carrera-IESA-Escuela-de-Gerencia-thumb.webp';
+import iesaSostenibilidadThumb from '../img/IESA/Sostenibilidad-en-Acción-IESA-Escuela-de-Gerencia-thumb.webp';
+
 import simpletvRecarga from '../img/SimpleTV/Email-RECARGA.webp';
 import simpletvBienvenida from '../img/SimpleTV/Email-Bienvenida.webp';
 import simpletvFibra from '../img/SimpleTV/Oferta Simplefibra - El doble de velocidad.webp';
@@ -55,6 +72,16 @@ import simpletvEmailD1 from '../img/SimpleTV/Email D-1.webp';
 import simpletvEmailD3 from '../img/SimpleTV/Email D-3.webp';
 import simpletvBienvenida02 from '../img/SimpleTV/Email-Bienvenida-02.webp';
 import simpletvCompliance from '../img/SimpleTV/Email-Compliance.webp';
+
+import simpletvRecargaThumb from '../img/SimpleTV/Email-RECARGA-thumb.webp';
+import simpletvBienvenidaThumb from '../img/SimpleTV/Email-Bienvenida-thumb.webp';
+import simpletvFibraThumb from '../img/SimpleTV/Oferta Simplefibra - El doble de velocidad-thumb.webp';
+import simpletvBdvThumb from '../img/SimpleTV/Promo BDV - 1-thumb.webp';
+import simpletvD2dThumb from '../img/SimpleTV/Door to door-thumb.webp';
+import simpletvEmailD1Thumb from '../img/SimpleTV/Email D-1-thumb.webp';
+import simpletvEmailD3Thumb from '../img/SimpleTV/Email D-3-thumb.webp';
+import simpletvBienvenida02Thumb from '../img/SimpleTV/Email-Bienvenida-02-thumb.webp';
+import simpletvComplianceThumb from '../img/SimpleTV/Email-Compliance-thumb.webp';
 
 export const projects = {
   en: [
@@ -130,26 +157,26 @@ export const projects = {
       descKey: 'projects.iesa.shortDesc',
       fullDescKey: 'projects.iesa.desc',
       solutionKey: 'projects.iesa.solution',
-      tags: ['WordPress', 'PHP', 'JavaScript', 'CSS3', 'SEO', 'Performance'],
+      tags: ['Bootstrap 5', 'PHP', 'JavaScript', 'CSS3', 'SEO', 'Performance'],
       imageUrl: iesaHome,
       isDashboard: false,
       images: [
-        iesaHome,
-        iesaCursos,
-        iesaMaestria,
-        iesaProfesores,
-        iesaProfesor,
-        iesaCaptura,
-        iesaClub,
-        iesaEspecializacion,
-        iesaInCompany,
-        iesaFinanzas,
-        iesaGerenciaPublica,
-        iesaMercadeo,
-        iesaNexus,
-        iesaPlantillaEmail,
-        iesaServiciosCarrera,
-        iesaSostenibilidad
+        { original: iesaHome, thumb: iesaHomeThumb },
+        { original: iesaCursos, thumb: iesaCursosThumb },
+        { original: iesaMaestria, thumb: iesaMaestriaThumb },
+        { original: iesaProfesores, thumb: iesaProfesoresThumb },
+        { original: iesaProfesor, thumb: iesaProfesorThumb },
+        { original: iesaCaptura, thumb: iesaCapturaThumb },
+        { original: iesaClub, thumb: iesaClubThumb },
+        { original: iesaEspecializacion, thumb: iesaEspecializacionThumb },
+        { original: iesaInCompany, thumb: iesaInCompanyThumb },
+        { original: iesaFinanzas, thumb: iesaFinanzasThumb },
+        { original: iesaGerenciaPublica, thumb: iesaGerenciaPublicaThumb },
+        { original: iesaMercadeo, thumb: iesaMercadeoThumb },
+        { original: iesaNexus, thumb: iesaNexusThumb },
+        { original: iesaPlantillaEmail, thumb: iesaPlantillaEmailThumb },
+        { original: iesaServiciosCarrera, thumb: iesaServiciosCarreraThumb },
+        { original: iesaSostenibilidad, thumb: iesaSostenibilidadThumb }
       ],
       url: '#'
     },
@@ -164,15 +191,15 @@ export const projects = {
       imageUrl: simpletvRecarga,
       isDashboard: false,
       images: [
-        simpletvRecarga,
-        simpletvBienvenida,
-        simpletvFibra,
-        simpletvBdv,
-        simpletvD2d,
-        simpletvEmailD1,
-        simpletvEmailD3,
-        simpletvBienvenida02,
-        simpletvCompliance
+        { original: simpletvRecarga, thumb: simpletvRecargaThumb },
+        { original: simpletvBienvenida, thumb: simpletvBienvenidaThumb },
+        { original: simpletvFibra, thumb: simpletvFibraThumb },
+        { original: simpletvBdv, thumb: simpletvBdvThumb },
+        { original: simpletvD2d, thumb: simpletvD2dThumb },
+        { original: simpletvEmailD1, thumb: simpletvEmailD1Thumb },
+        { original: simpletvEmailD3, thumb: simpletvEmailD3Thumb },
+        { original: simpletvBienvenida02, thumb: simpletvBienvenida02Thumb },
+        { original: simpletvCompliance, thumb: simpletvComplianceThumb }
       ],
       url: '#'
     }
@@ -250,26 +277,26 @@ export const projects = {
       descKey: 'projects.iesa.shortDesc',
       fullDescKey: 'projects.iesa.desc',
       solutionKey: 'projects.iesa.solution',
-      tags: ['WordPress', 'PHP', 'JavaScript', 'CSS3', 'SEO', 'Performance'],
+      tags: ['Bootstrap 5', 'PHP', 'JavaScript', 'CSS3', 'SEO', 'Performance'],
       imageUrl: iesaHome,
       isDashboard: false,
       images: [
-        iesaHome,
-        iesaCursos,
-        iesaMaestria,
-        iesaProfesores,
-        iesaProfesor,
-        iesaCaptura,
-        iesaClub,
-        iesaEspecializacion,
-        iesaInCompany,
-        iesaFinanzas,
-        iesaGerenciaPublica,
-        iesaMercadeo,
-        iesaNexus,
-        iesaPlantillaEmail,
-        iesaServiciosCarrera,
-        iesaSostenibilidad
+        { original: iesaHome, thumb: iesaHomeThumb },
+        { original: iesaCursos, thumb: iesaCursosThumb },
+        { original: iesaMaestria, thumb: iesaMaestriaThumb },
+        { original: iesaProfesores, thumb: iesaProfesoresThumb },
+        { original: iesaProfesor, thumb: iesaProfesorThumb },
+        { original: iesaCaptura, thumb: iesaCapturaThumb },
+        { original: iesaClub, thumb: iesaClubThumb },
+        { original: iesaEspecializacion, thumb: iesaEspecializacionThumb },
+        { original: iesaInCompany, thumb: iesaInCompanyThumb },
+        { original: iesaFinanzas, thumb: iesaFinanzasThumb },
+        { original: iesaGerenciaPublica, thumb: iesaGerenciaPublicaThumb },
+        { original: iesaMercadeo, thumb: iesaMercadeoThumb },
+        { original: iesaNexus, thumb: iesaNexusThumb },
+        { original: iesaPlantillaEmail, thumb: iesaPlantillaEmailThumb },
+        { original: iesaServiciosCarrera, thumb: iesaServiciosCarreraThumb },
+        { original: iesaSostenibilidad, thumb: iesaSostenibilidadThumb }
       ],
       url: '#'
     },
@@ -284,15 +311,15 @@ export const projects = {
       imageUrl: simpletvRecarga,
       isDashboard: false,
       images: [
-        simpletvRecarga,
-        simpletvBienvenida,
-        simpletvFibra,
-        simpletvBdv,
-        simpletvD2d,
-        simpletvEmailD1,
-        simpletvEmailD3,
-        simpletvBienvenida02,
-        simpletvCompliance
+        { original: simpletvRecarga, thumb: simpletvRecargaThumb },
+        { original: simpletvBienvenida, thumb: simpletvBienvenidaThumb },
+        { original: simpletvFibra, thumb: simpletvFibraThumb },
+        { original: simpletvBdv, thumb: simpletvBdvThumb },
+        { original: simpletvD2d, thumb: simpletvD2dThumb },
+        { original: simpletvEmailD1, thumb: simpletvEmailD1Thumb },
+        { original: simpletvEmailD3, thumb: simpletvEmailD3Thumb },
+        { original: simpletvBienvenida02, thumb: simpletvBienvenida02Thumb },
+        { original: simpletvCompliance, thumb: simpletvComplianceThumb }
       ],
       url: '#'
     }

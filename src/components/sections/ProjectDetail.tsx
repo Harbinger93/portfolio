@@ -86,8 +86,17 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
     return '';
   };
 
-  const resolvedImages = (project.images && project.images.length > 0 ? project.images : [project.imageUrl]).map(getImgSrc);
-  const activeMedia = resolvedImages[activeMediaIndex] || '';
+  const resolvedImages = (project.images && project.images.length > 0 ? project.images : [project.imageUrl]).map((img: any) => {
+    if (typeof img === 'object' && img.original) {
+      return {
+        src: getImgSrc(img.original),
+        thumb: getImgSrc(img.thumb)
+      };
+    }
+    const srcVal = getImgSrc(img);
+    return { src: srcVal, thumb: srcVal };
+  });
+  const activeMedia = resolvedImages[activeMediaIndex]?.src || '';
 
   const isVideo = (url: string) => {
     return url.toLowerCase().endsWith('.mp4') || url.toLowerCase().includes('.mp4');
@@ -228,15 +237,17 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
                           : 'border-glass-border opacity-50 hover:opacity-100'
                       }`}
                     >
-                      {isVideo(img) ? (
+                      {isVideo(img.src) ? (
                         <div className="w-full h-full bg-[var(--bg-secondary)] flex items-center justify-center text-[9px] font-mono text-[var(--accent-primary)] uppercase select-none">
                           Video
                         </div>
                       ) : (
                         <img
-                          src={img}
+                          src={img.thumb}
                           alt={`Thumbnail ${i + 1}`}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
                         />
                       )}
                     </button>
