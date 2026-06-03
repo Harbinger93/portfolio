@@ -13,6 +13,9 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
     });
 
     lenisRef.current = lenis;
+    if (typeof window !== 'undefined') {
+      (window as any).lenis = lenis;
+    }
 
     function raf(time: number) {
       lenis.raf(time);

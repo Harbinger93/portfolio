@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useI18n } from '../../i18n/context';
 import { projects } from '../../config/data';
 import TechIcon from '../ui/TechIcon';
@@ -29,6 +29,32 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
   const { t, locale } = useI18n();
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const lenis = (window as any).lenis;
+      if (isZoomOpen) {
+        lenis?.stop();
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.documentElement.classList.add('lenis-stopped');
+      } else {
+        lenis?.start();
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        document.documentElement.classList.remove('lenis-stopped');
+      }
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        const lenis = (window as any).lenis;
+        lenis?.start();
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        document.documentElement.classList.remove('lenis-stopped');
+      }
+    };
+  }, [isZoomOpen]);
 
   // Get project list based on current locale
   const currentProjects = projects[locale as keyof typeof projects] || projects['en'];
@@ -125,7 +151,10 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
                   </div>
 
                   {/* Display active media */}
-                  <div className="flex-1 w-full relative overflow-hidden bg-[#0a0a0b] hover:overflow-y-auto scroll-smooth custom-scrollbar">
+                  <div 
+                    className="flex-1 w-full relative overflow-hidden bg-[#0a0a0b] hover:overflow-y-auto scroll-smooth custom-scrollbar"
+                    data-lenis-prevent
+                  >
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={activeMediaIndex}
@@ -314,6 +343,7 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsZoomOpen(false)}
+            data-lenis-prevent
             className="fixed inset-0 bg-black/95 backdrop-blur-md z-[100] flex items-center justify-center p-4 md:p-10 cursor-zoom-out"
           >
             <button
@@ -328,6 +358,7 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
+              data-lenis-prevent
               className="relative max-w-4xl max-h-[85vh] overflow-y-auto rounded-lg bg-[var(--bg-secondary)] border border-glass-border p-2 custom-scrollbar cursor-default"
             >
               <img
