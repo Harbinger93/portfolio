@@ -3,12 +3,13 @@ import { useI18n } from '../../i18n/context';
 import { useTheme } from '../../utils/theme';
 import { Languages, Sun, Moon, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatedThemeToggler } from '../ui/animated-theme-toggler';
 
 const sections = ['home', 'projects', 'skills', 'coaching', 'contact'];
 
 export default function Navbar() {
   const { t, locale, setLocale } = useI18n();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme, toggleTheme } = useTheme();
   const [active, setActive] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,6 +33,10 @@ export default function Navbar() {
 
   const scrollTo = (id: string) => {
     setMenuOpen(false);
+    if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+      window.location.href = `/#${id}`;
+      return;
+    }
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
@@ -87,23 +92,24 @@ export default function Navbar() {
             {locale === 'es' ? 'EN' : 'ES'}
           </button>
           
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-glass-hover text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
+          <AnimatedThemeToggler 
+            theme={theme}
+            onThemeChange={(newTheme) => setTheme(newTheme)}
+            className="p-2 rounded-full hover:bg-glass-hover text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors flex items-center justify-center cursor-pointer [&_svg]:size-4"
+            variant="circle"
+            duration={500}
+          />
         </div>
 
         {/* Mobile controls */}
         <div className="flex items-center gap-4 md:hidden">
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
-          >
-            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </button>
+          <AnimatedThemeToggler 
+            theme={theme}
+            onThemeChange={(newTheme) => setTheme(newTheme)}
+            className="p-2 rounded-full text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors flex items-center justify-center cursor-pointer [&_svg]:size-5"
+            variant="circle"
+            duration={500}
+          />
           <button
             className="text-[var(--text-primary)]"
             onClick={() => setMenuOpen(!menuOpen)}

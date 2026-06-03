@@ -1,5 +1,5 @@
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
-import { MouseEvent, ReactNode } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 
 export default function GlowCard({ children, className = '' }: { children: ReactNode; className?: string }) {
   const mouseX = useMotionValue(0);

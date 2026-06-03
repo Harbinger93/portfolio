@@ -49,12 +49,8 @@ export default function Testimonials() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((testimonial, index) => (
-            <motion.div
+            <div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
               className="glass p-8 rounded-2xl relative group hover:border-[var(--accent-primary)] transition-colors duration-300 flex flex-col"
             >
               <Quote className="absolute top-6 right-6 w-8 h-8 text-[var(--glass-border)] group-hover:text-[var(--accent-primary)]/20 transition-colors duration-300" />
@@ -84,7 +80,7 @@ export default function Testimonials() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

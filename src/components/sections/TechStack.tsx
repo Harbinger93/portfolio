@@ -1,6 +1,7 @@
 import { useI18n } from '../../i18n/context';
 import ScrollReveal from '../ui/ScrollReveal';
 import SkillBar from '../ui/SkillBar';
+import TechIcon from '../ui/TechIcon';
 import { techStack } from '../../config/data';
 
 export default function TechStack() {
@@ -44,6 +45,7 @@ export default function TechStack() {
                       key={tag} 
                       className="px-3 py-1.5 rounded-lg bg-[var(--bg-secondary)] border border-[var(--glass-border)] text-[10px] font-medium text-[var(--text-secondary)] flex items-center gap-1.5 hover:border-[var(--accent-primary)]/50 transition-colors cursor-default"
                     >
+                      <TechIcon name={tag} className="w-3 h-3 text-[var(--accent-primary)]" />
                       {tag}
                     </div>
                   ))}

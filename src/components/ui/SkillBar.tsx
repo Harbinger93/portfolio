@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 interface SkillBarProps {
   label: string;
   percentage: number;
@@ -15,12 +13,12 @@ export default function SkillBar({ label, percentage, color, delay = 0 }: SkillB
         <span className="text-slate-500">{percentage}%</span>
       </div>
       <div className="w-full h-1.5 rounded-full bg-deep-700/50 overflow-hidden">
-        <motion.div
+        <div
           className={`h-full rounded-full ${color}`}
-          initial={{ width: 0 }}
-          whileInView={{ width: `${percentage}%` }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+          style={{ 
+            width: `${percentage}%`,
+            transition: `width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}s`
+          }}
         />
       </div>
     </div>

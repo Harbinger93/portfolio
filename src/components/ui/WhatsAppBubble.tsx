@@ -8,6 +8,10 @@ import { useI18n } from '../../i18n/context';
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import DOMPurify from 'isomorphic-dompurify';
+import { Input } from './input';
+import { Textarea } from './textarea';
+import { Button } from './button';
+import { CustomCountrySelect } from './CustomCountrySelect';
 
 const waSchema = z.object({
   name: z
@@ -72,12 +76,8 @@ export default function WhatsAppBubble() {
 
   const greetingText =
     locale === 'es'
-      ? '¡Hola! Para brindarte una mejor atención, indícame tu nombre, correo, teléfono y cómo puedo ayudarte.'
-      : 'Hi! To better assist you, please share your name, email, phone number and how I can help.';
-
-  // Input class reused across fields
-  const inputCls =
-    'w-full text-xs px-3 py-2 rounded-lg bg-[var(--bg-primary)] border border-[var(--glass-border)] focus:ring-1 focus:ring-[#25D366] text-[var(--text-primary)] placeholder-[var(--text-secondary)] outline-none transition-all';
+      ? '¡Hola! Para contactarme por WhatsApp escribe por aquí. Por favor, indícame tu nombre, correo, teléfono y tu consulta.'
+      : 'Hi! To contact me on WhatsApp write here. Please share your name, email, phone number and your inquiry.';
 
   return (
     <div className="fixed bottom-6 left-6 z-50 pointer-events-auto flex flex-col items-start">
@@ -143,22 +143,22 @@ export default function WhatsAppBubble() {
                 >
                   {/* Name */}
                   <div>
-                    <input
+                    <Input
                       {...register('name')}
                       placeholder={locale === 'es' ? 'Tu nombre' : 'Your name'}
                       onKeyDown={(e) => { if (/[0-9<>{}[\]\\;:"|,]/.test(e.key)) e.preventDefault(); }}
-                      className={inputCls}
+                      className="h-9 px-3 py-1.5 text-xs bg-white/[0.04] border-white/10"
                     />
                     {errors.name && <p className="text-[10px] text-red-400 mt-0.5">{errors.name.message}</p>}
                   </div>
 
                   {/* Email */}
                   <div>
-                    <input
+                    <Input
                       {...register('email')}
                       type="email"
                       placeholder={locale === 'es' ? 'Tu correo' : 'Your email'}
-                      className={inputCls}
+                      className="h-9 px-3 py-1.5 text-xs bg-white/[0.04] border-white/10"
                     />
                     {errors.email && <p className="text-[10px] text-red-400 mt-0.5">{errors.email.message}</p>}
                   </div>
@@ -173,6 +173,7 @@ export default function WhatsAppBubble() {
                           {...field}
                           defaultCountry="VE"
                           className="phone-input-wa"
+                          countrySelectComponent={CustomCountrySelect}
                         />
                       )}
                     />
@@ -181,11 +182,11 @@ export default function WhatsAppBubble() {
 
                   {/* Message */}
                   <div>
-                    <textarea
+                    <Textarea
                       {...register('message')}
                       placeholder={locale === 'es' ? 'Escribe tu mensaje...' : 'Type your message...'}
                       rows={2}
-                      className={`${inputCls} resize-none`}
+                      className="min-h-16 px-3 py-1.5 text-xs bg-white/[0.04] border-white/10"
                       onPaste={(e) => {
                         // Sanitize paste
                         e.preventDefault();
@@ -196,12 +197,12 @@ export default function WhatsAppBubble() {
                     {errors.message && <p className="text-[10px] text-red-400 mt-0.5">{errors.message.message}</p>}
                   </div>
 
-                  <button
+                  <Button
                     type="submit"
-                    className="w-full bg-[#25D366] text-white text-xs font-bold py-2.5 rounded-lg flex items-center justify-center gap-2 hover:bg-[#128C7E] transition-colors shadow-md"
+                    className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white text-xs font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md h-9 cursor-pointer"
                   >
                     {locale === 'es' ? 'Ir a WhatsApp' : 'Go to WhatsApp'} <Send className="w-3 h-3" />
-                  </button>
+                  </Button>
                 </motion.form>
               )}
             </div>

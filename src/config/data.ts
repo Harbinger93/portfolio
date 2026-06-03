@@ -1,141 +1,171 @@
+import ga4Landing from '../img/Dashboard GA4/GA4-Dashboard-Control-total-de-tus-analíticas-landing.webp';
+import ga4Dashboard from '../img/Dashboard GA4/Dashboard-Principal-GA4-dashboard.webp';
+import ga4Reports from '../img/Dashboard GA4/Reportes-y-Analíticas-GA4.webp';
+import ga4About from '../img/Dashboard GA4/Conocer-más-Capacidades-del-Sistema-GA4Dash-About.webp';
+import ga4Vault from '../img/Dashboard GA4/boveda-de-contraseñas.webp';
+import ga4Tasks from '../img/Dashboard GA4/tableto-de-planificación.webp';
+
+import adiwappMain from '../img/Adiwapp/Captura de pantalla 2026-06-02 155754.webp';
+import adiwappImg1 from '../img/Adiwapp/Captura de pantalla 2026-06-02 151930.webp';
+import adiwappImg2 from '../img/Adiwapp/Captura de pantalla 2026-06-02 151947.webp';
+import adiwappImg3 from '../img/Adiwapp/Captura de pantalla 2026-06-02 152003.webp';
+
+import koyoboMain from '../img/Koyobo/Koyobo-Adventures-Expertos-Home.webp';
+import koyoboChina from '../img/Koyobo/China-y-Feria-de-Cantón-Negocios-Internacionales.webp';
+import koyoboDestinos from '../img/Koyobo/Destinos-Koyobo-Adventures.webp';
+import koyoboNosotros from '../img/Koyobo/Nosotros-Koyobo-Adventures-Nosotros.webp';
+import koyoboServicios from '../img/Koyobo/Nuestros-Servicios-Koyobo-Adventures.webp';
+import koyoboVideo from '../img/Koyobo/Koyobo Adventures _ Expertos en Logística Corporativa.mp4';
+
+import intranetMain from '../img/Intranet/intranet-landing.webp';
+import intranetPerfil from '../img/Intranet/Perfil – intranet.webp';
+import intranetBiblioteca from '../img/Intranet/intranet-carga-informacion-biblioteca.webp';
+import intranetMapa from '../img/Intranet/intranet-carga-informacion-mapa.webp';
+import intranetTutorial from '../img/Intranet/intranet-tutorial.webp';
+
+import migracionMain from '../img/Migracion/SomosMigrantes-ComoTu-Trámites-de-Extranjería-en-España.webp';
+import migracionTramites from '../img/Migracion/Trámites-de-Extranjería-en-España-SomosMigrantes-ComoTu.webp';
+import migracionFaq from '../img/Migracion/Preguntas-Frecuentes-Extranjería-España-SomosMigrantes-ComoTu.webp';
+import migracionTestimonios from '../img/Migracion/Testimonios-de-Clientes-SomosMigrantes-ComoTu.webp';
+import migracionContacto from '../img/Migracion/Contacto-Asesoría-de-Extranjería-SomosMigrantes-ComoTu.webp';
+
 export const projects = {
   en: [
     {
-      id: 'messenger',
-      icon: 'MessageSquare',
-      titleKey: 'projects.messenger.title',
-      descKey: 'projects.messenger.desc',
-      tags: ['Flutter', 'React', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
-      imageUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop',
-      isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
-      url: '#'
-    },
-    {
-      id: 'whatsapp',
-      icon: 'MessageCircle',
-      titleKey: 'projects.whatsapp.title',
-      descKey: 'projects.whatsapp.desc',
-      tags: ['Node.js', 'Python', 'WhatsApp API', 'Telegram'],
-      imageUrl: 'https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1000&auto=format&fit=crop',
-      isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
-      url: '#'
-    },
-    {
-      id: 'accounting',
-      icon: 'Calculator',
-      titleKey: 'projects.accounting.title',
-      descKey: 'projects.accounting.desc',
-      tags: ['React', 'Tailwind CSS', 'JavaScript'],
-      imageUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop',
+      id: 'ga4-portal',
+      icon: 'LayoutDashboard',
+      titleKey: 'projects.ga4.title',
+      descKey: 'projects.ga4.shortDesc',
+      fullDescKey: 'projects.ga4.desc',
+      solutionKey: 'projects.ga4.solution',
+      tags: ['Astro', 'React.js', 'Tailwind CSS', 'Supabase', 'GA4', 'GTM', 'Vercel'],
+      imageUrl: ga4Landing,
       isDashboard: true,
-      images: ['https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      images: [ga4Landing, ga4Dashboard, ga4Reports, ga4About, ga4Vault, ga4Tasks],
       url: '#'
     },
     {
-      id: 'web',
-      icon: 'Layout',
-      titleKey: 'projects.web.title',
-      descKey: 'projects.web.desc',
-      tags: ['React', 'TypeScript', 'Tailwind', 'Next.js'],
-      imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
-      isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      id: 'adiwapp',
+      icon: 'CreditCard',
+      titleKey: 'projects.adiwapp.title',
+      descKey: 'projects.adiwapp.shortDesc',
+      fullDescKey: 'projects.adiwapp.desc',
+      solutionKey: 'projects.adiwapp.solution',
+      tags: ['Astro', 'React.js', 'Tailwind CSS', 'Supabase', 'Vercel'],
+      imageUrl: adiwappMain,
+      isDashboard: true,
+      images: [adiwappMain, adiwappImg1, adiwappImg2, adiwappImg3],
       url: '#'
     },
     {
-      id: 'docker',
-      icon: 'Container',
-      titleKey: 'projects.docker.title',
-      descKey: 'projects.docker.desc',
-      tags: ['Python/Django', 'PostgreSQL', 'NGINX', 'Redis'],
-      imageUrl: 'https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop',
+      id: 'koyobo',
+      icon: 'Compass',
+      titleKey: 'projects.koyobo.title',
+      descKey: 'projects.koyobo.shortDesc',
+      fullDescKey: 'projects.koyobo.desc',
+      solutionKey: 'projects.koyobo.solution',
+      tags: ['Astro', 'React', 'Tailwind CSS', 'WordPress Headless'],
+      imageUrl: koyoboMain,
       isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      images: [koyoboVideo, koyoboMain, koyoboChina, koyoboDestinos, koyoboNosotros, koyoboServicios],
       url: '#'
     },
     {
-      id: 'ecommerce',
-      icon: 'ShoppingCart',
-      titleKey: 'projects.ecommerce.title',
-      descKey: 'projects.ecommerce.desc',
-      tags: ['Next.js', 'Stripe', 'Supabase', 'Tailwind'],
-      imageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1000&auto=format&fit=crop',
-      isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      id: 'intranet',
+      icon: 'Building2',
+      titleKey: 'projects.intranet.title',
+      descKey: 'projects.intranet.shortDesc',
+      fullDescKey: 'projects.intranet.desc',
+      solutionKey: 'projects.intranet.solution',
+      tags: ['WordPress Headless', 'Leaflet.js', 'WordPress REST API', 'React'],
+      imageUrl: intranetMain,
+      isDashboard: true,
+      images: [intranetMain, intranetPerfil, intranetBiblioteca, intranetMapa, intranetTutorial],
       url: '#'
     },
+    {
+      id: 'somosmigrantes',
+      icon: 'UserCheck',
+      titleKey: 'projects.somosmigrantes.title',
+      descKey: 'projects.somosmigrantes.shortDesc',
+      fullDescKey: 'projects.somosmigrantes.desc',
+      solutionKey: 'projects.somosmigrantes.solution',
+      tags: ['Astro', 'React.js', 'Tailwind CSS', 'shadcn/ui', 'mapcn', 'Zod', 'Supabase'],
+      imageUrl: migracionMain,
+      isDashboard: false,
+      images: [migracionMain, migracionTramites, migracionFaq, migracionTestimonios, migracionContacto],
+      url: '#'
+    }
   ],
   es: [
     {
-      id: 'messenger',
-      icon: 'MessageSquare',
-      titleKey: 'projects.messenger.title',
-      descKey: 'projects.messenger.desc',
-      tags: ['Flutter', 'React', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
-      imageUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop',
-      isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
-      url: '#'
-    },
-    {
-      id: 'whatsapp',
-      icon: 'MessageCircle',
-      titleKey: 'projects.whatsapp.title',
-      descKey: 'projects.whatsapp.desc',
-      tags: ['Node.js', 'Python', 'WhatsApp API', 'Telegram'],
-      imageUrl: 'https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1000&auto=format&fit=crop',
-      isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
-      url: '#'
-    },
-    {
-      id: 'accounting',
-      icon: 'Calculator',
-      titleKey: 'projects.accounting.title',
-      descKey: 'projects.accounting.desc',
-      tags: ['React', 'Tailwind CSS', 'JavaScript'],
-      imageUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop',
+      id: 'ga4-portal',
+      icon: 'LayoutDashboard',
+      titleKey: 'projects.ga4.title',
+      descKey: 'projects.ga4.shortDesc',
+      fullDescKey: 'projects.ga4.desc',
+      solutionKey: 'projects.ga4.solution',
+      tags: ['Astro', 'React.js', 'Tailwind CSS', 'Supabase', 'GA4', 'GTM', 'Vercel'],
+      imageUrl: ga4Landing,
       isDashboard: true,
-      images: ['https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      images: [ga4Landing, ga4Dashboard, ga4Reports, ga4About, ga4Vault, ga4Tasks],
       url: '#'
     },
     {
-      id: 'web',
-      icon: 'Layout',
-      titleKey: 'projects.web.title',
-      descKey: 'projects.web.desc',
-      tags: ['React', 'TypeScript', 'Tailwind', 'Next.js'],
-      imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
-      isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      id: 'adiwapp',
+      icon: 'CreditCard',
+      titleKey: 'projects.adiwapp.title',
+      descKey: 'projects.adiwapp.shortDesc',
+      fullDescKey: 'projects.adiwapp.desc',
+      solutionKey: 'projects.adiwapp.solution',
+      tags: ['Astro', 'React.js', 'Tailwind CSS', 'Supabase', 'Vercel'],
+      imageUrl: adiwappMain,
+      isDashboard: true,
+      images: [adiwappMain, adiwappImg1, adiwappImg2, adiwappImg3],
       url: '#'
     },
     {
-      id: 'docker',
-      icon: 'Container',
-      titleKey: 'projects.docker.title',
-      descKey: 'projects.docker.desc',
-      tags: ['Python/Django', 'PostgreSQL', 'NGINX', 'Redis'],
-      imageUrl: 'https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop',
+      id: 'koyobo',
+      icon: 'Compass',
+      titleKey: 'projects.koyobo.title',
+      descKey: 'projects.koyobo.shortDesc',
+      fullDescKey: 'projects.koyobo.desc',
+      solutionKey: 'projects.koyobo.solution',
+      tags: ['Astro', 'React', 'Tailwind CSS', 'WordPress Headless'],
+      imageUrl: koyoboMain,
       isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      images: [koyoboVideo, koyoboMain, koyoboChina, koyoboDestinos, koyoboNosotros, koyoboServicios],
       url: '#'
     },
     {
-      id: 'ecommerce',
-      icon: 'ShoppingCart',
-      titleKey: 'projects.ecommerce.title',
-      descKey: 'projects.ecommerce.desc',
-      tags: ['Next.js', 'Stripe', 'Supabase', 'Tailwind'],
-      imageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1000&auto=format&fit=crop',
-      isDashboard: false,
-      images: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'],
+      id: 'intranet',
+      icon: 'Building2',
+      titleKey: 'projects.intranet.title',
+      descKey: 'projects.intranet.shortDesc',
+      fullDescKey: 'projects.intranet.desc',
+      solutionKey: 'projects.intranet.solution',
+      tags: ['WordPress Headless', 'Leaflet.js', 'WordPress REST API', 'React'],
+      imageUrl: intranetMain,
+      isDashboard: true,
+      images: [intranetMain, intranetPerfil, intranetBiblioteca, intranetMapa, intranetTutorial],
       url: '#'
     },
-  ],
+    {
+      id: 'somosmigrantes',
+      icon: 'UserCheck',
+      titleKey: 'projects.somosmigrantes.title',
+      descKey: 'projects.somosmigrantes.shortDesc',
+      fullDescKey: 'projects.somosmigrantes.desc',
+      solutionKey: 'projects.somosmigrantes.solution',
+      tags: ['Astro', 'React.js', 'Tailwind CSS', 'shadcn/ui', 'mapcn', 'Zod', 'Supabase'],
+      imageUrl: migracionMain,
+      isDashboard: false,
+      images: [migracionMain, migracionTramites, migracionFaq, migracionTestimonios, migracionContacto],
+      url: '#'
+    }
+  ]
 };
+
 
 export const techStack = {
   en: [
@@ -143,7 +173,7 @@ export const techStack = {
       id: 'frontend',
       titleKey: 'techstack.frontend.title',
       itemsKey: 'techstack.frontend.items',
-      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript'],
+      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript', 'WordPress'],
       percentage: 95
     },
     {
@@ -187,7 +217,7 @@ export const techStack = {
       id: 'frontend',
       titleKey: 'techstack.frontend.title',
       itemsKey: 'techstack.frontend.items',
-      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript'],
+      tags: ['React', 'Tailwind CSS', 'JavaScript', 'TypeScript', 'WordPress'],
       percentage: 95
     },
     {

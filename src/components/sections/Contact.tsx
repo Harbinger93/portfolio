@@ -8,6 +8,11 @@ import { Send, CheckCircle2, AlertCircle, Linkedin, Instagram, Dribbble } from '
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import DOMPurify from 'isomorphic-dompurify';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { Button } from '../ui/button';
+import { CustomCountrySelect } from '../ui/CustomCountrySelect';
 
 // Form validation schema
 const contactSchema = z.object({
@@ -68,10 +73,6 @@ export default function Contact() {
         }),
       });
 
-      const whatsappMessage = `Hola Gabriel, mi nombre es ${data.name} desde el país (${countryCode}). Te escribo desde tu portfolio.\n\n${sanitizedMessage}\n\nMi correo es: ${data.email}\nMi número es: ${data.phone}`;
-      const whatsappUrl = `https://wa.me/584120113404?text=${encodeURIComponent(whatsappMessage)}`;
-      window.open(whatsappUrl, '_blank');
-
       setSubmitStatus('success');
       reset();
       setTimeout(() => setSubmitStatus('idle'), 5000);
@@ -109,10 +110,10 @@ export default function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Name Field */}
                 <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium text-[var(--text-secondary)]">
+                  <Label htmlFor="name">
                     {t('contact.name')}
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     {...register('name')}
                     type="text"
                     id="name"
@@ -121,7 +122,6 @@ export default function Contact() {
                       // Block digits and common special chars in name field
                       if (/[0-9<>{}[\]\\\/;:"|,]/.test(e.key)) e.preventDefault();
                     }}
-                    className="form-input"
                     placeholder="Gabriel J. Vazquez"
                   />
                   {errors.name && (
@@ -133,15 +133,14 @@ export default function Contact() {
 
                 {/* Email Field */}
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-[var(--text-secondary)]">
+                  <Label htmlFor="email">
                     {t('contact.email')}
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     {...register('email')}
                     type="email"
                     id="email"
                     disabled={isSubmitting}
-                    className="form-input"
                     placeholder="gjvo93@gmail.com"
                   />
                   {errors.email && (
@@ -153,9 +152,9 @@ export default function Contact() {
 
                 {/* Phone Field */}
                 <div className="space-y-2 md:col-span-2">
-                  <label htmlFor="phone" className="text-sm font-medium text-[var(--text-secondary)]">
+                  <Label htmlFor="phone">
                     Teléfono
-                  </label>
+                  </Label>
                   <Controller
                     name="phone"
                     control={control}
@@ -165,6 +164,7 @@ export default function Contact() {
                         defaultCountry="VE"
                         disabled={isSubmitting}
                         className="phone-input-dark"
+                        countrySelectComponent={CustomCountrySelect}
                       />
                     )}
                   />
@@ -178,15 +178,14 @@ export default function Contact() {
 
               {/* Message Field */}
               <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium text-[var(--text-secondary)]">
+                <Label htmlFor="message">
                   {t('contact.message')}
-                </label>
-                <textarea
+                </Label>
+                <Textarea
                   {...register('message')}
                   id="message"
                   rows={5}
                   disabled={isSubmitting}
-                  className="form-input resize-none"
                   placeholder={t('contact.messagePlaceholder')}
                 />
                 {errors.message && (
@@ -198,10 +197,10 @@ export default function Contact() {
 
               {/* Submit Button & Status */}
               <div className="pt-2 flex flex-col sm:flex-row items-center gap-4 justify-between">
-                <button
+                <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-primary text-white font-semibold shadow-lg hover:shadow-[0_0_24px_rgba(0,242,254,0.4)] hover:scale-[1.02] transition-all duration-300 disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-white/20"
+                  className="w-full sm:w-auto h-auto px-8 py-3.5 rounded-xl bg-gradient-primary hover:bg-gradient-primary/95 text-white font-semibold shadow-lg hover:shadow-[0_0_24px_rgba(0,242,254,0.4)] hover:scale-[1.02] transition-all duration-300 disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-white/20 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
@@ -213,7 +212,7 @@ export default function Contact() {
                       {t('contact.send')} <Send className="w-4 h-4" />
                     </span>
                   )}
-                </button>
+                </Button>
 
                 {submitStatus === 'success' && (
                   <p className="text-sm text-emerald-400 flex items-center gap-2 animate-[fadeIn_0.3s_ease]">

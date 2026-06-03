@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --color-deep-900: #0a0a0a;
   --color-deep-800: #111111;
@@ -23,7 +25,7 @@
   --glass-bg: rgba(10, 10, 10, 0.7);
   --glass-border: rgba(148, 163, 184, 0.1);
   --glass-hover: rgba(148, 163, 184, 0.2);
-  
+
   --accent-primary: #00f2fe;   /* Luminous electric cyan */
   --accent-secondary: #7c3aed; /* Deep royal violet */
   --accent-tertiary: #94a3b8;  /* slate-400 */
@@ -31,6 +33,44 @@
   /* Gradient stops used everywhere */
   --grad-from: #00f2fe;
   --grad-to:   #7c3aed;
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  --card: var(--bg-secondary);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-tertiary);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent-primary);
+  --primary-foreground: #000000;
+  --secondary: var(--bg-secondary);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--bg-tertiary);
+  --muted-foreground: var(--text-secondary);
+  --accent: rgba(255, 255, 255, 0.06);
+  --accent-foreground: var(--text-primary);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: var(--glass-border);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: var(--accent-primary);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: var(--bg-secondary);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--accent-primary);
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: rgba(255, 255, 255, 0.06);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--glass-border);
+  --sidebar-ring: var(--accent-primary);
+  --color-1: #00f2fe;
+  --color-2: #7c3aed;
+  --color-3: #00f2fe;
+  --color-4: #7c3aed;
+  --color-5: #00f2fe;
 }
 
 /* Light Theme overrides */
@@ -43,11 +83,11 @@ html.light {
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(0, 0, 0, 0.1);
   --glass-hover: rgba(0, 0, 0, 0.15);
-  
+
   --accent-primary: #0284c7; /* darker blue for light theme */
   --accent-secondary: #7c3aed;
   --accent-tertiary: #0369a1;
-  
+
   --grad-from: #0284c7;
   --grad-to: #7c3aed;
 }
@@ -364,5 +404,149 @@ body {
     50% { opacity: 0.8; }
     100% { opacity: 0.4; }
   }
+  --animate-aurora: aurora 60s ease-in-out infinite alternate;
+  @keyframes aurora {
+    0% {
+      background-position: 0% 50%;
+      transform: rotate(-5deg) scale(0.9);
+    }
+    25% {
+      background-position: 50% 100%;
+      transform: rotate(5deg) scale(1.1);
+    }
+    50% {
+      background-position: 100% 50%;
+      transform: rotate(-3deg) scale(0.95);
+    }
+    75% {
+      background-position: 50% 0%;
+      transform: rotate(3deg) scale(1.05);
+    }
+    100% {
+      background-position: 0% 50%;
+      transform: rotate(-5deg) scale(0.9);
+    }
+  }
+  --animate-shimmer-line: shimmer-line 4s infinite linear;
+  @keyframes shimmer-line {
+    0% { left: -25%; }
+    100% { left: 125%; }
+  }
+  --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
+  --color-color-5: var(--color-5);
+  --color-color-4: var(--color-4);
+  --color-color-3: var(--color-3);
+  --color-color-2: var(--color-2);
+  --color-color-1: var(--color-1)
+;
+  @keyframes rainbow {
+    0% {
+      background-position: 0%;
+    }
+    100% {
+      background-position: 200%;
+    }
+  }
+  --animate-aurora-glow-1: aurora-glow-1 30s ease-in-out infinite alternate;
+  --animate-aurora-glow-2: aurora-glow-2 35s ease-in-out infinite alternate;
+  @keyframes aurora-glow-1 {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    50% {
+      transform: translate(80px, 40px) scale(1.15);
+    }
+    100% {
+      transform: translate(-40px, 20px) scale(0.9);
+    }
+  }
+  @keyframes aurora-glow-2 {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    50% {
+      transform: translate(-70px, -50px) scale(1.1);
+    }
+    100% {
+      transform: translate(30px, -20px) scale(0.95);
+    }
+  }
 }
 
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+.dark {
+  --color-1: #00f2fe;
+  --color-2: #7c3aed;
+  --color-3: #00f2fe;
+  --color-4: #7c3aed;
+  --color-5: #00f2fe;
+}
+
+/* ── Rainbow Button Custom Classes ────────────────────── */
+.rainbow-btn-default, .rainbow-btn-outline {
+  position: relative;
+  border: 2px solid transparent !important;
+  background-size: 200% !important;
+  background-origin: border-box !important;
+  background-clip: padding-box, border-box, border-box !important;
+}
+
+.rainbow-btn-default {
+  background: 
+    linear-gradient(#121213, #121213) padding-box,
+    linear-gradient(#121213 50%, rgba(18, 18, 19, 0.6) 80%, rgba(18, 18, 19, 0)) border-box,
+    linear-gradient(90deg, var(--color-1), var(--color-5), var(--color-3), var(--color-4), var(--color-2)) border-box !important;
+  color: #ffffff !important;
+}
+
+.light .rainbow-btn-default {
+  background: 
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(#ffffff 50%, rgba(255, 255, 255, 0.6) 80%, rgba(0, 0, 0, 0)) border-box,
+    linear-gradient(90deg, var(--color-1), var(--color-5), var(--color-3), var(--color-4), var(--color-2)) border-box !important;
+  color: #0f172a !important;
+}
+
+.rainbow-btn-outline {
+  background: 
+    linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box,
+    linear-gradient(var(--bg-primary) 50%, rgba(18, 18, 19, 0.6) 80%, transparent) border-box,
+    linear-gradient(90deg, var(--color-1), var(--color-5), var(--color-3), var(--color-4), var(--color-2)) border-box !important;
+  color: var(--text-primary) !important;
+}
+
+/* Glowing blur highlight beneath the button */
+.rainbow-btn-default::before, .rainbow-btn-outline::before {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: 50%;
+  z-index: -1;
+  height: 20%;
+  width: 60%;
+  transform: translateX(-50%);
+  animation: rainbow var(--speed, 2s) infinite linear;
+  background: linear-gradient(90deg, var(--color-1), var(--color-5), var(--color-3), var(--color-4), var(--color-2));
+  background-size: 200%;
+  filter: blur(0.75rem);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Border Beam CSS Mask cross-browser utility */
+.border-beam-mask {
+  border-style: solid;
+  border-color: transparent;
+  /* Standard CSS masks */
+  mask-image: linear-gradient(#000, #000), linear-gradient(#000, #000);
+  mask-clip: padding-box, border-box;
+  mask-composite: exclude;
+  /* Webkit mask properties */
+  -webkit-mask-image: linear-gradient(#000, #000), linear-gradient(#000, #000);
+  -webkit-mask-clip: padding-box, border-box;
+  -webkit-mask-composite: xor;
+}
