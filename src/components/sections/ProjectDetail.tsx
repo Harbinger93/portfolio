@@ -3,7 +3,7 @@ import { useI18n } from '../../i18n/context';
 import { projects } from '../../config/data';
 import TechIcon from '../ui/TechIcon';
 import ScrollReveal from '../ui/ScrollReveal';
-import { ArrowLeft, ExternalLink, Globe, LayoutGrid, X } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Globe, LayoutGrid, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Backlight } from '../ui/backlight';
 import { RainbowButton } from '../ui/rainbow-button';
@@ -91,6 +91,31 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
 
   const isVideo = (url: string) => {
     return url.toLowerCase().endsWith('.mp4') || url.toLowerCase().includes('.mp4');
+  };
+
+  useEffect(() => {
+    if (!isZoomOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        setActiveMediaIndex((prev) => (prev === 0 ? resolvedImages.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        setActiveMediaIndex((prev) => (prev === resolvedImages.length - 1 ? 0 : prev + 1));
+      } else if (e.key === 'Escape') {
+        setIsZoomOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isZoomOpen, resolvedImages.length]);
+
+  const handlePrev = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setActiveMediaIndex((prev) => (prev === 0 ? resolvedImages.length - 1 : prev - 1));
+  };
+
+  const handleNext = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setActiveMediaIndex((prev) => (prev === resolvedImages.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -344,7 +369,7 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
             exit={{ opacity: 0 }}
             onClick={() => setIsZoomOpen(false)}
             data-lenis-prevent
-            className="fixed inset-0 bg-black/95 backdrop-blur-md z-[100] flex items-center justify-center p-4 md:p-10 cursor-zoom-out"
+            className="fixed inset-0 bg-black/95 backdrop-blur-md z-[100] flex flex-col items-center justify-center p-4 md:p-10 cursor-zoom-out select-none"
           >
             <button
               onClick={() => setIsZoomOpen(false)}
@@ -353,20 +378,58 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
             >
               <X className="w-5 h-5" />
             </button>
+
+            {resolvedImages.length > 1 && (
+              <>
+                <button
+                  onClick={handlePrev}
+                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-105 active:scale-95 cursor-pointer z-[110] backdrop-blur-sm"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-105 active:scale-95 cursor-pointer z-[110] backdrop-blur-sm"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </>
+            )}
+
             <motion.div
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
               data-lenis-prevent
-              className="relative max-w-4xl max-h-[85vh] overflow-y-auto rounded-lg bg-[var(--bg-secondary)] border border-glass-border p-2 custom-scrollbar cursor-default"
+              className="relative max-w-4xl max-h-[80vh] overflow-y-auto rounded-lg bg-[var(--bg-secondary)] border border-glass-border p-2 custom-scrollbar cursor-default"
             >
-              <img
-                src={activeMedia}
-                alt="Zoomed project view"
-                className="w-full h-auto rounded-md"
-              />
+              {isVideo(activeMedia) ? (
+                <video
+                  src={activeMedia}
+                  controls
+                  autoPlay
+                  muted
+                  playsInline
+                  loop
+                  className="w-full max-h-[75vh] object-contain rounded-md"
+                />
+              ) : (
+                <img
+                  src={activeMedia}
+                  alt={`Zoomed project view ${activeMediaIndex + 1}`}
+                  className="w-full h-auto rounded-md"
+                />
+              )}
             </motion.div>
+
+            {resolvedImages.length > 1 && (
+              <div className="absolute bottom-6 px-4 py-1.5 rounded-full bg-white/10 text-white text-xs font-medium tracking-wider backdrop-blur-sm">
+                {activeMediaIndex + 1} / {resolvedImages.length}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
