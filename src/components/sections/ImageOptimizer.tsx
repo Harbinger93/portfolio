@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useI18n } from '../../i18n/context';
-import { Upload, FileImage, FileText, Download, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
+import { Upload, FileImage, FileText, Download, CheckCircle, AlertCircle, RefreshCw, Info } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
 
 interface ProcessedFile {
@@ -23,6 +23,7 @@ export default function ImageOptimizer() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progressMsg, setProgressMsg] = useState('');
+  const [showTechInfo, setShowTechInfo] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -319,8 +320,55 @@ export default function ImageOptimizer() {
     <div className="max-w-4xl mx-auto px-6">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight">
-          {locale === 'es' ? 'Optimizador de Imágenes y PDF' : 'Image & PDF Optimizer'}
+        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-3 relative">
+          <span>{locale === 'es' ? 'Optimizador de Imágenes y PDF' : 'Image & PDF Optimizer'}</span>
+          <div className="relative inline-block">
+            <button
+              type="button"
+              onMouseEnter={() => setShowTechInfo(true)}
+              onMouseLeave={() => setShowTechInfo(false)}
+              onClick={() => setShowTechInfo(!showTechInfo)}
+              className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
+              aria-label="Info"
+            >
+              <Info className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+            
+            {showTechInfo && (
+              <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
+                <h4 className="font-extrabold text-xs uppercase tracking-wider text-[var(--accent-primary)] mb-3 border-b border-glass-border pb-2">
+                  {locale === 'es' ? 'Detalles de la Herramienta' : 'Tool Architecture'}
+                </h4>
+                
+                <div className="space-y-3">
+                  <div>
+                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Qué:' : 'The What:'}</span>
+                    <p className="text-[var(--text-secondary)] mt-0.5">
+                      {locale === 'es' 
+                        ? 'Optimización de imágenes (PNG/JPG a WebP) y compresión de PDF.' 
+                        : 'Image optimization (PNG/JPG to WebP) and PDF compression.'}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Cómo:' : 'The How:'}</span>
+                    <p className="text-[var(--text-secondary)] mt-0.5">
+                      {locale === 'es' 
+                        ? 'Procesamiento en cliente usando Canvas HTML5 y carga asíncrona de PDF.js y jsPDF.' 
+                        : 'Client-side processing using HTML5 Canvas and asynchronously loading PDF.js and jsPDF.'}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Privacidad:' : 'Privacy:'}</span>
+                    <p className="text-[var(--text-secondary)] mt-0.5">
+                      {locale === 'es' 
+                        ? 'Tus archivos son 100% privados y procesados en local; nunca se envían a servidores externos.' 
+                        : 'Your files are 100% private and processed locally; they are never sent to external servers.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </h1>
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
           {locale === 'es' 
