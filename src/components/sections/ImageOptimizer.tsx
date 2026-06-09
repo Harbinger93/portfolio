@@ -186,13 +186,15 @@ export default function ImageOptimizer() {
             );
           });
 
+          const isAlreadyOptimized = compressedPdfBlob.size >= file.size;
+
           setFiles(prev => prev.map(f => {
             if (f.id === fileId) {
               return {
                 ...f,
-                compressedSize: compressedPdfBlob.size,
-                url: URL.createObjectURL(compressedPdfBlob),
-                name: file.name.replace(/\.[^/.]+$/, "") + '_opt.pdf',
+                compressedSize: isAlreadyOptimized ? file.size : compressedPdfBlob.size,
+                url: URL.createObjectURL(isAlreadyOptimized ? file : compressedPdfBlob),
+                name: isAlreadyOptimized ? file.name : (file.name.replace(/\.[^/.]+$/, "") + '_opt.pdf'),
                 status: 'completed'
               };
             }
@@ -278,9 +280,9 @@ export default function ImageOptimizer() {
       );
 
       const page = await pdfDoc.getPage(pageNum);
-      // Reducimos la escala según la calidad deseada. Calidad 0.6 = escala 1.2x.
-      // Escala 1.5 es excelente calidad, 1.0 es media.
-      const viewport = page.getViewport({ scale: scaleFactor * 2.0 }); 
+      // Reducimos la escala según la calidad deseada.
+      // Escala 1.0 es media calidad.
+      const viewport = page.getViewport({ scale: scaleFactor * 1.3 }); 
       
       const canvas = document.createElement('canvas');
       canvas.width = viewport.width;
@@ -578,13 +580,25 @@ export default function ImageOptimizer() {
                           </>
                         )}
                       </div>
+                      {file.status === 'completed' && file.originalSize === file.compressedSize && (
+                        <p className="text-[10px] text-amber-400 mt-1.5 leading-relaxed">
+                          {locale === 'es' 
+                            ? 'Este PDF ya está optimizado (documento vectorial/texto). Se mantuvo el original.' 
+                            : 'This PDF is already optimized (vector/text document). Original kept.'}
+                        </p>
+                      )}
                     </div>
                   </div>
-
+ 
                   <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-glass-border pt-3 md:pt-0">
                     {file.status === 'completed' && reduction > 0 && (
                       <span className="text-xs font-bold bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/20">
                         -{reduction}%
+                      </span>
+                    )}
+                    {file.status === 'completed' && reduction === 0 && (
+                      <span className="text-xs font-bold bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full border border-amber-500/20">
+                        {locale === 'es' ? 'Optimizado' : 'Optimized'}
                       </span>
                     )}
 
