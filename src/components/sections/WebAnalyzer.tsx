@@ -212,8 +212,8 @@ export default function WebAnalyzer() {
         </h1>
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
           {locale === 'es'
-            ? 'Inspecciona los Core Web Vitals y el rendimiento general de tu web al instante con datos en tiempo real de Google Lighthouse.'
-            : 'Audit Core Web Vitals and overall performance of your website instantly with real-time data from Google Lighthouse.'}
+            ? 'Inspecciona los Core Web Vitals y el rendimiento general de tu web con datos en tiempo real de Google Lighthouse.'
+            : 'Audit Core Web Vitals and overall performance of your website with real-time data from Google Lighthouse.'}
         </p>
       </div>
 
