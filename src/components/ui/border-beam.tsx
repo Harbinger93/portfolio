@@ -1,8 +1,6 @@
 "use client"
 
-import { motion, MotionStyle, Transition } from "framer-motion"
-
-import { cn } from "@/lib/utils"
+import { cn } from "../../utils/cn"
 
 interface BorderBeamProps {
   /**
@@ -25,10 +23,6 @@ interface BorderBeamProps {
    * The color of the border beam to.
    */
   colorTo?: string
-  /**
-   * The motion transition of the border beam.
-   */
-  transition?: Transition
   /**
    * The class name of the border beam.
    */
@@ -58,10 +52,8 @@ export const BorderBeam = ({
   duration = 6,
   colorFrom = "#ffaa40",
   colorTo = "#9c40ff",
-  transition,
   style,
   reverse = false,
-  initialOffset = 0,
   borderWidth = 1,
 }: BorderBeamProps) => {
   return (
@@ -74,7 +66,7 @@ export const BorderBeam = ({
         } as React.CSSProperties
       }
     >
-      <motion.div
+      <div
         className={cn(
           "absolute aspect-square",
           "bg-linear-to-l from-(--color-from) via-(--color-to) to-transparent",
@@ -86,22 +78,11 @@ export const BorderBeam = ({
             offsetPath: `rect(0 auto auto 0 round ${size}px)`,
             "--color-from": colorFrom,
             "--color-to": colorTo,
+            animation: `${reverse ? 'border-beam-reverse' : 'border-beam'} ${duration}s linear infinite`,
+            animationDelay: `${-delay}s`,
             ...style,
-          } as MotionStyle
+          } as React.CSSProperties
         }
-        initial={{ offsetDistance: `${initialOffset}%` }}
-        animate={{
-          offsetDistance: reverse
-            ? [`${100 - initialOffset}%`, `${-initialOffset}%`]
-            : [`${initialOffset}%`, `${100 + initialOffset}%`],
-        }}
-        transition={{
-          repeat: Infinity,
-          ease: "linear",
-          duration,
-          delay: -delay,
-          ...transition,
-        }}
       />
     </div>
   )

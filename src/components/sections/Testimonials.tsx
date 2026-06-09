@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import ScrollReveal from '../ui/ScrollReveal';
 import { Quote, Star } from 'lucide-react';
 

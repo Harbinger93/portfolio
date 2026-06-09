@@ -1,31 +1,31 @@
-import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
-import type { MouseEvent, ReactNode } from 'react';
+import { useRef, type MouseEvent, type ReactNode } from 'react';
 
 export default function GlowCard({ children, className = '' }: { children: ReactNode; className?: string }) {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const cardRef = useRef<HTMLDivElement>(null);
 
-  function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+  function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
+    if (!cardRef.current) return;
+    const { left, top } = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - left;
+    const y = e.clientY - top;
+    cardRef.current.style.setProperty('--mouse-x', `${x}px`);
+    cardRef.current.style.setProperty('--mouse-y', `${y}px`);
   }
 
   return (
     <div
+      ref={cardRef}
       className={`group relative flex h-full rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] hover:border-[var(--glass-border)] overflow-hidden ${className}`}
       onMouseMove={handleMouseMove}
     >
-      <motion.div
+      <div
         className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
         style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              450px circle at ${mouseX}px ${mouseY}px,
-              rgba(125, 211, 252, 0.15),
-              transparent 80%
-            )
-          `,
+          background: `radial-gradient(
+            450px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+            rgba(125, 211, 252, 0.15),
+            transparent 80%
+          )`,
         }}
       />
       <div className="relative z-10 p-6 h-full w-full">

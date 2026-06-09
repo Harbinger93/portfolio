@@ -4,7 +4,6 @@ import { projects } from '../../config/data';
 import TechIcon from '../ui/TechIcon';
 import ScrollReveal from '../ui/ScrollReveal';
 import { ArrowLeft, ExternalLink, Globe, LayoutGrid, X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Backlight } from '../ui/backlight';
 import { RainbowButton } from '../ui/rainbow-button';
 
@@ -185,18 +184,13 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
                   </div>
 
                   {/* Display active media */}
-                  <div 
-                    className="flex-1 w-full relative overflow-hidden bg-[#0a0a0b] hover:overflow-y-auto scroll-smooth custom-scrollbar"
-                    data-lenis-prevent
-                  >
-                    <AnimatePresence mode="wait">
-                      <motion.div
+                    <div 
+                      className="flex-1 w-full relative overflow-hidden bg-[#0a0a0b] hover:overflow-y-auto scroll-smooth custom-scrollbar"
+                      data-lenis-prevent
+                    >
+                      <div
                         key={activeMediaIndex}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.25 }}
-                        className="w-full h-full animate-[fadeIn_0.3s_ease]"
+                        className="w-full h-full animate-[fadeIn_0.25s_ease-out_forwards]"
                       >
                         {isVideo(activeMedia) ? (
                           <video
@@ -216,9 +210,8 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
                             onClick={() => setIsZoomOpen(true)}
                           />
                         )}
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
+                      </div>
+                    </div>
                 </div>
               </div>
             </ScrollReveal>
@@ -372,78 +365,70 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
       </div>
 
       {/* Image Zoom Modal */}
-      <AnimatePresence>
-        {isZoomOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+      {isZoomOpen && (
+        <div
+          onClick={() => setIsZoomOpen(false)}
+          data-lenis-prevent
+          className="fixed inset-0 bg-black/95 backdrop-blur-md z-[100] flex flex-col items-center justify-center p-4 md:p-10 cursor-zoom-out select-none animate-[fadeIn_0.2s_ease-out_forwards]"
+        >
+          <button
             onClick={() => setIsZoomOpen(false)}
-            data-lenis-prevent
-            className="fixed inset-0 bg-black/95 backdrop-blur-md z-[100] flex flex-col items-center justify-center p-4 md:p-10 cursor-zoom-out select-none"
+            className="absolute top-6 right-6 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer z-[110]"
+            aria-label="Close zoom"
           >
-            <button
-              onClick={() => setIsZoomOpen(false)}
-              className="absolute top-6 right-6 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer z-[110]"
-              aria-label="Close zoom"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <X className="w-5 h-5" />
+          </button>
 
-            {resolvedImages.length > 1 && (
-              <>
-                <button
-                  onClick={handlePrev}
-                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-105 active:scale-95 cursor-pointer z-[110] backdrop-blur-sm"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-                <button
-                  onClick={handleNext}
-                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-105 active:scale-95 cursor-pointer z-[110] backdrop-blur-sm"
-                  aria-label="Next image"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-              </>
+          {resolvedImages.length > 1 && (
+            <>
+              <button
+                onClick={handlePrev}
+                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-105 active:scale-95 cursor-pointer z-[110] backdrop-blur-sm"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={handleNext}
+                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-105 active:scale-95 cursor-pointer z-[110] backdrop-blur-sm"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </>
+          )}
+
+          <div
+            onClick={(e) => e.stopPropagation()}
+            data-lenis-prevent
+            className="relative max-w-4xl max-h-[80vh] overflow-y-auto rounded-lg bg-[var(--bg-secondary)] border border-glass-border p-2 custom-scrollbar cursor-default animate-[zoomIn_0.2s_ease-out_forwards]"
+          >
+            {isVideo(activeMedia) ? (
+              <video
+                src={activeMedia}
+                controls
+                autoPlay
+                muted
+                playsInline
+                loop
+                className="w-full max-h-[75vh] object-contain rounded-md"
+              />
+            ) : (
+              <img
+                src={activeMedia}
+                alt={`Zoomed project view ${activeMediaIndex + 1}`}
+                className="w-full h-auto rounded-md"
+              />
             )}
+          </div>
 
-            <motion.div
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
-              onClick={(e) => e.stopPropagation()}
-              data-lenis-prevent
-              className="relative max-w-4xl max-h-[80vh] overflow-y-auto rounded-lg bg-[var(--bg-secondary)] border border-glass-border p-2 custom-scrollbar cursor-default"
-            >
-              {isVideo(activeMedia) ? (
-                <video
-                  src={activeMedia}
-                  controls
-                  autoPlay
-                  muted
-                  playsInline
-                  loop
-                  className="w-full max-h-[75vh] object-contain rounded-md"
-                />
-              ) : (
-                <img
-                  src={activeMedia}
-                  alt={`Zoomed project view ${activeMediaIndex + 1}`}
-                  className="w-full h-auto rounded-md"
-                />
-              )}
-            </motion.div>
-
-            {resolvedImages.length > 1 && (
-              <div className="absolute bottom-6 px-4 py-1.5 rounded-full bg-white/10 text-white text-xs font-medium tracking-wider backdrop-blur-sm">
-                {activeMediaIndex + 1} / {resolvedImages.length}
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {resolvedImages.length > 1 && (
+            <div className="absolute bottom-6 px-4 py-1.5 rounded-full bg-white/10 text-white text-xs font-medium tracking-wider backdrop-blur-sm">
+              {activeMediaIndex + 1} / {resolvedImages.length}
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 }

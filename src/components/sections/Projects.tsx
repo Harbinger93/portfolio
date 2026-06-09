@@ -11,7 +11,6 @@ import {
   Layout,
   type LucideIcon,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 const iconMap: Record<string, LucideIcon> = {
   LayoutDashboard,

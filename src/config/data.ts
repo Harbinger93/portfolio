@@ -5,7 +5,7 @@ import ga4About from '../img/Dashboard GA4/Conocer-más-Capacidades-del-Sistema-
 import ga4Vault from '../img/Dashboard GA4/boveda-de-contraseñas.webp';
 import ga4Tasks from '../img/Dashboard GA4/tableto-de-planificación.webp';
 
-import adiwappMain from '../img/Adiwapp/Captura de pantalla 2026-06-02 155754.webp';
+import adiwappMain from '../img/Adiwapp/Portada.jpg';
 import adiwappImg1 from '../img/Adiwapp/Captura de pantalla 2026-06-02 151930.webp';
 import adiwappImg2 from '../img/Adiwapp/Captura de pantalla 2026-06-02 151947.webp';
 import adiwappImg3 from '../img/Adiwapp/Captura de pantalla 2026-06-02 152003.webp';
@@ -341,7 +341,7 @@ export const techStack = {
       titleKey: 'techstack.backend.title',
       itemsKey: 'techstack.backend.items',
       tags: ['Node.js', 'Python', 'Django', 'Express', 'Astro'],
-      percentage: 90
+      percentage: 70
     },
     {
       id: 'database',
@@ -385,7 +385,7 @@ export const techStack = {
       titleKey: 'techstack.backend.title',
       itemsKey: 'techstack.backend.items',
       tags: ['Node.js', 'Python', 'Django', 'Express', 'Astro'],
-      percentage: 90
+      percentage: 70
     },
     {
       id: 'database',

@@ -7,6 +7,7 @@ import ProtectionLayer from "../components/security/ProtectionLayer";
 import LenisProvider from "../components/layout/LenisProvider";
 import ScrollToTop from "../components/ui/ScrollToTop";
 import WhatsAppBubble from "../components/ui/WhatsAppBubble";
+import { ViewTransitions } from 'astro:transitions';
 ---
 
 <!doctype html>
@@ -24,6 +25,7 @@ import WhatsAppBubble from "../components/ui/WhatsAppBubble";
     <link rel="preload" href="/avatar.png" as="image" />
     <link rel="preload" href="/avatar-nav.png" as="image" />
     <link rel="stylesheet" href="/fonts/inter.css" />
+    <ViewTransitions />
     <title>Gabriel Vazquez | Desarrollador Web front-end</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4KY950MXL"></script>

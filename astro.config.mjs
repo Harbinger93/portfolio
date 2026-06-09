@@ -6,8 +6,5 @@ export default defineConfig({
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
-    ssr: {
-      noExternal: ['framer-motion', 'motion'],
-    },
   },
 });

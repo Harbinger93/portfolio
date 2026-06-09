@@ -7,41 +7,24 @@ import React, {
   useState,
   useRef,
   useCallback,
-  type ComponentType,
-  type RefAttributes,
 } from "react"
-import {
-  motion,
-  type DOMMotionComponents,
-  type HTMLMotionProps,
-  type MotionProps,
-} from "framer-motion"
 import { cn } from "@/lib/utils"
 
-const motionElements = {
-  article: motion.article,
-  div: motion.div,
-  h1: motion.h1,
-  h2: motion.h2,
-  h3: motion.h3,
-  h4: motion.h4,
-  h5: motion.h5,
-  h6: motion.h6,
-  li: motion.li,
-  p: motion.p,
-  section: motion.section,
-  span: motion.span,
-} as const
+type TerminalElementTypes =
+  | "article"
+  | "div"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6"
+  | "li"
+  | "p"
+  | "section"
+  | "span"
 
-type MotionElementType = Extract<
-  keyof DOMMotionComponents,
-  keyof typeof motionElements
->
-type TerminalTypingMotionComponent = ComponentType<
-  Omit<HTMLMotionProps<"span">, "ref"> & RefAttributes<HTMLElement>
->
-
-interface AnimatedSpanProps extends MotionProps {
+interface AnimatedSpanProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   delay?: number
   className?: string
@@ -59,7 +42,6 @@ export const AnimatedSpan = ({
 }: AnimatedSpanProps) => {
   const [hasStarted, setHasStarted] = useState(false)
 
-  // Keep a stable ref to onComplete so updates to it do not trigger the typing/animation effects
   const onCompleteRef = useRef(onComplete)
   useEffect(() => {
     onCompleteRef.current = onComplete
@@ -85,24 +67,30 @@ export const AnimatedSpan = ({
   }, [hasStarted, delay])
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -5 }}
-      animate={hasStarted ? { opacity: 1, y: 0 } : { opacity: 0, y: -5 }}
-      transition={{ duration: 0.3, delay: delay / 1000 }}
-      className={cn("grid text-sm font-normal tracking-tight", className)}
+    <div
+      className={cn(
+        "grid text-sm font-normal tracking-tight transition-all duration-300 ease-out",
+        className
+      )}
+      style={{
+        opacity: hasStarted ? 1 : 0,
+        transform: hasStarted ? 'translateY(0)' : 'translateY(-5px)',
+        transitionDelay: `${delay}ms`,
+        ...props.style,
+      }}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }
 
-interface TypingAnimationProps extends Omit<MotionProps, "children"> {
+interface TypingAnimationProps extends React.HTMLAttributes<HTMLElement> {
   children: string
   className?: string
   duration?: number
   delay?: number
-  as?: MotionElementType
+  as?: TerminalElementTypes
   active?: boolean
   onComplete?: () => void
 }
@@ -121,14 +109,9 @@ export const TypingAnimation = ({
     throw new Error("TypingAnimation: children must be a string.")
   }
 
-  const MotionComponent = motionElements[
-    Component
-  ] as TerminalTypingMotionComponent
-
   const [displayedText, setDisplayedText] = useState<string>("")
   const [started, setStarted] = useState(false)
 
-  // Keep a stable ref to onComplete to avoid resetting the typing interval
   const onCompleteRef = useRef(onComplete)
   useEffect(() => {
     onCompleteRef.current = onComplete
@@ -170,13 +153,15 @@ export const TypingAnimation = ({
     }
   }, [children, duration, started])
 
+  const Tag = Component as any
+
   return (
-    <MotionComponent
+    <Tag
       className={cn("text-sm font-normal tracking-tight", className)}
       {...props}
     >
       {displayedText}
-    </MotionComponent>
+    </Tag>
   )
 }
 
@@ -195,12 +180,10 @@ export const Terminal = ({
 }: TerminalProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
 
-  // Count only valid React elements to ensure proper indexing and completion check
   const validElementsCount = useMemo(() => {
     return Children.toArray(children).filter(isValidElement).length
   }, [children])
 
-  // Stable callback handler for child completion that prevents recreating callbacks
   const handleChildComplete = useCallback((index: number) => {
     setActiveIndex((current) => {
       const next = index === current ? current + 1 : current

@@ -12,25 +12,25 @@ const processSteps = {
       id: "01",
       title: "Diagnóstico y Estrategia",
       description: "Todo comienza entendiendo tu visión y tus cuellos de botella actuales. Diseñamos la estrategia tecnológica y definimos el alcance ideal para tu negocio antes de tocar la primera línea de código.",
-      time: "DÍA 1"
+      time: "DÍA 1-3"
     },
     {
       id: "02",
       title: "Diseño y Prototipado",
       description: "Creamos la arquitectura visual y técnica de la solución. Validamos contigo la estructura, los flujos de usuario y el rendimiento proyectado para asegurarnos de que el resultado final sea exactamente lo que esperas.",
-      time: "DÍA 2"
+      time: "DÍA 4-8"
     },
     {
       id: "03",
       title: "Desarrollo y Optimización",
-      description: "Traducimos la estrategia en código sólido, seguro y ultra-optimizado. Desarrollamos soluciones a medida, libres de plantillas genéricas, enfocadas al 100% en la velocidad y escalabilidad de tu plataforma.",
-      time: "DÍA 3-6"
+      description: "Traducimos la estrategia en código sólido, seguro y altamente optimizado. Desarrollamos soluciones a medida, libres de plantillas genéricas, enfocadas al 100% en la velocidad y escalabilidad de tu plataforma.",
+      time: "DÍA 9-25"
     },
     {
       id: "04",
       title: "Despliegue y Acompañamiento",
       description: "Lanzamos tu plataforma bajo los más altos estándares de producción. Pero no te dejamos solo: monitoreamos el impacto inicial y te acompañamos con soporte continuo para asegurar que tu inversión sea rentable a largo plazo.",
-      time: "DÍA 7"
+      time: "DÍA 26-30"
     },
     {
       id: "05",
@@ -44,25 +44,25 @@ const processSteps = {
       id: "01",
       title: "Diagnosis & Strategy",
       description: "It all starts by understanding your vision and current bottlenecks. We design the technological strategy and define the ideal scope for your business before writing the first line of code.",
-      time: "DAY 1"
+      time: "DAY 1-3"
     },
     {
       id: "02",
       title: "Design & Prototyping",
       description: "We create the visual and technical architecture of the solution. We validate the structure, user flows, and projected performance with you to ensure that the final result is exactly what you expect.",
-      time: "DAY 2"
+      time: "DAY 4-8"
     },
     {
       id: "03",
       title: "Development & Optimization",
-      description: "We translate the strategy into solid, secure, and ultra-optimized code. We develop custom solutions, free of generic templates, focused 100% on the speed and scalability of your platform.",
-      time: "DAY 3-6"
+      description: "We translate the strategy into solid, secure, and highly optimized code. We develop custom solutions, free of generic templates, focused 100% on the speed and scalability of your platform.",
+      time: "DAY 9-25"
     },
     {
       id: "04",
       title: "Deployment & Support",
       description: "We launch your platform under the highest production standards. But we do not leave you alone: we monitor the initial impact and accompany you with continuous support to ensure your investment is profitable in the long term.",
-      time: "DAY 7"
+      time: "DAY 26-30"
     },
     {
       id: "05",
@@ -180,20 +180,20 @@ export default function Services() {
                 {locale === 'es' ? (
                   <>
                     Proceso<br/>ágil.<br/>
-                    <span className="bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] bg-clip-text text-transparent">Resultados<br/>predecibles.</span>
+                    <span className="bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] bg-clip-text text-transparent">Resultados<br/>reales.</span>
                   </>
                 ) : (
                   <>
                     Agile<br/>process.<br/>
-                    <span className="bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] bg-clip-text text-transparent">Predictable<br/>results.</span>
+                    <span className="bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] bg-clip-text text-transparent">Real<br/>results.</span>
                   </>
                 )}
               </h2>
               
               <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed mb-8 max-w-sm">
                 {locale === 'es' 
-                  ? 'Desde una landing page hasta un sistema a medida, elimino la incertidumbre de tu proyecto. Divido el desarrollo en bloques ágiles con entregas constantes, asegurando tu validación y aprobación en cada etapa antes de dar el siguiente paso.' 
-                  : 'From a landing page to a custom system, I eliminate your project\'s uncertainty. I divide development into agile blocks with constant deliveries, ensuring your validation and approval at each stage before taking the next step.'}
+                  ? 'Desde una landing page hasta un sistema a medida, te acompaño en cada paso del proceso. Divido el desarrollo en bloques claros con entregas constantes, garantizando transparencia y control total sobre el avance del proyecto.' 
+                  : 'From a landing page to a custom system, I walk with you through every step of the process. I break down development into clear blocks with constant deliveries, ensuring transparency and total control over the project\'s progress.'}
               </p>
               
               {/* Brand gradient line separator */}
@@ -201,8 +201,8 @@ export default function Services() {
               
               <p className="text-[10px] md:text-xs font-mono font-bold text-[var(--text-secondary)] tracking-widest uppercase">
                 {locale === 'es' 
-                  ? 'DURACIÓN TÍPICA · 7 - 21 DÍAS' 
-                  : 'TYPICAL DURATION · 7 - 21 DAYS'}
+                  ? 'DURACIÓN TÍPICA · 15 - 30 DÍAS' 
+                  : 'TYPICAL DURATION · 15 - 30 DAYS'}
               </p>
             </ScrollReveal>
           </div>

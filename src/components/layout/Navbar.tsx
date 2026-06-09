@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useI18n } from '../../i18n/context';
 import { useTheme } from '../../utils/theme';
 import { Languages, Sun, Moon, Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedThemeToggler } from '../ui/animated-theme-toggler';
 
 const sections = ['home', 'projects', 'skills', 'coaching', 'contact'];
@@ -71,7 +70,7 @@ export default function Navbar() {
             <button
               key={s}
               onClick={() => scrollTo(s)}
-              className={`text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${
+              className={`text-[11px] font-medium uppercase tracking-[0.2em] cursor-pointer transition-all duration-300 ${
                 active === s
                   ? 'text-[var(--accent-primary)]'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -85,7 +84,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-4 border-l border-glass-border pl-4 ml-4">
           <button
             onClick={() => setLocale(locale === 'es' ? 'en' : 'es')}
-            className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer transition-colors"
             aria-label="Toggle language"
           >
             <Languages className="w-4 h-4" />
@@ -120,46 +119,40 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Dropdown */}
-        <AnimatePresence>
-          {menuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="absolute top-20 left-0 right-0 bg-[var(--bg-secondary)] backdrop-blur-xl rounded-2xl border border-glass-border overflow-hidden shadow-2xl"
-            >
-              <div className="flex flex-col p-4 gap-2">
-                {sections.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => scrollTo(s)}
-                    className={`p-4 text-sm font-medium uppercase tracking-widest text-center rounded-xl transition-colors ${
-                      active === s 
-                        ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]' 
-                        : 'text-[var(--text-secondary)] hover:bg-glass-hover'
-                    }`}
-                  >
-                    {t(`nav.${s}`)}
-                  </button>
-                ))}
-                
-                <div className="h-px bg-glass-border my-2 mx-4" />
-                
+        {menuOpen && (
+          <div
+            className="absolute top-20 left-0 right-0 bg-[var(--bg-secondary)] backdrop-blur-xl rounded-2xl border border-glass-border overflow-hidden shadow-2xl animate-[dropdownFadeIn_0.2s_ease-out_forwards]"
+          >
+            <div className="flex flex-col p-4 gap-2">
+              {sections.map((s) => (
                 <button
-                  onClick={() => {
-                    setLocale(locale === 'es' ? 'en' : 'es');
-                    setMenuOpen(false);
-                  }}
-                  className="p-4 flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                  key={s}
+                  onClick={() => scrollTo(s)}
+                  className={`p-4 text-sm font-medium uppercase tracking-widest text-center rounded-xl cursor-pointer transition-colors ${
+                    active === s 
+                      ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]' 
+                      : 'text-[var(--text-secondary)] hover:bg-glass-hover'
+                  }`}
                 >
-                  <Languages className="w-4 h-4" />
-                  {locale === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+                  {t(`nav.${s}`)}
                 </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              ))}
+              
+              <div className="h-px bg-glass-border my-2 mx-4" />
+              
+              <button
+                onClick={() => {
+                  setLocale(locale === 'es' ? 'en' : 'es');
+                  setMenuOpen(false);
+                }}
+                className="p-4 flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer transition-colors"
+              >
+                <Languages className="w-4 h-4" />
+                {locale === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
