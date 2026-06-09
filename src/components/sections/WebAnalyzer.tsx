@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useI18n } from '../../i18n/context';
-import { Gauge, Search, AlertTriangle, ShieldAlert, Cpu, Sparkles, Clock, LayoutGrid, Zap } from 'lucide-react';
+import { Gauge, Search, AlertTriangle, ShieldAlert, Cpu, Sparkles, Clock, LayoutGrid, Zap, Clipboard, Mail, Share2, MessageCircle } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
 
 interface AuditResult {
@@ -36,6 +36,122 @@ export default function WebAnalyzer() {
       formatted = 'https://' + formatted;
     }
     return formatted;
+  };
+
+  const isValidUrl = (input: string): boolean => {
+    try {
+      const formatted = input.trim();
+      
+      // Prevent basic XSS / HTML / Script injection
+      if (/[<>"'`$()[\]{}]/g.test(formatted)) {
+        return false;
+      }
+      
+      // Block common protocol handlers that can execute code
+      const lower = formatted.toLowerCase();
+      if (
+        lower.startsWith('javascript:') ||
+        lower.startsWith('data:') ||
+        lower.startsWith('file:') ||
+        lower.startsWith('vbscript:')
+      ) {
+        return false;
+      }
+
+      // Check if it's a parseable URL after formatting
+      let targetUrl = formatted;
+      if (!/^https?:\/\//i.test(targetUrl)) {
+        targetUrl = 'https://' + targetUrl;
+      }
+      
+      const parsed = new URL(targetUrl);
+      // Ensure the protocol is http or https
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+        return false;
+      }
+
+      // Ensure the hostname is valid and not empty, and doesn't contain weird characters
+      if (!parsed.hostname || parsed.hostname.trim() === '') {
+        return false;
+      }
+      
+      // Avoid hostname containing script-like elements or invalid domains
+      if (/[^a-zA-Z0-9.-]/g.test(parsed.hostname)) {
+        return false;
+      }
+
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
+
+  const handlePaste = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          setUrl(text);
+        }
+      } else {
+        alert(
+          locale === 'es'
+            ? 'Tu navegador no permite acceder al portapapeles automáticamente. Por favor, pega la URL manualmente.'
+            : 'Your browser does not allow clipboard access. Please paste the URL manually.'
+        );
+      }
+    } catch (err) {
+      console.error('Failed to read clipboard:', err);
+    }
+  };
+
+  const generateShareText = () => {
+    if (!result) return '';
+    const targetUrl = validateAndFormatUrl(url);
+    return locale === 'es'
+      ? `📊 *Reporte de Rendimiento Web* 📊\n\n` +
+        `🌐 *Sitio:* ${targetUrl}\n` +
+        `⚡ *Puntuación:* ${result.score}/100\n\n` +
+        `🔑 *Métricas Core Web Vitals:*\n` +
+        `• FCP: ${result.metrics.fcp.val}\n` +
+        `• LCP: ${result.metrics.lcp.val}\n` +
+        `• TBT: ${result.metrics.tbt.val}\n` +
+        `• CLS: ${result.metrics.cls.val}\n\n` +
+        `Generado con el Analizador de Velocidad Web de Gabriel Vazquez.`
+      : `📊 *Web Performance Report* 📊\n\n` +
+        `🌐 *Site:* ${targetUrl}\n` +
+        `⚡ *Score:* ${result.score}/100\n\n` +
+        `🔑 *Core Web Vitals Metrics:*\n` +
+        `• FCP: ${result.metrics.fcp.val}\n` +
+        `• LCP: ${result.metrics.lcp.val}\n` +
+        `• TBT: ${result.metrics.tbt.val}\n` +
+        `• CLS: ${result.metrics.cls.val}\n\n` +
+        `Generated with Gabriel Vazquez's Web Speed Analyzer.`;
+  };
+
+  const getWhatsAppShareUrl = () => {
+    return `https://api.whatsapp.com/send?text=${encodeURIComponent(generateShareText())}`;
+  };
+
+  const getEmailShareUrl = () => {
+    const subject = locale === 'es' 
+      ? `Reporte de Rendimiento Web - ${url}` 
+      : `Web Performance Report - ${url}`;
+    const body = generateShareText().replace(/\*/g, '');
+    return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const handleNativeShare = async () => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: locale === 'es' ? 'Reporte de Rendimiento Web' : 'Web Performance Report',
+          text: generateShareText().replace(/\*/g, ''),
+        });
+      } catch (err) {
+        console.error('Failed to share natively:', err);
+      }
+    }
   };
 
   const isLocalUrl = (urlStr: string): boolean => {
@@ -81,6 +197,15 @@ export default function WebAnalyzer() {
     setResult(null);
 
     if (!url.trim()) return;
+
+    if (!isValidUrl(url)) {
+      setError(
+        locale === 'es'
+          ? 'URL no válida o sospechosa. Por favor ingresa una dirección web estándar (ej: google.com) y evita caracteres especiales o scripts.'
+          : 'Invalid or suspicious URL. Please enter a standard web address (e.g. google.com) and avoid special characters or scripts.'
+      );
+      return;
+    }
 
     const targetUrl = validateAndFormatUrl(url);
 
@@ -227,9 +352,17 @@ export default function WebAnalyzer() {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               disabled={loading}
-              className="w-full h-14 pl-12 pr-4 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:border-[var(--accent-primary)] transition-all duration-300 shadow-inner"
+              className="w-full h-14 pl-12 pr-12 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:border-[var(--accent-primary)] transition-all duration-300 shadow-inner"
             />
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-secondary)]/70" />
+            <button
+              type="button"
+              onClick={handlePaste}
+              title={locale === 'es' ? 'Pegar desde portapapeles' : 'Paste from clipboard'}
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center text-[var(--text-secondary)]/70 hover:text-[var(--accent-primary)] hover:bg-white/5 active:scale-95 transition-all cursor-pointer"
+            >
+              <Clipboard className="w-5 h-5" />
+            </button>
           </div>
           <button
             type="submit"
@@ -364,6 +497,55 @@ export default function WebAnalyzer() {
                   ? (locale === 'es' ? 'El sitio tiene un rendimiento aceptable pero existen oportunidades de mejora clave para reducir los tiempos de bloqueo e interactividad.' : 'Performance is acceptable, but key opportunities exist to lower blocking and interactive times.')
                   : (locale === 'es' ? 'El rendimiento es crítico. Hay retrasos graves en el pintado de pantalla e interactividad que podrían perjudicar el SEO y la retención.' : 'Critical performance issues. Heavy delay in rendering and interactivity may hurt SEO and conversion.')}
               </p>
+            </div>
+          </div>
+
+          {/* Share Report Section */}
+          <div className="p-6 bg-[var(--bg-secondary)] border border-glass-border rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg animate-[fadeIn_0.3s_ease-out_forwards]">
+            <div className="text-center sm:text-left">
+              <h3 className="text-sm font-bold text-[var(--text-primary)] mb-1 flex items-center justify-center sm:justify-start gap-2">
+                <Share2 className="w-4 h-4 text-[var(--accent-primary)]" />
+                {locale === 'es' ? '¿Te gusta el resultado? Comparte este informe' : 'Like the result? Share this report'}
+              </h3>
+              <p className="text-xs text-[var(--text-secondary)]">
+                {locale === 'es' 
+                  ? 'Envía las métricas de rendimiento por WhatsApp o correo electrónico.' 
+                  : 'Send the performance metrics via WhatsApp or email.'}
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap gap-3 w-full sm:w-auto justify-center">
+              {/* WhatsApp Button */}
+              <a
+                href={getWhatsAppShareUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial h-10 px-5 rounded-xl bg-[#25D366] hover:bg-[#25D366]/90 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 shadow-md cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <MessageCircle className="w-4 h-4 fill-current" />
+                <span>WhatsApp</span>
+              </a>
+
+              {/* Email Button */}
+              <a
+                href={getEmailShareUrl()}
+                className="flex-1 sm:flex-initial h-10 px-5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-[var(--text-primary)] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 shadow-md cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <Mail className="w-4 h-4" />
+                <span>{locale === 'es' ? 'Correo' : 'Email'}</span>
+              </a>
+
+              {/* Native Share Button (if supported) */}
+              {typeof navigator !== 'undefined' && navigator.share && (
+                <button
+                  type="button"
+                  onClick={handleNativeShare}
+                  className="flex-1 sm:flex-initial h-10 px-5 rounded-xl bg-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/90 text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 shadow-md cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <Share2 className="w-4 h-4" />
+                  <span>{locale === 'es' ? 'Compartir' : 'Share'}</span>
+                </button>
+              )}
             </div>
           </div>
 
