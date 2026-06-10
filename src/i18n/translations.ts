@@ -101,6 +101,9 @@ const en = {
   "projects.iesa.desc": "Led the digital renovation and restructuring of the main web platform for IESA (Instituto de Estudios Superiores de Administración). The project focused on optimizing the information architecture, improving global loading speeds, and seamlessly integrating the catalog of master's degrees, in-company courses, and management training programs.",
   "projects.iesa.solution": "Developed a robust, modular platform that unifies the academic catalog and enhances user experience (UX). We implemented performance and SEO optimizations that cut load times to under 1.5 seconds, boosting conversion rates for new student acquisition.",
 
+  "projects.simpletv.title": "Email Marketing Templates for SimpleTV",
+  "projects.simpletv.shortDesc": "Development of responsive HTML templates compatible with multiple email clients for SimpleTV's mass marketing campaigns.",
+  "projects.simpletv.desc": "Technical design and development of a high-conversion set of HTML templates for SimpleTV's email marketing campaigns. Absolute compatibility was guaranteed across demanding clients like Outlook (desktop and iOS/Android versions), Gmail, and Apple Mail, adhering to email design best practices and responsive rendering.",
   "projects.simpletv.solution": "Developed optimized, modular HTML templates using inline CSS and robust table layouts. This reduced the HTML file weight, ensuring inbox delivery and boosting the click-through rate (CTR) by 25% for top-up promos and Simplefibra.",
 
   "nav.tools": "Tools",
@@ -222,6 +225,9 @@ const es = {
   "projects.iesa.desc": "Lideré la renovación digital y reestructuración de la plataforma web principal del IESA (Instituto de Estudios Superiores de Administración). El proyecto consistió en optimizar la arquitectura de la información, mejorar la velocidad de carga global, e integrar de forma fluida el catálogo de maestrías, cursos in-company y programas de formación gerencial.",
   "projects.iesa.solution": "Desarrollamos una plataforma robusta y modular que unifica la oferta académica y mejora la experiencia de usuario (UX). Implementamos optimizaciones de rendimiento y SEO que redujeron el tiempo de carga a menos de 1.5 segundos, incrementando la conversión en la captación de nuevos estudiantes.",
 
+  "projects.simpletv.title": "Plantillas de Email Marketing para SimpleTV",
+  "projects.simpletv.shortDesc": "Desarrollo de plantillas HTML responsivas y compatibles con múltiples clientes de correo para las campañas masivas de SimpleTV.",
+  "projects.simpletv.desc": "Diseño técnico y desarrollo de un set de plantillas HTML de alta conversión para las campañas de email marketing de SimpleTV. Se garantizó la compatibilidad absoluta con clientes exigentes como Outlook (versiones de escritorio e iOS/Android), Gmail, y Apple Mail, aplicando buenas prácticas de diseño de correo electrónico y renderizado responsivo.",
   "projects.simpletv.solution": "Desarrollamos plantillas HTML optimizadas y modulares con código en línea (inline CSS) y estructuras de tabla robustas. Esto redujo el peso del archivo HTML garantizando su entrega en la bandeja de entrada principal y mejorando la tasa de clics (CTR) en un 25% para promociones de recargas y Simplefibra.",
 
   "nav.tools": "Herramientas",
