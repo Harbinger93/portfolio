@@ -163,6 +163,8 @@ export default function Contact() {
                         {...field}
                         defaultCountry="VE"
                         disabled={isSubmitting}
+                        id="phone"
+                        aria-label="Teléfono"
                         className="phone-input-dark"
                         countrySelectComponent={CustomCountrySelect}
                       />

@@ -80,6 +80,8 @@ export default function Projects() {
                       <img 
                         src={getImgSrc(project.imageUrl) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'} 
                         alt={t(project.titleKey)}
+                        width={800}
+                        height={500}
                         loading={isFeatured ? "eager" : "lazy"}
                         className="w-full h-full object-cover object-top block"
                       />

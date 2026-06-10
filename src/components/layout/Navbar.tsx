@@ -58,6 +58,8 @@ export default function Navbar() {
           <img
             src="/avatar-nav.webp"
             alt="GV"
+            width={40}
+            height={40}
             className="w-10 h-10 rounded-full object-cover border-2 border-glass-border group-hover:border-[var(--accent-primary)] transition-colors"
             onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=GV&background=0D8ABC&color=fff'; }}
           />

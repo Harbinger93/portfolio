@@ -88,7 +88,7 @@ export default function WhatsAppBubble() {
           <div className="bg-[#075E54] p-4 flex items-center justify-between text-white">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <img src="/avatar-nav.webp" alt="Gabriel" className="w-10 h-10 rounded-full object-cover" />
+                <img src="/avatar-nav.webp" alt="Gabriel" width={40} height={40} className="w-10 h-10 rounded-full object-cover" />
                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-[#075E54]" />
               </div>
               <div>
@@ -135,6 +135,8 @@ export default function WhatsAppBubble() {
                 <div>
                   <Input
                     {...register('name')}
+                    id="wa-name"
+                    aria-label={locale === 'es' ? 'Tu nombre' : 'Your name'}
                     placeholder={locale === 'es' ? 'Tu nombre' : 'Your name'}
                     onKeyDown={(e) => { if (/[0-9<>{}[\]\\;:"|,]/.test(e.key)) e.preventDefault(); }}
                     className="h-9 px-3 py-1.5 text-xs bg-white/[0.04] border-white/10"
@@ -147,6 +149,8 @@ export default function WhatsAppBubble() {
                   <Input
                     {...register('email')}
                     type="email"
+                    id="wa-email"
+                    aria-label={locale === 'es' ? 'Tu correo' : 'Your email'}
                     placeholder={locale === 'es' ? 'Tu correo' : 'Your email'}
                     className="h-9 px-3 py-1.5 text-xs bg-white/[0.04] border-white/10"
                   />
@@ -162,6 +166,8 @@ export default function WhatsAppBubble() {
                       <PhoneInput
                         {...field}
                         defaultCountry="VE"
+                        id="wa-phone"
+                        aria-label={locale === 'es' ? 'Tu teléfono' : 'Your phone'}
                         className="phone-input-wa"
                         countrySelectComponent={CustomCountrySelect}
                       />
@@ -174,6 +180,8 @@ export default function WhatsAppBubble() {
                 <div>
                   <Textarea
                     {...register('message')}
+                    id="wa-message"
+                    aria-label={locale === 'es' ? 'Escribe tu mensaje' : 'Type your message'}
                     placeholder={locale === 'es' ? 'Escribe tu mensaje...' : 'Type your message...'}
                     rows={2}
                     className="min-h-16 px-3 py-1.5 text-xs bg-white/[0.04] border-white/10"

@@ -79,7 +79,7 @@ html.light {
   --bg-secondary: #ffffff;
   --bg-tertiary: #e2e8f0; /* slate-200 */
   --text-primary: #0f172a; /* slate-900 */
-  --text-secondary: #475569; /* slate-600 */
+  --text-secondary: #334155; /* slate-700 for better accessibility contrast */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(0, 0, 0, 0.1);
   --glass-hover: rgba(0, 0, 0, 0.15);

@@ -99,6 +99,8 @@ export default function Hero() {
                   <img 
                     src="/avatar.webp" 
                     alt="" 
+                    width={700}
+                    height={925}
                     className="object-contain h-full max-h-full object-bottom block scale-[0.97] origin-bottom"
                   />
                 </Backlight>
@@ -108,6 +110,10 @@ export default function Hero() {
               <img 
                 src="/avatar.webp" 
                 alt="Gabriel Vazquez" 
+                width={700}
+                height={925}
+                loading="eager"
+                fetchPriority="high"
                 className="relative z-20 object-contain h-full max-h-full drop-shadow-2xl object-bottom block"
               />
             </div>
