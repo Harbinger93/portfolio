@@ -527,6 +527,16 @@ body {
   mix-blend-mode: normal;
 }
 
+/* Disable standard CSS transitions/animations on all elements during the theme view transition
+   so they snap instantly to the new theme's values, making the geometric reveal perfectly crisp. */
+html[data-magicui-theme-vt="active"],
+html[data-magicui-theme-vt="active"] *,
+html[data-magicui-theme-vt="active"] *::before,
+html[data-magicui-theme-vt="active"] *::after {
+  transition: none !important;
+  animation-duration: 0s !important;
+}
+
 /* Explicit overlay order during theme switching reveal animation */
 [data-magicui-theme-vt="active"]::view-transition-new(root) {
   z-index: 9999;
@@ -535,6 +545,7 @@ body {
 [data-magicui-theme-vt="active"]::view-transition-old(root) {
   z-index: 1;
 }
+
 
 .dark {
   --color-1: #00f2fe;
