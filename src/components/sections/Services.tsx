@@ -180,12 +180,12 @@ export default function Services() {
                 {locale === 'es' ? (
                   <>
                     Proceso<br/>ágil.<br/>
-                    <span className="bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] bg-clip-text text-transparent">Resultados<br/>reales.</span>
+                    <AuroraText>Resultados<br/>reales.</AuroraText>
                   </>
                 ) : (
                   <>
                     Agile<br/>process.<br/>
-                    <span className="bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] bg-clip-text text-transparent">Real<br/>results.</span>
+                    <AuroraText>Real<br/>results.</AuroraText>
                   </>
                 )}
               </h2>

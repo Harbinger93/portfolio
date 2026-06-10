@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NotFound from '../components/sections/NotFound';
+import ToolsLaunchpad from '../components/layout/ToolsLaunchpad';
+---
+
+<BaseLayout>
+  <div class="pt-24 pb-12">
+    <NotFound client:load />
+  </div>
+  <ToolsLaunchpad client:load />
+</BaseLayout>

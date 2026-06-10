@@ -75,13 +75,13 @@ export default function Projects() {
                       <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
                     </div>
                     
-                    {/* Image with hover scroll (using object-position) */}
+                    {/* Static Image Area without hover scroll */}
                     <div className="w-full h-full pt-8 relative overflow-hidden">
                       <img 
                         src={getImgSrc(project.imageUrl) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'} 
                         alt={t(project.titleKey)}
                         loading={isFeatured ? "eager" : "lazy"}
-                        className={`w-full h-full object-cover object-top transition-all ease-in-out ${project.isDashboard ? 'duration-[4000ms]' : 'duration-[3000ms]'} group-hover/image:object-bottom`}
+                        className="w-full h-full object-cover object-top block"
                       />
                     </div>
                   </div>

@@ -90,16 +90,16 @@ export default function Hero() {
         </div>
 
         {/* Right Column: Avatar Image */}
-        <div className="flex-1 relative h-[40vh] md:h-full w-full mt-4 md:mt-0 flex justify-center items-end self-end">
+        <div className="flex-1 relative h-[350px] sm:h-[400px] md:h-[500px] lg:h-[620px] xl:h-[720px] w-full mt-4 md:mt-0 flex justify-center items-end self-end">
           <ScrollReveal className="relative z-20 w-full h-full flex justify-center items-end">
             <div className="group relative w-full h-full flex justify-center items-end">
               {/* Backlight glow positioned strictly behind the portrait */}
               <div className="absolute inset-0 flex justify-center items-end pointer-events-none select-none z-10 transition-opacity duration-500 opacity-80 group-hover:opacity-100">
-                <Backlight blur={15} className="w-full h-full flex justify-center items-end" color="var(--accent-primary)" opacity={0.35} glowOnly>
+                <Backlight blur={12} className="w-full h-full flex justify-center items-end" glowClassName="w-full h-full flex justify-center items-end" color="var(--accent-primary)" opacity={0.25} glowOnly>
                   <img 
                     src="/avatar.png" 
                     alt="" 
-                    className="object-contain h-full max-h-[40vh] md:max-h-[75vh] object-bottom block"
+                    className="object-contain h-full max-h-full object-bottom block scale-[0.97] origin-bottom"
                   />
                 </Backlight>
               </div>
@@ -108,7 +108,7 @@ export default function Hero() {
               <img 
                 src="/avatar.png" 
                 alt="Gabriel Vazquez" 
-                className="relative z-20 object-contain h-full max-h-[40vh] md:max-h-[75vh] drop-shadow-2xl object-bottom block"
+                className="relative z-20 object-contain h-full max-h-full drop-shadow-2xl object-bottom block"
               />
             </div>
           </ScrollReveal>

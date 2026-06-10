@@ -42,7 +42,7 @@ export default function ScrollToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full glass flex items-center justify-center text-[var(--accent-primary)] hover:text-[var(--accent-secondary)] transition-all duration-300 shadow-lg ${
+      className={`fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full glass flex items-center justify-center text-[var(--accent-primary)] hover:text-[var(--accent-secondary)] transition-all duration-300 shadow-lg cursor-pointer ${
         isVisible ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-50 pointer-events-none'
       }`}
       aria-label="Scroll to top"
@@ -70,7 +70,7 @@ export default function ScrollToTop() {
           fill="none"
           strokeWidth="4"
           stroke="url(#scrollGradient)"
-          className="drop-shadow-[0_0_8px_rgba(0,242,254,0.3)] transition-all duration-100"
+          className="drop-shadow-[0_0_8px_rgba(0,242,254,0.3)]"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"

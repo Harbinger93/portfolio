@@ -111,7 +111,12 @@ const en = {
   "tools.optimizer.desc": "Convert JPG/PNG to high-performance WebP formats and compress heavy PDF documents locally.",
   "tools.analyzer.title": "Web Speed Analyzer",
   "tools.analyzer.desc": "Quickly inspect any public website's loading speed and get actionable performance checklists.",
-  "tools.cta": "Open Tool"
+  "tools.cta": "Open Tool",
+  "404.title": "Lost in Space?",
+  "404.subtitle": "Page Not Found",
+  "404.message": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+  "404.cta": "Back to Home",
+  "404.suggested": "Or check out my free performance tools:"
 };
 
 const es = {
@@ -227,7 +232,12 @@ const es = {
   "tools.optimizer.desc": "Convierte imágenes JPG/PNG a formatos WebP eficientes y comprime PDFs pesados de forma local.",
   "tools.analyzer.title": "Analizador de Velocidad Web",
   "tools.analyzer.desc": "Mide rápidamente la velocidad de carga de cualquier web pública y obtén oportunidades de mejora claras.",
-  "tools.cta": "Abrir Herramienta"
+  "tools.cta": "Abrir Herramienta",
+  "404.title": "¿Perdido en el Espacio?",
+  "404.subtitle": "Página no encontrada",
+  "404.message": "Es posible que la página que estás buscando haya sido eliminada, haya cambiado de nombre o no esté disponible temporalmente.",
+  "404.cta": "Volver al Inicio",
+  "404.suggested": "O explora mis herramientas de rendimiento:"
 };
 
 const translations = { en, es };

@@ -3,13 +3,14 @@ import { useId, type ReactElement } from "react"
 type BacklightProps = {
   children?: ReactElement
   className?: string
+  glowClassName?: string
   blur?: number
   color?: string
   opacity?: number
   glowOnly?: boolean
 }
 
-export function Backlight({ blur = 20, children, className, color, opacity = 1, glowOnly = false }: BacklightProps) {
+export function Backlight({ blur = 20, children, className, glowClassName, color, opacity = 1, glowOnly = false }: BacklightProps) {
   const id = useId()
 
   return (
@@ -41,7 +42,7 @@ export function Backlight({ blur = 20, children, className, color, opacity = 1, 
         </filter>
       </svg>
 
-      <div style={{ filter: `url(#${id})` }}>{children}</div>
+      <div className={glowClassName} style={{ filter: `url(#${id})` }}>{children}</div>
     </div>
   )
 }

@@ -19,6 +19,7 @@
     "clsx": "^2.1.1",
     "isomorphic-dompurify": "^3.15.0",
     "lenis": "^1.2.0",
+    "libphonenumber-js": "^1.13.6",
     "lucide-react": "^0.400.0",
     "radix-ui": "^1.4.3",
     "react": "^19.0.0",
