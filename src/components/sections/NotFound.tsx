@@ -1,5 +1,4 @@
 import { useI18n } from '../../i18n/context';
-import { motion } from 'framer-motion';
 import { RainbowButton } from '../ui/rainbow-button';
 import { Backlight } from '../ui/backlight';
 import { Home, ArrowRight, ShieldAlert, Image, Activity } from 'lucide-react';
@@ -14,54 +13,41 @@ export default function NotFound() {
       <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-[var(--accent-secondary)]/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
 
       {/* Floating 3D-like icon */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="mb-6 relative z-10"
-      >
+      <div className="mb-6 relative z-10 opacity-0 animate-slide-down">
         <Backlight blur={10} color="var(--accent-primary)" opacity={0.2} glowOnly>
           <div className="p-5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--glass-border)] flex items-center justify-center">
             <ShieldAlert className="w-16 h-16 text-[var(--accent-primary)] animate-[float_4s_ease-in-out_infinite]" />
           </div>
         </Backlight>
-      </motion.div>
+      </div>
 
       {/* Large 404 Text */}
-      <motion.h1
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="text-8xl md:text-9xl font-extrabold tracking-tighter text-gradient mb-2 select-none"
+      <h1
+        className="text-8xl md:text-9xl font-extrabold tracking-tighter text-gradient mb-2 select-none opacity-0 animate-zoom-in-404"
+        style={{ animationDelay: '100ms' }}
       >
         404
-      </motion.h1>
+      </h1>
 
       {/* Subtitle & Description */}
-      <motion.h2
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-4"
+      <h2
+        className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-4 opacity-0 animate-fade-in"
+        style={{ animationDelay: '200ms' }}
       >
         {t('404.subtitle')}
-      </motion.h2>
+      </h2>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="text-[var(--text-secondary)] text-sm md:text-base max-w-md mb-8 leading-relaxed"
+      <p
+        className="text-[var(--text-secondary)] text-sm md:text-base max-w-md mb-8 leading-relaxed opacity-0 animate-fade-in"
+        style={{ animationDelay: '300ms' }}
       >
         {t('404.message')}
-      </motion.p>
+      </p>
 
       {/* Primary CTA Button */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="mb-12 relative z-10"
+      <div
+        className="mb-12 relative z-10 opacity-0 animate-fade-in"
+        style={{ animationDelay: '400ms' }}
       >
         <RainbowButton variant="default" asChild className="rounded-full px-8 py-5 text-sm font-bold hover:scale-105 active:scale-95 transition-transform duration-300 cursor-pointer">
           <a href="/" className="flex items-center gap-2">
@@ -69,14 +55,12 @@ export default function NotFound() {
             {t('404.cta')}
           </a>
         </RainbowButton>
-      </motion.div>
+      </div>
 
       {/* Suggested Tools Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="w-full max-w-lg mt-4 relative z-10"
+      <div
+        className="w-full max-w-lg mt-4 relative z-10 opacity-0 animate-slide-up"
+        style={{ animationDelay: '500ms' }}
       >
         <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider mb-4">
           {t('404.suggested')}
@@ -119,7 +103,7 @@ export default function NotFound() {
             </div>
           </a>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

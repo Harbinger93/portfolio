@@ -7,7 +7,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     ssr: {
-      noExternal: ['framer-motion', 'motion', 'react-phone-number-input', 'libphonenumber-js'],
+      noExternal: ['react-phone-number-input', 'libphonenumber-js'],
     },
   },
 });
