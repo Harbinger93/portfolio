@@ -3,6 +3,7 @@ import { useI18n } from '../../i18n/context';
 import { useTheme } from '../../utils/theme';
 import { Languages, Sun, Moon, Menu, X } from 'lucide-react';
 import { AnimatedThemeToggler } from '../ui/animated-theme-toggler';
+import { navigate } from 'astro:transitions/client';
 
 const sections = ['home', 'projects', 'skills', 'coaching', 'contact'];
 
@@ -33,7 +34,7 @@ export default function Navbar() {
   const scrollTo = (id: string) => {
     setMenuOpen(false);
     if (typeof window !== 'undefined' && window.location.pathname !== '/') {
-      window.location.href = `/#${id}`;
+      navigate(`/#${id}`);
       return;
     }
     const el = document.getElementById(id);
@@ -55,7 +56,7 @@ export default function Navbar() {
           aria-label="Home"
         >
           <img
-            src="/avatar-nav.png"
+            src="/avatar-nav.webp"
             alt="GV"
             className="w-10 h-10 rounded-full object-cover border-2 border-glass-border group-hover:border-[var(--accent-primary)] transition-colors"
             onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=GV&background=0D8ABC&color=fff'; }}

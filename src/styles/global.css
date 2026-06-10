@@ -520,9 +520,19 @@ body {
   }
 }
 
-::view-transition-old(root), ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
+/* Disable default cross-fade ONLY when theme toggler is active */
+[data-magicui-theme-vt="active"]::view-transition-old(root),
+[data-magicui-theme-vt="active"]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Explicit overlay order during theme switching reveal animation */
+[data-magicui-theme-vt="active"]::view-transition-new(root) {
+  z-index: 9999;
+}
+[data-magicui-theme-vt="active"]::view-transition-old(root) {
+  z-index: 1;
 }
 
 .dark {

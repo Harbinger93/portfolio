@@ -97,7 +97,7 @@ export default function Hero() {
               <div className="absolute inset-0 flex justify-center items-end pointer-events-none select-none z-10 transition-opacity duration-500 opacity-80 group-hover:opacity-100">
                 <Backlight blur={12} className="w-full h-full flex justify-center items-end" glowClassName="w-full h-full flex justify-center items-end" color="var(--accent-primary)" opacity={0.25} glowOnly>
                   <img 
-                    src="/avatar.png" 
+                    src="/avatar.webp" 
                     alt="" 
                     className="object-contain h-full max-h-full object-bottom block scale-[0.97] origin-bottom"
                   />
@@ -106,7 +106,7 @@ export default function Hero() {
 
               {/* Clean crisp foreground portrait image */}
               <img 
-                src="/avatar.png" 
+                src="/avatar.webp" 
                 alt="Gabriel Vazquez" 
                 className="relative z-20 object-contain h-full max-h-full drop-shadow-2xl object-bottom block"
               />

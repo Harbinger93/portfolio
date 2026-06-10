@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import Lenis from 'lenis';
 
-export default function LenisProvider({ children }: { children: ReactNode }) {
+export default function LenisProvider({ children }: { children?: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -24,18 +24,31 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
 
     requestAnimationFrame(raf);
 
-    // Scroll to hash anchor on initial page load if present
-    if (typeof window !== 'undefined' && window.location.hash) {
-      const hash = window.location.hash;
-      setTimeout(() => {
-        const element = document.querySelector(hash);
-        if (element) {
-          lenis.scrollTo(element, { offset: -80, duration: 1.5, immediate: false });
-        }
-      }, 400); // Small delay to allow the page and elements to settle in the DOM
-    }
+    // Handle scroll/resize and hash links on page load or client-side navigation
+    const handlePageLoad = () => {
+      lenis.resize();
+      if (typeof window !== 'undefined' && window.location.hash) {
+        const hash = window.location.hash;
+        setTimeout(() => {
+          const element = document.querySelector(hash);
+          if (element) {
+            lenis.scrollTo(element, { offset: -80, duration: 1.5, immediate: false });
+          }
+        }, 100);
+      } else {
+        // Reset scroll position to top on page change
+        lenis.scrollTo(0, { immediate: true });
+      }
+    };
+
+    // Listen to Astro's client router page-load event
+    document.addEventListener('astro:page-load', handlePageLoad);
+
+    // Run once on initial layout mount
+    handlePageLoad();
 
     return () => {
+      document.removeEventListener('astro:page-load', handlePageLoad);
       lenis.destroy();
     };
   }, []);

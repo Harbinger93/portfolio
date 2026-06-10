@@ -24,7 +24,7 @@ import { ViewTransitions } from 'astro:transitions';
     <meta property="og:url" content="https://gabrielvazquez.dev/" />
     <meta property="og:title" content="Gabriel Vazquez | Desarrollador Web & Coach Ontológico" />
     <meta property="og:description" content="Desarrollador front-end con 7+ años creando ecosistemas digitales de alto impacto." />
-    <meta property="og:image" content="https://gabrielvazquez.dev/avatar.png" />
+    <meta property="og:image" content="https://gabrielvazquez.dev/avatar.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -33,14 +33,16 @@ import { ViewTransitions } from 'astro:transitions';
     <meta name="twitter:url" content="https://gabrielvazquez.dev/" />
     <meta name="twitter:title" content="Gabriel Vazquez | Desarrollador Web & Coach Ontológico" />
     <meta name="twitter:description" content="Desarrollador front-end con 7+ años creando ecosistemas digitales de alto impacto." />
-    <meta name="twitter:image" content="https://gabrielvazquez.dev/avatar.png" />
+    <meta name="twitter:image" content="https://gabrielvazquez.dev/avatar.webp" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <meta name="theme-color" content="#050505" />
-    <link rel="preload" href="/avatar.png" as="image" />
-    <link rel="preload" href="/avatar-nav.png" as="image" />
+    <link rel="preload" href="/avatar.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/avatar-nav.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/fonts/inter-weight-7.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-weight-14.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/fonts/inter.css" />
     <ViewTransitions />
     <title>Gabriel Vazquez | Desarrollador Web front-end</title>
@@ -54,24 +56,29 @@ import { ViewTransitions } from 'astro:transitions';
       gtag('config', 'G-Y4KY950MXL');
     </script>
     <script is:inline>
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "light") {
-        document.documentElement.classList.add("light");
-      }
-      // Dark mode is the default — no need to do anything for dark
+      const applyTheme = () => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light") {
+          document.documentElement.classList.add("light");
+        } else {
+          document.documentElement.classList.remove("light");
+        }
+      };
+
+      applyTheme();
+      document.addEventListener("astro:after-swap", applyTheme);
     </script>
   </head>
   <body class="antialiased">
-    <GlowBackground client:only="react" />
-    <LenisProvider client:only="react">
-      <Navbar client:only="react" />
-      <main>
-        <slot />
-      </main>
-      <Footer client:only="react" />
-    </LenisProvider>
-    <ProtectionLayer client:only="react" />
-    <ScrollToTop client:only="react" />
-    <WhatsAppBubble client:only="react" />
+    <GlowBackground client:only="react" transition:persist />
+    <LenisProvider client:only="react" transition:persist />
+    <Navbar client:only="react" transition:persist />
+    <main>
+      <slot />
+    </main>
+    <Footer client:only="react" transition:persist />
+    <ProtectionLayer client:only="react" transition:persist />
+    <ScrollToTop client:only="react" transition:persist />
+    <WhatsAppBubble client:only="react" transition:persist />
   </body>
 </html>
