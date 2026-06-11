@@ -1,7 +1,7 @@
 import { useI18n } from '../../i18n/context';
 import ScrollReveal from '../ui/ScrollReveal';
 import { NeonGradientCard } from '../ui/NeonGradientCard';
-import { FileImage, Gauge, ArrowRight, Sparkles } from 'lucide-react';
+import { FileImage, Gauge, ArrowRight, Sparkles, Radar } from 'lucide-react';
 
 export default function ToolsPreview() {
   const { t, locale } = useI18n();
@@ -13,8 +13,8 @@ export default function ToolsPreview() {
       titleKey: 'tools.optimizer.title',
       descKey: 'tools.optimizer.desc',
       Icon: FileImage,
-      color: 'from-cyan-500/20 to-blue-500/20',
-      neonColors: { firstColor: '#00F2FE', secondColor: '#0070F3' }
+      color: 'from-[#00F2FE]/20 to-[#7C3AED]/20',
+      neonColors: { firstColor: '#00F2FE', secondColor: '#7C3AED' }
     },
     {
       id: 'analyzer',
@@ -22,8 +22,17 @@ export default function ToolsPreview() {
       titleKey: 'tools.analyzer.title',
       descKey: 'tools.analyzer.desc',
       Icon: Gauge,
-      color: 'from-amber-500/20 to-orange-500/20',
-      neonColors: { firstColor: '#F59E0B', secondColor: '#EA580C' }
+      color: 'from-[#00F2FE]/20 to-[#7C3AED]/20',
+      neonColors: { firstColor: '#00F2FE', secondColor: '#7C3AED' }
+    },
+    {
+      id: 'radar',
+      href: '/herramientas/radar',
+      titleKey: 'tools.radar.title',
+      descKey: 'tools.radar.desc',
+      Icon: Radar,
+      color: 'from-[#00F2FE]/20 to-[#7C3AED]/20',
+      neonColors: { firstColor: '#00F2FE', secondColor: '#7C3AED' }
     }
   ];
 
@@ -48,7 +57,7 @@ export default function ToolsPreview() {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {toolsList.map((tool) => {
             const Icon = tool.Icon;
             return (

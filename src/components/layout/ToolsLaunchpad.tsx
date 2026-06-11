@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useI18n } from '../../i18n/context';
-import { Home, FileImage, Gauge } from 'lucide-react';
+import { Home, FileImage, Gauge, Radar } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 export default function ToolsLaunchpad() {
@@ -34,12 +34,19 @@ export default function ToolsLaunchpad() {
       labelEs: 'Analizador Web',
       labelEn: 'Web Analyzer',
       Icon: Gauge
+    },
+    {
+      id: 'radar',
+      href: '/herramientas/radar',
+      labelEs: 'Radar (Dólar/Bs)',
+      labelEn: 'Radar (Rates)',
+      Icon: Radar
     }
   ];
 
   return (
-    <div className="w-full flex justify-center mt-16 mb-4 z-10">
-      <div className="bg-[var(--glass-bg)]/80 border border-glass-border backdrop-blur-xl px-4 py-2.5 rounded-full flex gap-3 items-center shadow-lg border-white/5">
+    <div className="sticky bottom-6 left-0 right-0 w-full flex justify-center z-50 pointer-events-none">
+      <div className="bg-[var(--glass-bg)]/80 border border-glass-border backdrop-blur-xl px-4 py-2.5 rounded-full flex gap-3 items-center shadow-lg border-white/5 pointer-events-auto">
         {launchpadItems.map((item) => {
           const Icon = item.Icon;
           const isActive = currentPath === item.href;
