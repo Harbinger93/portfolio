@@ -1,14 +1,15 @@
 import ScrollReveal from '../ui/ScrollReveal';
 import { Quote, Star } from 'lucide-react';
+import karenImage from '../../img/Testimonios/karen.webp';
 
 const testimonials = [
   {
     id: 1,
-    name: "Carlos Rodríguez",
-    role: "CEO en TechStart",
-    content: "Gabriel no solo entregó una web increíble, sino que entendió perfectamente nuestro problema operativo. El sistema que desarrolló redujo nuestros tiempos de carga en un 40%.",
+    name: "Karen Rosa",
+    role: "Consultora en Comunicaciones",
+    content: "Me gusta trabajar con Gabriel en proyectos independientes porque me da tranquilidad: más allá de su sólida base técnica (que es indiscutible), tiene la capacidad para comprender la dimensión de cada misión y adaptarse a las distintas necesidades de los clientes. Las entregas siempre llegan a tiempo y la colaboración fluye de forma natural. Es el perfil que busco para llevar a buen puerto cualquier proyecto web",
     rating: 5,
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&auto=format&fit=crop"
+    image: karenImage
   },
   {
     id: 2,
@@ -27,6 +28,14 @@ const testimonials = [
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop"
   }
 ];
+
+// Helper to resolve images imported locally vs external URLs
+const getImgSrc = (img: any) => {
+  if (!img) return '';
+  if (typeof img === 'string') return img;
+  if (typeof img === 'object' && img.src) return img.src;
+  return '';
+};
 
 export default function Testimonials() {
   return (
@@ -66,7 +75,7 @@ export default function Testimonials() {
 
               <div className="flex items-center gap-4 mt-auto pt-6 border-t border-[var(--glass-border)]">
                 <img 
-                  src={testimonial.image} 
+                  src={getImgSrc(testimonial.image)} 
                   alt={testimonial.name}
                   className="w-12 h-12 rounded-full object-cover border-2 border-[var(--bg-primary)] ring-2 ring-[var(--glass-border)] group-hover:ring-[var(--accent-primary)]/50 transition-all"
                 />
