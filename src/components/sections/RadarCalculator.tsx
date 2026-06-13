@@ -317,65 +317,15 @@ export default function RadarCalculator() {
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex flex-wrap items-center justify-center gap-3 relative" id="radar-title-section">
           <span>{locale === 'es' ? 'Radar de Cotizaciones' : 'Rates Radar'}</span>
-          <div className="flex items-center gap-2">
-            <div className="relative inline-block">
-              <button
-                type="button"
-                onMouseEnter={() => setShowTechInfo(true)}
-                onMouseLeave={() => setShowTechInfo(false)}
-                onClick={() => setShowTechInfo(!showTechInfo)}
-                className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
-                aria-label="Info"
-              >
-                <Info className="w-5 h-5 md:w-6 md:h-6" />
-              </button>
-              
-              {showTechInfo && (
-                <div className="absolute right-0 translate-x-0 md:left-1/2 md:-translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
-                  <h4 className="font-extrabold text-xs uppercase tracking-wider text-[#10B981] mb-3 border-b border-glass-border pb-2">
-                    {locale === 'es' ? 'Arquitectura de Radar' : 'Radar Architecture'}
-                  </h4>
-                  
-                  <div className="space-y-3">
-                    <div>
-                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Tecnología:' : 'Technology:'}</span>
-                      <p className="text-[var(--text-secondary)] mt-0.5">
-                        {locale === 'es' 
-                          ? 'Integración directa con Cotizave API mediante llamadas HTTPS seguras.' 
-                          : 'Direct secure integration with Cotizave API using HTTPS requests.'}
-                      </p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Optimización:' : 'Optimization:'}</span>
-                      <p className="text-[var(--text-secondary)] mt-0.5">
-                        {locale === 'es' 
-                          ? 'Caché local (localStorage) de 10 minutos para ahorrar cuota y acelerar la carga de la página.' 
-                          : '10-minute local cache (localStorage) to save API quota and accelerate page speed.'}
-                      </p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
-                      <p className="text-[var(--text-secondary)] mt-0.5">
-                        {locale === 'es' 
-                          ? 'Sanitización estricta de inputs numéricos en cliente, previniendo inyección de scripts.' 
-                          : 'Strict client-side numerical input sanitization preventing script injection.'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={startTutorial}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-black bg-gradient-to-r from-[var(--accent-primary)] to-teal-400 hover:from-[var(--accent-primary)]/90 hover:to-teal-400/90 active:scale-95 transition-all cursor-pointer shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] shrink-0 border-0"
-              title={locale === 'es' ? '¿Cómo usar esta herramienta? - Tutorial interactivo' : 'How to use this tool? - Interactive tour'}
-            >
-              <HelpCircle className="w-4 h-4 text-black" />
-              <span>{locale === 'es' ? '¿Cómo usar?' : 'How to use?'}</span>
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={startTutorial}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-black bg-gradient-to-r from-[var(--accent-primary)] to-teal-400 hover:from-[var(--accent-primary)]/90 hover:to-teal-400/90 active:scale-95 transition-all cursor-pointer shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] shrink-0 border-0"
+            title={locale === 'es' ? '¿Cómo usar esta herramienta? - Tutorial interactivo' : 'How to use this tool? - Interactive tour'}
+          >
+            <HelpCircle className="w-4 h-4 text-black" />
+            <span>{locale === 'es' ? '¿Cómo usar?' : 'How to use?'}</span>
+          </button>
         </h1>
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
           {locale === 'es' 
@@ -729,7 +679,7 @@ export default function RadarCalculator() {
                             {rate.market === 'parallel' && (
                               <div className="relative group/tooltip inline-flex items-center">
                                 <Info className="w-3.5 h-3.5 text-[var(--text-secondary)]/50 hover:text-[#10B981] transition-colors cursor-help" />
-                                <div className="absolute bottom-full left-0 translate-x-0 md:left-1/2 md:-translate-x-1/2 mb-2 w-64 p-3 bg-[var(--bg-secondary)]/95 backdrop-blur-md border border-glass-border rounded-xl shadow-2xl text-[10px] text-[var(--text-secondary)] leading-relaxed opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-50 whitespace-normal font-normal">
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-60 p-3 bg-[var(--bg-secondary)]/95 backdrop-blur-md border border-glass-border rounded-xl shadow-2xl text-[10px] text-[var(--text-secondary)] leading-relaxed opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-50 whitespace-normal font-normal">
                                   {locale === 'es' 
                                     ? 'El dólar paralelo venezolano no es un orderbook. Es un promedio de fuentes públicas que se ajustan varias veces al día, no cada minuto. 25 min captura los movimientos reales sin añadir ruido.'
                                     : 'The Venezuelan parallel dollar is not an orderbook. It is an average of public sources adjusted a few times a day, not every minute. 25 min captures real movements without adding noise.'}

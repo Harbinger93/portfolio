@@ -8,9 +8,18 @@ export default function ToolsLaunchpad() {
   const [currentPath, setCurrentPath] = useState('');
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window === 'undefined') return;
+
+    const handlePathChange = () => {
       setCurrentPath(window.location.pathname);
-    }
+    };
+
+    handlePathChange();
+    document.addEventListener('astro:page-load', handlePathChange);
+    
+    return () => {
+      document.removeEventListener('astro:page-load', handlePathChange);
+    };
   }, []);
 
   const launchpadItems = [

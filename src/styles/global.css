@@ -94,6 +94,7 @@ html.light {
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 /* Lenis smooth scrolling compatibility (fixes iOS Safari scroll freezing/locking) */
