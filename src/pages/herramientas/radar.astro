@@ -1,12 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RadarCalculator from '../../components/sections/RadarCalculator';
-import ToolsLaunchpad from '../../components/layout/ToolsLaunchpad';
 ---
 
 <BaseLayout>
   <div class="pt-32 pb-24">
     <RadarCalculator client:load />
   </div>
-  <ToolsLaunchpad client:load />
 </BaseLayout>

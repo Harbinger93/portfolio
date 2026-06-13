@@ -314,9 +314,59 @@ export default function RadarCalculator() {
   return (
     <div className="max-w-4xl mx-auto px-6">
       {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex flex-wrap items-center justify-center gap-3 relative" id="radar-title-section">
+      <div className="text-center mb-12 flex flex-col items-center justify-center">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative" id="radar-title-section">
           <span>{locale === 'es' ? 'Radar de Cotizaciones' : 'Rates Radar'}</span>
+          <div className="relative inline-block">
+            <button
+              type="button"
+              onMouseEnter={() => setShowTechInfo(true)}
+              onMouseLeave={() => setShowTechInfo(false)}
+              onClick={() => setShowTechInfo(!showTechInfo)}
+              className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
+              aria-label="Info"
+            >
+              <Info className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+            
+            {showTechInfo && (
+              <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
+                <h4 className="font-extrabold text-xs uppercase tracking-wider text-[#10B981] mb-3 border-b border-glass-border pb-2">
+                  {locale === 'es' ? 'Arquitectura de Radar' : 'Radar Architecture'}
+                </h4>
+                
+                <div className="space-y-3">
+                  <div>
+                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Tecnología:' : 'Technology:'}</span>
+                    <p className="text-[var(--text-secondary)] mt-0.5">
+                      {locale === 'es' 
+                        ? 'Integración directa con Cotizave API mediante llamadas HTTPS seguras.' 
+                        : 'Direct secure integration with Cotizave API using HTTPS requests.'}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Optimización:' : 'Optimization:'}</span>
+                    <p className="text-[var(--text-secondary)] mt-0.5">
+                      {locale === 'es' 
+                        ? 'Caché local (localStorage) de 10 minutos para ahorrar cuota y acelerar la carga de la página.' 
+                        : '10-minute local cache (localStorage) to save API quota and accelerate page speed.'}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
+                    <p className="text-[var(--text-secondary)] mt-0.5">
+                      {locale === 'es' 
+                        ? 'Sanitización estricta de inputs numéricos en cliente, previniendo inyección de scripts.' 
+                        : 'Strict client-side numerical input sanitization preventing script injection.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </h1>
+
+        <div className="mb-6 flex justify-center">
           <button
             type="button"
             onClick={startTutorial}
@@ -326,7 +376,8 @@ export default function RadarCalculator() {
             <HelpCircle className="w-4 h-4 text-black" />
             <span>{locale === 'es' ? '¿Cómo usar?' : 'How to use?'}</span>
           </button>
-        </h1>
+        </div>
+
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
           {locale === 'es' 
             ? 'Calculadora de Dólar y Bolívar en tiempo real. Obtén valores exactos comparando el BCV oficial, el paralelo y el promedio P2P al instante.'
@@ -417,7 +468,7 @@ export default function RadarCalculator() {
               <div className="mb-4">
                 <label className="flex items-center justify-between text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase mb-2">
                   <span>{locale === 'es' ? 'Monto a Convertir' : 'Amount to Convert'}</span>
-                  <span className="text-[10px] font-extrabold text-[#10B981] bg-[#10B981]/15 px-2.5 py-0.5 rounded-full border border-[#10B981]/25 animate-pulse">
+                  <span className="text-[8px] sm:text-[10px] whitespace-nowrap font-extrabold text-[#10B981] bg-[#10B981]/15 px-2.5 py-0.5 rounded-full border border-[#10B981]/25 animate-pulse">
                     {locale === 'es' ? 'Ingresa el monto aquí' : 'Enter amount here'}
                   </span>
                 </label>
@@ -441,7 +492,7 @@ export default function RadarCalculator() {
 
               {/* Shortcut buttons */}
               <div className="flex gap-2 mb-6 flex-wrap">
-                {['1', '10', '50', '100', '500', '1000'].map((val) => (
+                {['1', '10', '50', '100', '500'].map((val) => (
                   <button
                     key={val}
                     type="button"

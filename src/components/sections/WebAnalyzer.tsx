@@ -400,9 +400,59 @@ export default function WebAnalyzer() {
   return (
     <div className="max-w-4xl mx-auto px-6">
       {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex flex-wrap items-center justify-center gap-3 relative" id="analyzer-title-section">
+      <div className="text-center mb-12 flex flex-col items-center justify-center">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative" id="analyzer-title-section">
           <span>{locale === 'es' ? 'Analizador de Velocidad Web' : 'Web Speed Analyzer'}</span>
+          <div className="relative inline-block">
+            <button
+              type="button"
+              onMouseEnter={() => setShowTechInfo(true)}
+              onMouseLeave={() => setShowTechInfo(false)}
+              onClick={() => setShowTechInfo(!showTechInfo)}
+              className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
+              aria-label="Info"
+            >
+              <Info className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+            
+            {showTechInfo && (
+              <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
+                <h4 className="font-extrabold text-xs uppercase tracking-wider text-[var(--accent-primary)] mb-3 border-b border-glass-border pb-2">
+                  {locale === 'es' ? 'Detalles de la Herramienta' : 'Tool Architecture'}
+                </h4>
+                
+                <div className="space-y-3">
+                  <div>
+                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Qué:' : 'The What:'}</span>
+                    <p className="text-[var(--text-secondary)] mt-0.5">
+                      {locale === 'es' 
+                        ? 'Auditorías de rendimiento y Core Web Vitals en tiempo real utilizando datos de Google Lighthouse.' 
+                        : 'Real-time performance and Core Web Vitals audits using Google Lighthouse data.'}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Cómo:' : 'The How:'}</span>
+                    <p className="text-[var(--text-secondary)] mt-0.5">
+                      {locale === 'es' 
+                        ? 'Consume la API oficial de Google PageSpeed de forma asíncrona mediante peticiones HTTPS seguras.' 
+                        : 'Asynchronously queries Google PageSpeed\'s official API via secure HTTPS requests.'}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
+                    <p className="text-[var(--text-secondary)] mt-0.5">
+                      {locale === 'es' 
+                        ? 'Input sanitizado que filtra y bloquea caracteres especiales, scripts (XSS) y protocolos maliciosos.' 
+                        : 'Sanitized input filtering out special characters, scripts (XSS), and unsafe protocols.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </h1>
+
+        <div className="mb-6 flex justify-center">
           <button
             type="button"
             onClick={startTutorial}
@@ -412,7 +462,8 @@ export default function WebAnalyzer() {
             <HelpCircle className="w-4 h-4 text-black" />
             <span>{locale === 'es' ? '¿Cómo usar?' : 'How to use?'}</span>
           </button>
-        </h1>
+        </div>
+
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
           {locale === 'es'
             ? 'Inspecciona los Core Web Vitals y el rendimiento general de tu web con datos en tiempo real de Google Lighthouse.'

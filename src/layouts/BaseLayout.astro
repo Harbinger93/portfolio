@@ -7,6 +7,7 @@ import ProtectionLayer from "../components/security/ProtectionLayer";
 import LenisProvider from "../components/layout/LenisProvider";
 import ScrollToTop from "../components/ui/ScrollToTop";
 import WhatsAppBubble from "../components/ui/WhatsAppBubble";
+import ToolsLaunchpad from "../components/layout/ToolsLaunchpad";
 import { ViewTransitions } from 'astro:transitions';
 ---
 
@@ -80,5 +81,6 @@ import { ViewTransitions } from 'astro:transitions';
     <ProtectionLayer client:only="react" transition:persist />
     <ScrollToTop client:only="react" transition:persist />
     <WhatsAppBubble client:only="react" transition:persist />
+    <ToolsLaunchpad client:only="react" transition:persist />
   </body>
 </html>

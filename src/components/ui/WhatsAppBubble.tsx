@@ -29,22 +29,6 @@ export default function WhatsAppBubble() {
   const [isOpen, setIsOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [showGreeting, setShowGreeting] = useState(false);
-  const [isToolsPage, setIsToolsPage] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const handlePathChange = () => {
-      setIsToolsPage(window.location.pathname.startsWith('/herramientas'));
-    };
-
-    handlePathChange();
-    document.addEventListener('astro:page-load', handlePathChange);
-    
-    return () => {
-      document.removeEventListener('astro:page-load', handlePathChange);
-    };
-  }, []);
 
   const {
     register,
@@ -95,7 +79,7 @@ export default function WhatsAppBubble() {
       : 'Hi! To contact me on WhatsApp write here. Please share your name, email, phone number and your inquiry.';
 
   return (
-    <div className={`fixed ${isToolsPage ? 'bottom-24' : 'bottom-6'} md:bottom-6 left-6 z-50 pointer-events-auto flex flex-col items-start`}>
+    <div className="fixed bottom-24 md:bottom-6 left-6 z-50 pointer-events-auto flex flex-col items-start">
       {isOpen && (
         <div
           className="mb-4 w-80 max-w-[calc(100vw-3rem)] rounded-2xl border border-[var(--glass-border)] shadow-2xl overflow-hidden flex flex-col bg-[var(--bg-secondary)]/95 backdrop-blur-xl animate-[zoomIn_0.2s_ease-out_forwards]"

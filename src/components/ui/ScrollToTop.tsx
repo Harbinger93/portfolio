@@ -4,22 +4,6 @@ import { ChevronUp } from 'lucide-react';
 export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [isToolsPage, setIsToolsPage] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const handlePathChange = () => {
-      setIsToolsPage(window.location.pathname.startsWith('/herramientas'));
-    };
-
-    handlePathChange();
-    document.addEventListener('astro:page-load', handlePathChange);
-    
-    return () => {
-      document.removeEventListener('astro:page-load', handlePathChange);
-    };
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +42,7 @@ export default function ScrollToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed ${isToolsPage ? 'bottom-24' : 'bottom-6'} md:bottom-6 right-6 z-40 w-12 h-12 rounded-full glass flex items-center justify-center text-[var(--accent-primary)] hover:text-[var(--accent-secondary)] transition-all duration-300 shadow-lg cursor-pointer ${
+      className={`fixed bottom-24 md:bottom-6 right-6 z-40 w-12 h-12 rounded-full glass flex items-center justify-center text-[var(--accent-primary)] hover:text-[var(--accent-secondary)] transition-all duration-300 shadow-lg cursor-pointer ${
         isVisible ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-50 pointer-events-none'
       }`}
       aria-label="Scroll to top"

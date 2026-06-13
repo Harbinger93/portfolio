@@ -6,6 +6,8 @@ import { cn } from '../../utils/cn';
 export default function ToolsLaunchpad() {
   const { locale } = useI18n();
   const [currentPath, setCurrentPath] = useState('');
+  const [showWelcomeTooltip, setShowWelcomeTooltip] = useState(false);
+  const [isTooltipFading, setIsTooltipFading] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -19,6 +21,35 @@ export default function ToolsLaunchpad() {
     
     return () => {
       document.removeEventListener('astro:page-load', handlePathChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const hasSeen = sessionStorage.getItem('has_seen_tools_tooltip');
+    if (hasSeen) return;
+
+    // Show tooltip after a short delay on first visit
+    const timerShow = setTimeout(() => {
+      setShowWelcomeTooltip(true);
+    }, 1500);
+
+    // Fade out after 4.5 seconds
+    const timerFade = setTimeout(() => {
+      setIsTooltipFading(true);
+    }, 5500);
+
+    // Remove from DOM
+    const timerRemove = setTimeout(() => {
+      setShowWelcomeTooltip(false);
+      sessionStorage.setItem('has_seen_tools_tooltip', 'true');
+    }, 6000);
+
+    return () => {
+      clearTimeout(timerShow);
+      clearTimeout(timerFade);
+      clearTimeout(timerRemove);
     };
   }, []);
 
@@ -54,8 +85,24 @@ export default function ToolsLaunchpad() {
   ];
 
   return (
-    <div className="sticky bottom-6 left-0 right-0 w-full flex justify-center z-50 pointer-events-none">
-      <div className="bg-[var(--glass-bg)]/80 border border-glass-border backdrop-blur-xl px-4 py-2.5 rounded-full flex gap-3 items-center shadow-lg border-white/5 pointer-events-auto">
+    <div className="fixed bottom-6 left-0 right-0 w-full flex justify-center z-50 pointer-events-none">
+      <div className="relative bg-[var(--glass-bg)]/80 border border-glass-border backdrop-blur-xl px-4 py-2.5 rounded-full flex gap-3 items-center shadow-lg border-white/5 pointer-events-auto">
+        
+        {/* Welcome Tools Tooltip */}
+        {showWelcomeTooltip && (
+          <div 
+            className={cn(
+              "absolute bottom-[calc(100%+16px)] left-1/2 -translate-x-1/2 px-4 py-2 text-[10px] font-extrabold uppercase tracking-wider text-black bg-gradient-to-r from-[var(--accent-primary)] to-teal-400 rounded-xl shadow-[0_0_15px_rgba(0,242,254,0.4)] border border-[var(--accent-primary)]/20 transition-all duration-500 z-50 flex items-center gap-1.5 select-none pointer-events-none",
+              isTooltipFading ? "opacity-0 scale-95 translate-y-2" : "opacity-100 scale-100 translate-y-0 animate-bounce"
+            )}
+          >
+            <span>{locale === 'es' ? 'Herramientas' : 'Tools'}</span>
+            <span className="animate-[pulse_1s_infinite]">🛠️</span>
+            {/* Tooltip Arrow */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-teal-400" />
+          </div>
+        )}
+
         {launchpadItems.map((item) => {
           const Icon = item.Icon;
           const isActive = currentPath === item.href;
@@ -76,8 +123,8 @@ export default function ToolsLaunchpad() {
                 <Icon className="w-5 h-5" />
               </a>
               
-              {/* Tooltip */}
-              <div className="absolute bottom-[calc(100%+12px)] left-1/2 -translate-x-1/2 px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-[var(--text-primary)] bg-[var(--bg-secondary)]/95 border border-glass-border rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-lg translate-y-2 group-hover:translate-y-0">
+              {/* Tooltip on Hover */}
+              <div className="absolute bottom-[calc(100%+12px)] left-1/2 -translate-x-1/2 px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-[var(--text-primary)] bg-[var(--bg-secondary)]/95 border border-glass-border rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-lg translate-y-2 group-hover:translate-y-0 z-50">
                 {label}
               </div>
             </div>
