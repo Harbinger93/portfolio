@@ -57,7 +57,7 @@ export default function Testimonials() {
         </ScrollReveal>
 
         {/* Mobile Animated Marquee (Looping from right to left) */}
-        <div className="block md:hidden overflow-hidden w-full relative py-4">
+        <div className="block md:hidden overflow-hidden w-full relative py-4 marquee-mask">
           <div className="flex gap-4 animate-marquee hover:[animation-play-state:paused] active:[animation-play-state:paused]">
             {[...testimonials, ...testimonials].map((testimonial, index) => (
               <div

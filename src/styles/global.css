@@ -705,3 +705,8 @@ html[data-magicui-theme-vt="active"] *::after {
   width: max-content;
   animation: marquee 35s linear infinite;
 }
+
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
