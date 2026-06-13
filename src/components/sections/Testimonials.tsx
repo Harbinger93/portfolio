@@ -1,6 +1,7 @@
 import ScrollReveal from '../ui/ScrollReveal';
 import { Quote, Star } from 'lucide-react';
 import karenImage from '../../img/Testimonios/karen.webp';
+import saulImage from '../../img/Testimonios/saul.webp';
 
 const testimonials = [
   {
@@ -13,11 +14,11 @@ const testimonials = [
   },
   {
     id: 2,
-    name: "Ana Silva",
-    role: "Directora de Marketing",
-    content: "Buscábamos a alguien que no nos diera excusas, sino resultados. Su profesionalismo, atención al detalle y capacidad para solucionar problemas superó nuestras expectativas.",
+    name: "Saúl Briceño",
+    role: "Coordinador de Marketing Digital - SimpleTV",
+    content: "Más de 8 años trabajando en múltiples proyectos. Gabriel es sinónimo de proactividad, optimización de procesos y resolución de problemas.",
     rating: 5,
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop"
+    image: saulImage
   },
   {
     id: 3,
