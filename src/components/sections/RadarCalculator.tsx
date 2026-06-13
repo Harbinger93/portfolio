@@ -12,9 +12,12 @@ import {
   ArrowUpRight, 
   ShieldCheck, 
   Activity,
-  Check
+  Check,
+  HelpCircle
 } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
 
 interface Rate {
   market: string;
@@ -52,6 +55,72 @@ export default function RadarCalculator() {
   const [selectedMarket, setSelectedMarket] = useState<string>('parallel');
   const [customRate, setCustomRate] = useState<string>('');
   const [showTechInfo, setShowTechInfo] = useState(false);
+
+  const startTutorial = () => {
+    const driverObj = driver({
+      showProgress: true,
+      nextBtnText: locale === 'es' ? 'Siguiente' : 'Next',
+      prevBtnText: locale === 'es' ? 'Anterior' : 'Prev',
+      doneBtnText: locale === 'es' ? 'Finalizar' : 'Done',
+      steps: [
+        {
+          element: '#radar-title-section',
+          popover: {
+            title: locale === 'es' ? '¡Bienvenido al Radar!' : 'Welcome to Radar!',
+            description: locale === 'es' ? 'Esta herramienta te permite comparar y calcular conversiones de divisas en Venezuela usando múltiples tasas en tiempo real.' : 'This tool allows you to compare and calculate currency conversions in Venezuela using multiple rates in real-time.',
+            side: 'bottom',
+            align: 'center'
+          }
+        },
+        {
+          element: window.innerWidth < 1024 ? '#radar-mobile-pill' : '#radar-desktop-list',
+          popover: {
+            title: locale === 'es' ? 'Tasas de Referencia' : 'Reference Rates',
+            description: locale === 'es' ? 'Aquí ves los valores actualizados del BCV (Dólar y Euro), el dólar paralelo y Binance P2P.' : 'Here you can see the updated rates for BCV (USD & EUR), Parallel dollar, and Binance P2P.',
+            side: window.innerWidth < 1024 ? 'bottom' : 'left',
+            align: 'center'
+          }
+        },
+        {
+          element: '#radar-direction-selector',
+          popover: {
+            title: locale === 'es' ? 'Dirección de Conversión' : 'Conversion Direction',
+            description: locale === 'es' ? 'Presiona este botón para alternar entre convertir de Dólares a Bolívares o de Bolívares a Dólares.' : 'Press this button to toggle between converting from Dollars to Bolivars or from Bolivars to Dollars.',
+            side: 'bottom',
+            align: 'center'
+          }
+        },
+        {
+          element: '#radar-input-amount',
+          popover: {
+            title: locale === 'es' ? 'Ingresa el Monto' : 'Enter the Amount',
+            description: locale === 'es' ? 'Ingresa aquí el monto que deseas convertir. Este campo tiene un borde verde resaltado para que lo ubiques fácilmente.' : 'Enter the amount you want to convert here. This field has a highlighted green border for easy spotting.',
+            side: 'bottom',
+            align: 'center'
+          }
+        },
+        {
+          element: '#radar-rate-selector',
+          popover: {
+            title: locale === 'es' ? 'Selecciona la Tasa' : 'Select the Rate',
+            description: locale === 'es' ? 'Elige cuál tasa deseas usar para el cálculo. También puedes seleccionar "Tasa Personalizada" y escribir tu propio valor.' : 'Choose which rate to use for calculation. You can also select "Custom Rate" and type your own value.',
+            side: 'top',
+            align: 'center'
+          }
+        },
+        {
+          element: '#radar-result',
+          popover: {
+            title: locale === 'es' ? 'Resultado de Conversión' : 'Conversion Result',
+            description: locale === 'es' ? 'Aquí se muestra el resultado final el cual es calculado al instante con la tasa seleccionada.' : 'Here is the final result calculated instantly using the selected rate.',
+            side: 'top',
+            align: 'center'
+          }
+        }
+      ]
+    });
+    driverObj.drive();
+  };
 
   // Load rates on mount
   useEffect(() => {
@@ -213,7 +282,8 @@ export default function RadarCalculator() {
 
   const formatMarketName = (market: string): string => {
     switch (market) {
-      case 'reference': return locale === 'es' ? 'Oficial BCV' : 'Official BCV';
+      case 'reference': return locale === 'es' ? 'BCV (Dólar)' : 'BCV (USD)';
+      case 'eur_reference': return locale === 'es' ? 'BCV (Euro)' : 'BCV (EUR)';
       case 'parallel': return locale === 'es' ? 'Dólar Paralelo' : 'Parallel Dollar';
       case 'binance': return 'Binance P2P';
       case 'bybit': return 'Bybit P2P';
@@ -245,54 +315,66 @@ export default function RadarCalculator() {
     <div className="max-w-4xl mx-auto px-6">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-3 relative">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex flex-wrap items-center justify-center gap-3 relative" id="radar-title-section">
           <span>{locale === 'es' ? 'Radar de Cotizaciones' : 'Rates Radar'}</span>
-          <div className="relative inline-block">
-            <button
-              type="button"
-              onMouseEnter={() => setShowTechInfo(true)}
-              onMouseLeave={() => setShowTechInfo(false)}
-              onClick={() => setShowTechInfo(!showTechInfo)}
-              className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
-              aria-label="Info"
-            >
-              <Info className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-            
-            {showTechInfo && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
-                <h4 className="font-extrabold text-xs uppercase tracking-wider text-[#10B981] mb-3 border-b border-glass-border pb-2">
-                  {locale === 'es' ? 'Arquitectura de Radar' : 'Radar Architecture'}
-                </h4>
-                
-                <div className="space-y-3">
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Tecnología:' : 'Technology:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Integración directa con Cotizave API mediante llamadas HTTPS seguras.' 
-                        : 'Direct secure integration with Cotizave API using HTTPS requests.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Optimización:' : 'Optimization:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Caché local (localStorage) de 10 minutos para ahorrar cuota y acelerar la carga de la página.' 
-                        : '10-minute local cache (localStorage) to save API quota and accelerate page speed.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Sanitización estricta de inputs numéricos en cliente, previniendo inyección de scripts.' 
-                        : 'Strict client-side numerical input sanitization preventing script injection.'}
-                    </p>
+          <div className="flex items-center gap-2">
+            <div className="relative inline-block">
+              <button
+                type="button"
+                onMouseEnter={() => setShowTechInfo(true)}
+                onMouseLeave={() => setShowTechInfo(false)}
+                onClick={() => setShowTechInfo(!showTechInfo)}
+                className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
+                aria-label="Info"
+              >
+                <Info className="w-5 h-5 md:w-6 md:h-6" />
+              </button>
+              
+              {showTechInfo && (
+                <div className="absolute right-0 translate-x-0 md:left-1/2 md:-translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
+                  <h4 className="font-extrabold text-xs uppercase tracking-wider text-[#10B981] mb-3 border-b border-glass-border pb-2">
+                    {locale === 'es' ? 'Arquitectura de Radar' : 'Radar Architecture'}
+                  </h4>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Tecnología:' : 'Technology:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-0.5">
+                        {locale === 'es' 
+                          ? 'Integración directa con Cotizave API mediante llamadas HTTPS seguras.' 
+                          : 'Direct secure integration with Cotizave API using HTTPS requests.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Optimización:' : 'Optimization:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-0.5">
+                        {locale === 'es' 
+                          ? 'Caché local (localStorage) de 10 minutos para ahorrar cuota y acelerar la carga de la página.' 
+                          : '10-minute local cache (localStorage) to save API quota and accelerate page speed.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-0.5">
+                        {locale === 'es' 
+                          ? 'Sanitización estricta de inputs numéricos en cliente, previniendo inyección de scripts.' 
+                          : 'Strict client-side numerical input sanitization preventing script injection.'}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={startTutorial}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-black bg-gradient-to-r from-[var(--accent-primary)] to-teal-400 hover:from-[var(--accent-primary)]/90 hover:to-teal-400/90 active:scale-95 transition-all cursor-pointer shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] shrink-0 border-0"
+              title={locale === 'es' ? '¿Cómo usar esta herramienta? - Tutorial interactivo' : 'How to use this tool? - Interactive tour'}
+            >
+              <HelpCircle className="w-4 h-4 text-black" />
+              <span>{locale === 'es' ? '¿Cómo usar?' : 'How to use?'}</span>
+            </button>
           </div>
         </h1>
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
@@ -307,6 +389,33 @@ export default function RadarCalculator() {
         
         {/* Left Panel: Calculator Card */}
         <div className="lg:col-span-7">
+          {ratesData && (
+            <div className="lg:hidden flex justify-center mb-6 w-full animate-[fadeIn_0.3s_ease-out]" id="radar-mobile-pill">
+              <div className="bg-[var(--glass-bg)] border border-glass-border backdrop-blur-xl p-4 rounded-2xl w-full max-w-sm shadow-xl grid grid-cols-2 gap-3 text-xs font-bold text-[var(--text-secondary)]">
+                {/* BCV Dólar */}
+                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-white/[0.02] border border-glass-border">
+                  <span className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider mb-1">BCV Dólar</span>
+                  <span className="text-white text-base font-black tracking-tight">{getMarketRateValue('reference').toFixed(2)} Bs.</span>
+                </div>
+                {/* BCV Euro */}
+                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-white/[0.02] border border-glass-border">
+                  <span className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider mb-1">BCV Euro</span>
+                  <span className="text-amber-400 text-base font-black tracking-tight">{getMarketRateValue('eur_reference').toFixed(2)} Bs.</span>
+                </div>
+                {/* Paralelo */}
+                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-[var(--accent-primary)]/5 border border-[var(--accent-primary)]/20 shadow-[0_0_10px_rgba(0,242,254,0.05)]">
+                  <span className="text-[9px] text-[var(--accent-primary)] uppercase tracking-wider mb-1">Paralelo</span>
+                  <span className="text-[var(--accent-primary)] text-lg font-black tracking-tight">{getMarketRateValue('parallel').toFixed(2)} Bs.</span>
+                </div>
+                {/* Binance P2P */}
+                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.05)]">
+                  <span className="text-[9px] text-emerald-400 uppercase tracking-wider mb-1">Binance P2P</span>
+                  <span className="text-emerald-400 text-lg font-black tracking-tight">{getMarketRateValue('binance').toFixed(2)} Bs.</span>
+                </div>
+              </div>
+            </div>
+          )}
+          
           <GlowCard className="border border-glass-border h-full flex flex-col justify-between">
             <div>
               {/* Card Title Header */}
@@ -325,7 +434,7 @@ export default function RadarCalculator() {
               </div>
 
               {/* Conversion Direction Selector */}
-              <div className="flex items-center justify-between gap-4 mb-6 p-4 rounded-xl bg-white/[0.02] border border-glass-border">
+              <div id="radar-direction-selector" className="flex items-center justify-between gap-4 mb-6 p-4 rounded-xl bg-white/[0.02] border border-glass-border">
                 <div className="flex-1 text-center">
                   <span className="block text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1">
                     {locale === 'es' ? 'Tengo' : 'From'}
@@ -356,16 +465,20 @@ export default function RadarCalculator() {
 
               {/* Amount Input */}
               <div className="mb-4">
-                <label className="block text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase mb-2">
-                  {locale === 'es' ? 'Monto a Convertir' : 'Amount to Convert'}
+                <label className="flex items-center justify-between text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase mb-2">
+                  <span>{locale === 'es' ? 'Monto a Convertir' : 'Amount to Convert'}</span>
+                  <span className="text-[10px] font-extrabold text-[#10B981] bg-[#10B981]/15 px-2.5 py-0.5 rounded-full border border-[#10B981]/25 animate-pulse">
+                    {locale === 'es' ? 'Ingresa el monto aquí' : 'Enter amount here'}
+                  </span>
                 </label>
                 <div className="relative">
                   <input
+                    id="radar-input-amount"
                     type="text"
                     value={amount}
                     onChange={(e) => handleAmountChange(e.target.value)}
                     placeholder="100"
-                    className="w-full h-14 pl-12 pr-16 bg-[var(--bg-secondary)] border border-glass-border rounded-xl text-lg font-bold text-[var(--text-primary)] focus:outline-none focus:border-[#10B981] transition-all duration-300 shadow-inner"
+                    className="w-full h-14 pl-12 pr-16 bg-[var(--bg-secondary)]/85 border-2 border-[#10B981] shadow-[0_0_20px_rgba(16,185,129,0.2)] rounded-xl text-lg font-bold text-[var(--text-primary)] focus:outline-none focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 transition-all duration-300"
                   />
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center text-[var(--text-secondary)]/80 font-bold text-sm">
                     {isUsdToVes ? <DollarSign className="w-5 h-5" /> : <span className="text-xs">Bs.</span>}
@@ -395,11 +508,11 @@ export default function RadarCalculator() {
               </div>
 
               {/* Active Rate Selector */}
-              <div className="mb-6">
+              <div id="radar-rate-selector" className="mb-6">
                 <label className="block text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase mb-2">
                   {locale === 'es' ? 'Tasa de Referencia Activa' : 'Active Exchange Rate'}
                 </label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   <button
                     type="button"
                     onClick={() => setSelectedMarket('parallel')}
@@ -424,9 +537,24 @@ export default function RadarCalculator() {
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
-                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">BCV (Oficial)</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">BCV (Dólar)</span>
                     <span className="text-sm font-extrabold mt-1 text-[var(--text-primary)]">
                       {getMarketRateValue('reference') > 0 ? `${getMarketRateValue('reference').toFixed(2)} Bs.` : '---'}
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedMarket('eur_reference')}
+                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer ${
+                      selectedMarket === 'eur_reference'
+                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)]'
+                        : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
+                    }`}
+                  >
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">BCV (Euro)</span>
+                    <span className="text-sm font-extrabold mt-1 text-[var(--text-primary)]">
+                      {getMarketRateValue('eur_reference') > 0 ? `${getMarketRateValue('eur_reference').toFixed(2)} Bs.` : '---'}
                     </span>
                   </button>
 
@@ -448,7 +576,7 @@ export default function RadarCalculator() {
                   <button
                     type="button"
                     onClick={() => setSelectedMarket('custom')}
-                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer ${
+                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer col-span-2 sm:col-span-2 ${
                       selectedMarket === 'custom'
                         ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
@@ -477,7 +605,7 @@ export default function RadarCalculator() {
             </div>
 
             {/* Conversion Result Block */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 mt-4">
+            <div id="radar-result" className="p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 mt-4">
               <div className="text-center">
                 <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                   {locale === 'es' ? 'Resultado de Conversión' : 'Conversion Result'}
@@ -543,7 +671,7 @@ export default function RadarCalculator() {
           </div>
 
           {/* Rates Ticker List */}
-          <div className="p-5 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl flex-1 flex flex-col shadow-lg">
+          <div id="radar-desktop-list" className="p-5 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl flex-1 flex flex-col shadow-lg">
             <h3 className="text-xs font-extrabold tracking-wider text-[var(--text-secondary)] uppercase mb-4 flex items-center gap-2 pb-3 border-b border-glass-border">
               <Activity className="w-4 h-4 text-[#10B981]" />
               <span>{locale === 'es' ? 'Tasas de Cambio Oficiales y P2P' : 'Official & P2P Rates'}</span>
@@ -567,7 +695,7 @@ export default function RadarCalculator() {
             ) : ratesData ? (
               <div className="space-y-3 flex-1">
                 {/* BCV */}
-                {ratesData.rates.filter(r => ['reference', 'parallel', 'binance', 'bybit', 'okx'].includes(r.market)).map((rate) => {
+                {ratesData.rates.filter(r => ['reference', 'eur_reference', 'parallel', 'binance', 'bybit', 'okx'].includes(r.market)).map((rate) => {
                   const isSelected = selectedMarket === rate.market;
                   return (
                     <div
@@ -601,7 +729,7 @@ export default function RadarCalculator() {
                             {rate.market === 'parallel' && (
                               <div className="relative group/tooltip inline-flex items-center">
                                 <Info className="w-3.5 h-3.5 text-[var(--text-secondary)]/50 hover:text-[#10B981] transition-colors cursor-help" />
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[var(--bg-secondary)]/95 backdrop-blur-md border border-glass-border rounded-xl shadow-2xl text-[10px] text-[var(--text-secondary)] leading-relaxed opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-50 whitespace-normal font-normal">
+                                <div className="absolute bottom-full left-0 translate-x-0 md:left-1/2 md:-translate-x-1/2 mb-2 w-64 p-3 bg-[var(--bg-secondary)]/95 backdrop-blur-md border border-glass-border rounded-xl shadow-2xl text-[10px] text-[var(--text-secondary)] leading-relaxed opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-50 whitespace-normal font-normal">
                                   {locale === 'es' 
                                     ? 'El dólar paralelo venezolano no es un orderbook. Es un promedio de fuentes públicas que se ajustan varias veces al día, no cada minuto. 25 min captura los movimientos reales sin añadir ruido.'
                                     : 'The Venezuelan parallel dollar is not an orderbook. It is an average of public sources adjusted a few times a day, not every minute. 25 min captures real movements without adding noise.'}
@@ -641,15 +769,14 @@ export default function RadarCalculator() {
 
             {/* API Citation Link */}
             {ratesData && (
-              <div className="mt-4 pt-3 border-t border-glass-border flex items-center justify-between text-[9px] text-[var(--text-secondary)] font-semibold uppercase tracking-wider">
-                <span>API: cotizave.com</span>
+              <div className="mt-4 pt-3 border-t border-glass-border flex justify-end text-[9px] text-[var(--text-secondary)] font-semibold uppercase tracking-wider">
                 <a
                   href="https://cotizave.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-[#10B981] flex items-center gap-1 transition-colors"
                 >
-                  <span>Link</span>
+                  <span>API: cotizave.com</span>
                   <ArrowUpRight className="w-3 h-3" />
                 </a>
               </div>
@@ -687,7 +814,7 @@ export default function RadarCalculator() {
                 </thead>
                 <tbody className="divide-y divide-glass-border">
                   {ratesData.rates
-                    .filter(r => ['reference', 'parallel', 'binance', 'bybit'].includes(r.market))
+                    .filter(r => ['reference', 'eur_reference', 'parallel', 'binance', 'bybit'].includes(r.market))
                     .map((rate) => {
                       const bcvRate = getMarketRateValue('reference');
                       const diffPct = bcvRate > 0 ? ((rate.mid - bcvRate) / bcvRate) * 100 : 0;
@@ -707,7 +834,7 @@ export default function RadarCalculator() {
                             {isUsdToVes ? 'Bs.' : '$'} {calculateConversion(rate.mid)}
                           </td>
                           <td className="p-4 text-xs font-semibold text-center font-mono">
-                            {rate.market === 'reference' ? (
+                            {(rate.market === 'reference' || rate.market === 'eur_reference') ? (
                               <span className="text-[var(--text-secondary)]/40">-</span>
                             ) : diffPct >= 0 ? (
                               <span className="text-emerald-400">+{diffPct.toFixed(2)}%</span>

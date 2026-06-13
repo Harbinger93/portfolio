@@ -694,3 +694,14 @@ html[data-magicui-theme-vt="active"] *::after {
   90% { opacity: 1; }
   100% { transform: translateY(120vh); opacity: 0; }
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}

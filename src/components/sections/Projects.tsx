@@ -52,9 +52,63 @@ export default function Projects() {
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Mobile Horizontal Carousel */}
+        <div className="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-4 pb-6 px-6 -mx-6 scrollbar-none">
+          {currentProjects.map((project) => {
+            return (
+              <a 
+                key={project.id} 
+                href={`/projects/${project.id}`}
+                className="group block cursor-pointer min-w-[290px] max-w-[85vw] snap-center flex-shrink-0"
+              >
+                <div className="relative h-full overflow-hidden p-0 rounded-2xl flex flex-col glass transition-all duration-300 hover:border-[var(--accent-primary)]/50">
+                  {/* Image Area */}
+                  <div className="relative bg-[var(--bg-secondary)] h-48 overflow-hidden border-b border-[var(--glass-border)] group/image block">
+                    <div className="absolute top-0 left-0 w-full h-8 bg-[var(--bg-primary)]/90 backdrop-blur-md flex items-center px-3 gap-1.5 border-b border-[var(--glass-border)] z-10">
+                      <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+                    </div>
+                    <div className="w-full h-full pt-8 relative overflow-hidden">
+                      <img 
+                        src={getImgSrc(project.imageUrl) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000'} 
+                        alt={t(project.titleKey)}
+                        width={800}
+                        height={500}
+                        loading="lazy"
+                        className="w-full h-full object-cover object-top block"
+                      />
+                    </div>
+                  </div>
+                  {/* Content Area */}
+                  <div className="p-5 flex-1 flex flex-col justify-center">
+                    <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-primary)] transition-colors">
+                      {t(project.titleKey)}
+                    </h3>
+                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-4 line-clamp-3">
+                      {t(project.descKey)}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 mt-auto">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-medium rounded-full bg-[var(--glass-bg)] text-[var(--text-primary)] border border-[var(--glass-border)]"
+                        >
+                          <TechIcon name={tag} className="w-2.5 h-2.5 text-[var(--accent-primary)]" />
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+
+        {/* Desktop Grid */}
+        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-6">
           {currentProjects.map((project, index) => {
-            const Icon = iconMap[project.icon] || Layout;
             const isFeatured = index === 0;
 
             return (

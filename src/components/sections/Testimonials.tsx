@@ -56,8 +56,49 @@ export default function Testimonials() {
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
+        {/* Mobile Animated Marquee (Looping from right to left) */}
+        <div className="block md:hidden overflow-hidden w-full relative py-4">
+          <div className="flex gap-4 animate-marquee hover:[animation-play-state:paused] active:[animation-play-state:paused]">
+            {[...testimonials, ...testimonials].map((testimonial, index) => (
+              <div
+                key={`${testimonial.id}-${index}`}
+                className="glass p-6 rounded-2xl relative w-[290px] shrink-0 flex flex-col border border-[var(--glass-border)]"
+              >
+                <Quote className="absolute top-4 right-4 w-6 h-6 text-[var(--glass-border)]" />
+                
+                <div className="flex gap-0.5 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+
+                <p className="text-[var(--text-secondary)] text-xs leading-relaxed mb-6 flex-grow whitespace-normal">
+                  "{testimonial.content}"
+                </p>
+
+                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-[var(--glass-border)]">
+                  <img 
+                    src={getImgSrc(testimonial.image)} 
+                    alt={testimonial.name}
+                    className="w-10 h-10 rounded-full object-cover border border-[var(--glass-border)]"
+                  />
+                  <div>
+                    <h4 className="text-[var(--text-primary)] font-bold text-xs">
+                      {testimonial.name}
+                    </h4>
+                    <p className="text-[var(--text-secondary)] text-[10px]">
+                      {testimonial.role}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop Grid */}
+        <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6">
+          {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
               className="glass p-8 rounded-2xl relative group hover:border-[var(--accent-primary)] transition-colors duration-300 flex flex-col"

@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useI18n } from '../../i18n/context';
-import { Upload, FileImage, FileText, Download, CheckCircle, AlertCircle, RefreshCw, Info } from 'lucide-react';
+import { Upload, FileImage, FileText, Download, CheckCircle, AlertCircle, RefreshCw, Info, HelpCircle } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
 
 interface ProcessedFile {
   id: string;
@@ -26,6 +28,63 @@ export default function ImageOptimizer() {
   const [showTechInfo, setShowTechInfo] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const startTutorial = () => {
+    const driverObj = driver({
+      showProgress: true,
+      nextBtnText: locale === 'es' ? 'Siguiente' : 'Next',
+      prevBtnText: locale === 'es' ? 'Anterior' : 'Prev',
+      doneBtnText: locale === 'es' ? 'Finalizar' : 'Done',
+      steps: [
+        {
+          element: '#optimizer-title-section',
+          popover: {
+            title: locale === 'es' ? '¡Bienvenido al Optimizador!' : 'Welcome to Optimizer!',
+            description: locale === 'es' ? 'Esta herramienta te permite optimizar imágenes (PNG/JPG a WebP) y comprimir archivos PDF de forma 100% local y privada.' : 'This tool allows you to optimize images (PNG/JPG to WebP) and compress PDF files 100% locally and privately.',
+            side: 'bottom',
+            align: 'center'
+          }
+        },
+        {
+          element: '#optimizer-tabs',
+          popover: {
+            title: locale === 'es' ? 'Selección de Formato' : 'Format Selector',
+            description: locale === 'es' ? 'Elige si deseas optimizar imágenes o comprimir un documento PDF.' : 'Choose whether you want to optimize images or compress a PDF document.',
+            side: 'bottom',
+            align: 'center'
+          }
+        },
+        {
+          element: '#optimizer-config',
+          popover: {
+            title: locale === 'es' ? 'Ajustes de Calidad' : 'Quality Configuration',
+            description: locale === 'es' ? 'Ajusta el nivel de compresión deseado. Un 80% suele ser el balance óptimo entre peso y calidad.' : 'Adjust the desired compression level. 80% is typically the optimal balance between size and quality.',
+            side: 'right',
+            align: 'center'
+          }
+        },
+        {
+          element: '#optimizer-dropzone',
+          popover: {
+            title: locale === 'es' ? 'Subir Archivos' : 'Upload Files',
+            description: locale === 'es' ? 'Arrastra y suelta tus archivos aquí, o haz clic para seleccionarlos desde tu dispositivo.' : 'Drag & drop your files here, or click to select them from your device.',
+            side: 'top',
+            align: 'center'
+          }
+        },
+        {
+          element: files.length > 0 ? '#optimizer-file-list' : '#optimizer-dropzone',
+          popover: {
+            title: locale === 'es' ? 'Descargar Resultados' : 'Download Results',
+            description: locale === 'es' ? 'Una vez procesados, tus archivos optimizados aparecerán listos para descargar con el porcentaje de ahorro de espacio.' : 'Once processed, your optimized files will appear here ready to download showing the space savings percentage.',
+            side: 'top',
+            align: 'center'
+          }
+        }
+      ]
+    });
+    driverObj.drive();
+  };
 
   // Cargar dinámicamente las dependencias de PDF.js y jsPDF cuando se activa la pestaña PDF
   const [pdfLibsLoaded, setPdfLibsLoaded] = useState(false);
@@ -322,54 +381,66 @@ export default function ImageOptimizer() {
     <div className="max-w-4xl mx-auto px-6">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-3 relative">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex flex-wrap items-center justify-center gap-3 relative" id="optimizer-title-section">
           <span>{locale === 'es' ? 'Optimizador de Imágenes y PDF' : 'Image & PDF Optimizer'}</span>
-          <div className="relative inline-block">
-            <button
-              type="button"
-              onMouseEnter={() => setShowTechInfo(true)}
-              onMouseLeave={() => setShowTechInfo(false)}
-              onClick={() => setShowTechInfo(!showTechInfo)}
-              className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
-              aria-label="Info"
-            >
-              <Info className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-            
-            {showTechInfo && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
-                <h4 className="font-extrabold text-xs uppercase tracking-wider text-[var(--accent-primary)] mb-3 border-b border-glass-border pb-2">
-                  {locale === 'es' ? 'Detalles de la Herramienta' : 'Tool Architecture'}
-                </h4>
-                
-                <div className="space-y-3">
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Qué:' : 'The What:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Optimización de imágenes (PNG/JPG a WebP) y compresión de PDF.' 
-                        : 'Image optimization (PNG/JPG to WebP) and PDF compression.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Cómo:' : 'The How:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Procesamiento en cliente usando Canvas HTML5 y carga asíncrona de PDF.js y jsPDF.' 
-                        : 'Client-side processing using HTML5 Canvas and asynchronously loading PDF.js and jsPDF.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Privacidad:' : 'Privacy:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Tus archivos son 100% privados y procesados en local; nunca se envían a servidores externos.' 
-                        : 'Your files are 100% private and processed locally; they are never sent to external servers.'}
-                    </p>
+          <div className="flex items-center gap-2">
+            <div className="relative inline-block">
+              <button
+                type="button"
+                onMouseEnter={() => setShowTechInfo(true)}
+                onMouseLeave={() => setShowTechInfo(false)}
+                onClick={() => setShowTechInfo(!showTechInfo)}
+                className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
+                aria-label="Info"
+              >
+                <Info className="w-5 h-5 md:w-6 md:h-6" />
+              </button>
+              
+              {showTechInfo && (
+                <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
+                  <h4 className="font-extrabold text-xs uppercase tracking-wider text-[var(--accent-primary)] mb-3 border-b border-glass-border pb-2">
+                    {locale === 'es' ? 'Detalles de la Herramienta' : 'Tool Architecture'}
+                  </h4>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Qué:' : 'The What:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-0.5">
+                        {locale === 'es' 
+                          ? 'Optimización de imágenes (PNG/JPG a WebP) y compresión de PDF.' 
+                          : 'Image optimization (PNG/JPG to WebP) and PDF compression.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Cómo:' : 'The How:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-0.5">
+                        {locale === 'es' 
+                          ? 'Procesamiento en cliente usando Canvas HTML5 y carga asíncrona de PDF.js y jsPDF.' 
+                          : 'Client-side processing using HTML5 Canvas and asynchronously loading PDF.js and jsPDF.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Privacidad:' : 'Privacy:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-0.5">
+                        {locale === 'es' 
+                          ? 'Tus archivos son 100% privados y procesados en local; nunca se envían a servidores externos.' 
+                          : 'Your files are 100% private and processed locally; they are never sent to external servers.'}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={startTutorial}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-black bg-gradient-to-r from-[var(--accent-primary)] to-teal-400 hover:from-[var(--accent-primary)]/90 hover:to-teal-400/90 active:scale-95 transition-all cursor-pointer shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] shrink-0 border-0"
+              title={locale === 'es' ? '¿Cómo usar esta herramienta? - Tutorial interactivo' : 'How to use this tool? - Interactive tour'}
+            >
+              <HelpCircle className="w-4 h-4 text-black" />
+              <span>{locale === 'es' ? '¿Cómo usar?' : 'How to use?'}</span>
+            </button>
           </div>
         </h1>
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
@@ -380,7 +451,7 @@ export default function ImageOptimizer() {
       </div>
 
       {/* Tabs */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-8" id="optimizer-tabs">
         <div className="flex bg-[var(--bg-secondary)] border border-glass-border p-1.5 rounded-full shadow-lg">
           <button
             onClick={() => setActiveTab('image')}
@@ -411,7 +482,7 @@ export default function ImageOptimizer() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
         
         {/* Quality Controls */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1" id="optimizer-config">
           <GlowCard className="h-full border border-glass-border">
             <h3 className="text-lg font-bold text-[var(--text-primary)] mb-6">
               {locale === 'es' ? 'Configuración' : 'Settings'}
@@ -476,7 +547,7 @@ export default function ImageOptimizer() {
         </div>
 
         {/* Dropzone Area */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2" id="optimizer-dropzone">
           <div
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -526,7 +597,7 @@ export default function ImageOptimizer() {
 
       {/* File List */}
       {files.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-4" id="optimizer-file-list">
           <div className="flex justify-between items-center mb-2">
             <h3 className="text-lg font-bold text-[var(--text-primary)]">
               {locale === 'es' ? 'Archivos Procesados' : 'Processed Files'}

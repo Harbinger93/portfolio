@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useI18n } from '../../i18n/context';
-import { Gauge, Search, AlertTriangle, ShieldAlert, Cpu, Sparkles, Clock, LayoutGrid, Zap, Clipboard, Mail, Share2, MessageCircle, Info } from 'lucide-react';
+import { Gauge, Search, AlertTriangle, ShieldAlert, Cpu, Sparkles, Clock, LayoutGrid, Zap, Clipboard, Mail, Share2, MessageCircle, Info, HelpCircle } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
 
 interface AuditResult {
   score: number;
@@ -30,6 +32,72 @@ export default function WebAnalyzer() {
   const [isLocalBlocked, setIsLocalBlocked] = useState(false);
   const [result, setResult] = useState<AuditResult | null>(null);
   const [showTechInfo, setShowTechInfo] = useState(false);
+
+  const startTutorial = () => {
+    const driverObj = driver({
+      showProgress: true,
+      nextBtnText: locale === 'es' ? 'Siguiente' : 'Next',
+      prevBtnText: locale === 'es' ? 'Anterior' : 'Prev',
+      doneBtnText: locale === 'es' ? 'Finalizar' : 'Done',
+      steps: [
+        {
+          element: '#analyzer-title-section',
+          popover: {
+            title: locale === 'es' ? '¡Bienvenido al Analizador Web!' : 'Welcome to Web Speed Analyzer!',
+            description: locale === 'es' ? 'Esta herramienta realiza auditorías completas de velocidad y Core Web Vitals en tiempo real usando datos oficiales de Google Lighthouse.' : 'This tool performs real-time speed and Core Web Vitals audits using official Google Lighthouse data.',
+            side: 'bottom',
+            align: 'center'
+          }
+        },
+        {
+          element: '#analyzer-input',
+          popover: {
+            title: locale === 'es' ? 'Ingresa la URL' : 'Enter the URL',
+            description: locale === 'es' ? 'Escribe o pega la dirección de cualquier sitio web público que desees auditar (ej: google.com).' : 'Type or paste the URL of any public website you wish to audit (e.g. google.com).',
+            side: 'bottom',
+            align: 'center'
+          }
+        },
+        {
+          element: '#analyzer-btn',
+          popover: {
+            title: locale === 'es' ? 'Iniciar Análisis' : 'Start Analysis',
+            description: locale === 'es' ? 'Haz clic aquí para iniciar la auditoría. Puede tardar unos segundos mientras recopilamos las métricas en vivo.' : 'Click here to start the audit. It may take a few seconds as we collect live metrics.',
+            side: 'bottom',
+            align: 'center'
+          }
+        },
+        {
+          element: result ? '#analyzer-score' : '#analyzer-input',
+          popover: {
+            title: locale === 'es' ? 'Puntuación de Rendimiento' : 'Performance Score',
+            description: locale === 'es' ? 'Muestra la calificación general de rendimiento sobre 100 y ofrece un diagnóstico automatizado.' : 'Displays the overall performance rating out of 100 along with an automated diagnostics report.',
+            side: 'top',
+            align: 'center'
+          }
+        },
+        {
+          element: result ? '#analyzer-metrics' : '#analyzer-input',
+          popover: {
+            title: locale === 'es' ? 'Core Web Vitals' : 'Core Web Vitals Metrics',
+            description: locale === 'es' ? 'Visualiza las métricas clave de velocidad y estabilidad visual: FCP, LCP, TBT y CLS.' : 'View key metrics for speed and visual stability: FCP, LCP, TBT, and CLS.',
+            side: 'top',
+            align: 'center'
+          }
+        },
+        {
+          element: result ? '#analyzer-opportunities' : '#analyzer-input',
+          popover: {
+            title: locale === 'es' ? 'Recomendaciones de Optimización' : 'Optimization Recommendations',
+            description: locale === 'es' ? 'Lista los cuellos de botella detectados en el sitio auditado y estima cuánto tiempo puedes ahorrar al resolverlos.' : 'Lists detected bottlenecks on the audited site and estimates how much load time you can save by solving them.',
+            side: 'top',
+            align: 'center'
+          }
+        }
+      ]
+    });
+    driverObj.drive();
+  };
 
   const validateAndFormatUrl = (input: string) => {
     let formatted = input.trim();
@@ -333,54 +401,66 @@ export default function WebAnalyzer() {
     <div className="max-w-4xl mx-auto px-6">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-3 relative">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex flex-wrap items-center justify-center gap-3 relative" id="analyzer-title-section">
           <span>{locale === 'es' ? 'Analizador de Velocidad Web' : 'Web Speed Analyzer'}</span>
-          <div className="relative inline-block">
-            <button
-              type="button"
-              onMouseEnter={() => setShowTechInfo(true)}
-              onMouseLeave={() => setShowTechInfo(false)}
-              onClick={() => setShowTechInfo(!showTechInfo)}
-              className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
-              aria-label="Info"
-            >
-              <Info className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-            
-            {showTechInfo && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
-                <h4 className="font-extrabold text-xs uppercase tracking-wider text-[var(--accent-primary)] mb-3 border-b border-glass-border pb-2">
-                  {locale === 'es' ? 'Detalles de la Herramienta' : 'Tool Architecture'}
-                </h4>
-                
-                <div className="space-y-3">
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Qué:' : 'The What:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Auditorías de rendimiento y Core Web Vitals en tiempo real utilizando datos de Google Lighthouse.' 
-                        : 'Real-time performance and Core Web Vitals audits using Google Lighthouse data.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Cómo:' : 'The How:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Consume la API oficial de Google PageSpeed de forma asíncrona mediante peticiones HTTPS seguras.' 
-                        : 'Asynchronously queries Google PageSpeed\'s official API via secure HTTPS requests.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Input sanitizado que filtra y bloquea caracteres especiales, scripts (XSS) y protocolos maliciosos.' 
-                        : 'Sanitized input filtering out special characters, scripts (XSS), and unsafe protocols.'}
-                    </p>
+          <div className="flex items-center gap-2">
+            <div className="relative inline-block">
+              <button
+                type="button"
+                onMouseEnter={() => setShowTechInfo(true)}
+                onMouseLeave={() => setShowTechInfo(false)}
+                onClick={() => setShowTechInfo(!showTechInfo)}
+                className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
+                aria-label="Info"
+              >
+                <Info className="w-5 h-5 md:w-6 md:h-6" />
+              </button>
+              
+              {showTechInfo && (
+                <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
+                  <h4 className="font-extrabold text-xs uppercase tracking-wider text-[var(--accent-primary)] mb-3 border-b border-glass-border pb-2">
+                    {locale === 'es' ? 'Detalles de la Herramienta' : 'Tool Architecture'}
+                  </h4>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Qué:' : 'The What:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-0.5">
+                        {locale === 'es' 
+                          ? 'Auditorías de rendimiento y Core Web Vitals en tiempo real utilizando datos de Google Lighthouse.' 
+                          : 'Real-time performance and Core Web Vitals audits using Google Lighthouse data.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Cómo:' : 'The How:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-0.5">
+                        {locale === 'es' 
+                          ? 'Consume la API oficial de Google PageSpeed de forma asíncrona mediante peticiones HTTPS seguras.' 
+                          : 'Asynchronously queries Google PageSpeed\'s official API via secure HTTPS requests.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-0.5">
+                        {locale === 'es' 
+                          ? 'Input sanitizado que filtra y bloquea caracteres especiales, scripts (XSS) y protocolos maliciosos.' 
+                          : 'Sanitized input filtering out special characters, scripts (XSS), and unsafe protocols.'}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={startTutorial}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-black bg-gradient-to-r from-[var(--accent-primary)] to-teal-400 hover:from-[var(--accent-primary)]/90 hover:to-teal-400/90 active:scale-95 transition-all cursor-pointer shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] shrink-0 border-0"
+              title={locale === 'es' ? '¿Cómo usar esta herramienta? - Tutorial interactivo' : 'How to use this tool? - Interactive tour'}
+            >
+              <HelpCircle className="w-4 h-4 text-black" />
+              <span>{locale === 'es' ? '¿Cómo usar?' : 'How to use?'}</span>
+            </button>
           </div>
         </h1>
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
@@ -395,6 +475,7 @@ export default function WebAnalyzer() {
         <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
           <div className="relative flex-1">
             <input
+              id="analyzer-input"
               type="text"
               placeholder={locale === 'es' ? 'Ingresa una URL (ej: google.com)' : 'Enter a URL (e.g. google.com)'}
               value={url}
@@ -413,6 +494,7 @@ export default function WebAnalyzer() {
             </button>
           </div>
           <button
+            id="analyzer-btn"
             type="submit"
             disabled={loading || !url.trim()}
             className="h-14 px-8 rounded-2xl bg-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/90 text-black font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 transition-all duration-300 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
@@ -494,7 +576,7 @@ export default function WebAnalyzer() {
         <div className="space-y-8 animate-[fadeIn_0.4s_ease-out_forwards]">
           
           {/* Main Score & Summary Card */}
-          <div className="p-8 bg-[var(--bg-secondary)] border border-glass-border rounded-3xl flex flex-col md:flex-row items-center justify-center gap-8 shadow-xl relative overflow-hidden">
+          <div id="analyzer-score" className="p-8 bg-[var(--bg-secondary)] border border-glass-border rounded-3xl flex flex-col md:flex-row items-center justify-center gap-8 shadow-xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[var(--accent-primary)]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
             
             {/* Radial Performance Gauge */}
@@ -598,7 +680,7 @@ export default function WebAnalyzer() {
           </div>
 
           {/* Core Web Vitals Grid */}
-          <div>
+          <div id="analyzer-metrics">
             <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
               <LayoutGrid className="w-4 h-4 text-[var(--accent-primary)]" />
               {locale === 'es' ? 'Métricas Core Web Vitals' : 'Core Web Vitals Metrics'}
@@ -641,7 +723,7 @@ export default function WebAnalyzer() {
 
           {/* Optimization Opportunities */}
           {result.opportunities.length > 0 && (
-            <div>
+            <div id="analyzer-opportunities">
               <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-[var(--accent-primary)]" />
                 {locale === 'es' ? 'Oportunidades de Optimización Clave' : 'Key Optimization Opportunities'}

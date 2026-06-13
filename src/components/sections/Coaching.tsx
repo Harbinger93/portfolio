@@ -29,7 +29,30 @@ export default function Coaching() {
           </h2>
         </ScrollReveal>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Mobile Horizontal Carousel */}
+        <div className="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-4 pb-6 px-6 -mx-6 scrollbar-none">
+          {currentCards.map((card) => {
+            const Icon = iconMap[card.icon] || CheckCircle;
+            return (
+              <div key={card.titleKey} className="min-w-[260px] max-w-[80vw] snap-center flex-shrink-0">
+                <GlowCard>
+                  <div className="w-12 h-12 rounded-xl bg-[var(--bg-primary)] border border-[var(--glass-border)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <Icon className="w-6 h-6 text-[var(--accent-primary)]" />
+                  </div>
+                  <h3 className="text-base font-bold text-[var(--text-primary)] mb-2">
+                    {t(card.titleKey)}
+                  </h3>
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-4">
+                    {t(card.descKey)}
+                  </p>
+                </GlowCard>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop Grid */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentCards.map((card, i) => {
             const Icon = iconMap[card.icon] || CheckCircle;
             return (
