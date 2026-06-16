@@ -71,16 +71,16 @@ import { ViewTransitions } from 'astro:transitions';
     </script>
   </head>
   <body class="antialiased">
-    <GlowBackground client:only="react" transition:persist />
+    <GlowBackground transition:persist />
     <LenisProvider client:only="react" transition:persist />
-    <Navbar client:only="react" transition:persist />
+    <Navbar client:load transition:persist />
     <main>
       <slot />
     </main>
-    <Footer client:only="react" transition:persist />
-    <ProtectionLayer client:only="react" transition:persist />
-    <ScrollToTop client:only="react" transition:persist />
-    <WhatsAppBubble client:only="react" transition:persist />
-    <ToolsLaunchpad client:only="react" transition:persist />
+    <Footer client:visible transition:persist />
+    <ProtectionLayer client:idle transition:persist />
+    <ScrollToTop client:idle transition:persist />
+    <WhatsAppBubble client:idle transition:persist />
+    <ToolsLaunchpad client:idle transition:persist />
   </body>
 </html>

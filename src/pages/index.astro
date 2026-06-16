@@ -12,11 +12,17 @@ import Contact from '../components/sections/Contact';
 
 <BaseLayout>
   <Hero client:load />
-  <Services client:load />
-  <Projects client:load />
-  <ToolsPreview client:load />
-  <TechStack client:load />
-  <Coaching client:load />
-  <Testimonials client:load />
-  <Contact client:load />
+  <Services client:visible />
+  <Projects client:visible />
+  <ToolsPreview client:visible />
+  <TechStack client:visible />
+  <Coaching client:visible />
+  <Testimonials client:visible />
+  <Contact client:visible />
 </BaseLayout>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

@@ -86,7 +86,7 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="py-24 relative z-10 overflow-clip">
+    <section id="services" className="py-24 relative z-10 overflow-visible">
       {/* Decorative background elements */}
       <div className="absolute top-1/3 left-0 -translate-y-1/2 w-72 h-72 bg-blue-500/5 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
       <div className="absolute top-2/3 right-0 w-96 h-96 bg-purple-500/5 rounded-full blur-[120px] -z-10 pointer-events-none"></div>

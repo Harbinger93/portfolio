@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useI18n } from '../../i18n/context';
 import { Home, FileImage, Gauge, Radar } from 'lucide-react';
 import { cn } from '../../utils/cn';
@@ -9,6 +9,8 @@ export default function ToolsLaunchpad() {
   const [showWelcomeTooltip, setShowWelcomeTooltip] = useState(false);
   const [isTooltipFading, setIsTooltipFading] = useState(false);
   const [isLaunchpadVisible, setIsLaunchpadVisible] = useState(true);
+  const [bottomOffset, setBottomOffset] = useState(24);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -40,16 +42,39 @@ export default function ToolsLaunchpad() {
       } else {
         setIsLaunchpadVisible(true);
       }
+
+      // Calculate collision with footer to prevent overlapping
+      const footer = document.querySelector('footer');
+      if (footer) {
+        const footerRect = footer.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        if (footerRect.top < viewportHeight) {
+          const overlap = viewportHeight - footerRect.top;
+          setBottomOffset(24 + overlap);
+        } else {
+          setBottomOffset(24);
+        }
+      } else {
+        setBottomOffset(24);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // initial check
+    window.addEventListener('resize', handleScroll, { passive: true });
+    
+    // Initial check and timeouts for layout shifts after page load/navigation
+    handleScroll();
+    const t1 = setTimeout(handleScroll, 100);
+    const t2 = setTimeout(handleScroll, 500);
 
     document.addEventListener('astro:page-load', handleScroll);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
       document.removeEventListener('astro:page-load', handleScroll);
+      clearTimeout(t1);
+      clearTimeout(t2);
     };
   }, [currentPath]);
 
@@ -118,10 +143,14 @@ export default function ToolsLaunchpad() {
   ];
 
   return (
-    <div className={cn(
-      "fixed bottom-6 left-0 right-0 w-full flex justify-center z-50 pointer-events-none transition-all duration-500 ease-out",
-      isLaunchpadVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-    )}>
+    <div 
+      ref={containerRef}
+      style={{ bottom: `${bottomOffset}px` }}
+      className={cn(
+        "fixed left-0 right-0 w-full flex justify-center z-50 pointer-events-none transition-[opacity,transform] duration-500 ease-out",
+        isLaunchpadVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+      )}
+    >
       <div className="relative bg-[var(--glass-bg)]/80 border border-glass-border backdrop-blur-xl px-4 py-2.5 rounded-full flex gap-3 items-center shadow-lg border-white/5 pointer-events-auto">
         
         {/* Welcome Tools Tooltip */}

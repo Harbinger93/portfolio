@@ -13,11 +13,13 @@ import {
   ShieldCheck, 
   Activity,
   Check,
-  HelpCircle
+  HelpCircle,
+  X
 } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
+import { RainbowButton } from '../ui/rainbow-button';
 
 interface Rate {
   market: string;
@@ -52,9 +54,10 @@ export default function RadarCalculator() {
   // Calculator State
   const [amount, setAmount] = useState<string>('100');
   const [isUsdToVes, setIsUsdToVes] = useState<boolean>(true);
-  const [selectedMarket, setSelectedMarket] = useState<string>('parallel');
+  const [selectedMarket, setSelectedMarket] = useState<string>('reference');
   const [customRate, setCustomRate] = useState<string>('');
   const [showTechInfo, setShowTechInfo] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   const startTutorial = () => {
     const driverObj = driver({
@@ -307,22 +310,45 @@ export default function RadarCalculator() {
     return new Date(rateObj.updated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  const getShortMarketName = (market: string): string => {
+    switch (market) {
+      case 'reference': return 'BCV Dólar';
+      case 'eur_reference': return 'BCV Euro';
+      case 'parallel': return 'Paralelo';
+      case 'binance': return 'Binance';
+      case 'custom': return locale === 'es' ? 'Pers.' : 'Cust.';
+      default: return market.toUpperCase();
+    }
+  };
+
   const toggleDirection = () => {
     setIsUsdToVes(!isUsdToVes);
   };
 
   return (
     <div className="max-w-4xl mx-auto px-6">
+      {/* Interactive Mobile Result Bubble */}
+      {isInputFocused && (
+        <div className="lg:hidden fixed top-24 left-1/2 -translate-x-1/2 z-[45] bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none">
+          <span className="text-xs font-bold text-[var(--text-secondary)]/90 uppercase tracking-wider">
+            {getShortMarketName(selectedMarket)}:
+          </span>
+          <span className="text-base font-black text-[var(--text-primary)]">
+            {isUsdToVes ? 'Bs.' : '$'}
+          </span>
+          <span className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
+            {calculateConversion()}
+          </span>
+        </div>
+      )}
       {/* Header */}
       <div className="text-center mb-12 flex flex-col items-center justify-center">
         <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative" id="radar-title-section">
           <span>{locale === 'es' ? 'Radar de Cotizaciones' : 'Rates Radar'}</span>
-          <div className="relative inline-block">
+          <div className="inline-block">
             <button
               type="button"
-              onMouseEnter={() => setShowTechInfo(true)}
-              onMouseLeave={() => setShowTechInfo(false)}
-              onClick={() => setShowTechInfo(!showTechInfo)}
+              onClick={() => setShowTechInfo(true)}
               className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
               aria-label="Info"
             >
@@ -330,35 +356,52 @@ export default function RadarCalculator() {
             </button>
             
             {showTechInfo && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
-                <h4 className="font-extrabold text-xs uppercase tracking-wider text-[#10B981] mb-3 border-b border-glass-border pb-2">
-                  {locale === 'es' ? 'Arquitectura de Radar' : 'Radar Architecture'}
-                </h4>
-                
-                <div className="space-y-3">
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Tecnología:' : 'Technology:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Integración directa con Cotizave API mediante llamadas HTTPS seguras.' 
-                        : 'Direct secure integration with Cotizave API using HTTPS requests.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Optimización:' : 'Optimization:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Caché local (localStorage) de 10 minutos para ahorrar cuota y acelerar la carga de la página.' 
-                        : '10-minute local cache (localStorage) to save API quota and accelerate page speed.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Sanitización estricta de inputs numéricos en cliente, previniendo inyección de scripts.' 
-                        : 'Strict client-side numerical input sanitization preventing script injection.'}
-                    </p>
+              <div 
+                className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]"
+                onClick={() => setShowTechInfo(false)}
+              >
+                <div 
+                  className="bg-[var(--bg-secondary)] border border-glass-border rounded-2xl shadow-2xl w-full max-w-sm p-6 relative text-left text-xs leading-relaxed font-normal animate-[zoomIn_0.2s_ease-out]"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button 
+                    type="button"
+                    onClick={() => setShowTechInfo(false)}
+                    className="absolute top-4 right-4 text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+                    aria-label="Close details"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+
+                  <h4 className="font-extrabold text-sm uppercase tracking-wider text-purple-400 mb-4 border-b border-glass-border pb-2">
+                    {locale === 'es' ? 'Arquitectura de Radar' : 'Radar Architecture'}
+                  </h4>
+                  
+                  <div className="space-y-4 text-sm">
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Tecnología:' : 'Technology:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-1">
+                        {locale === 'es' 
+                          ? 'Integración directa con Cotizave API mediante llamadas HTTPS seguras.' 
+                          : 'Direct secure integration with Cotizave API using HTTPS requests.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Optimización:' : 'Optimization:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-1">
+                        {locale === 'es' 
+                          ? 'Caché local (localStorage) de 10 minutos para ahorrar cuota y acelerar la carga de la página.' 
+                          : '10-minute local cache (localStorage) to save API quota and accelerate page speed.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-1">
+                        {locale === 'es' 
+                          ? 'Sanitización estricta de inputs numéricos en cliente, previniendo inyección de scripts.' 
+                          : 'Strict client-side numerical input sanitization preventing script injection.'}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -367,15 +410,15 @@ export default function RadarCalculator() {
         </h1>
 
         <div className="mb-6 flex justify-center">
-          <button
-            type="button"
+          <RainbowButton
+            variant="default"
             onClick={startTutorial}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-black bg-gradient-to-r from-[var(--accent-primary)] to-teal-400 hover:from-[var(--accent-primary)]/90 hover:to-teal-400/90 active:scale-95 transition-all cursor-pointer shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] shrink-0 border-0"
+            className="rounded-full px-6 py-4 text-xs md:text-sm hover:scale-105 active:scale-95 transition-transform duration-300 font-semibold cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.15)] flex items-center gap-1.5 shrink-0"
             title={locale === 'es' ? '¿Cómo usar esta herramienta? - Tutorial interactivo' : 'How to use this tool? - Interactive tour'}
           >
-            <HelpCircle className="w-4 h-4 text-black" />
+            <HelpCircle className="w-4 h-4 text-[var(--accent-primary)] animate-pulse" />
             <span>{locale === 'es' ? '¿Cómo usar?' : 'How to use?'}</span>
-          </button>
+          </RainbowButton>
         </div>
 
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
@@ -394,24 +437,24 @@ export default function RadarCalculator() {
             <div className="lg:hidden flex justify-center mb-6 w-full animate-[fadeIn_0.3s_ease-out]" id="radar-mobile-pill">
               <div className="bg-[var(--glass-bg)] border border-glass-border backdrop-blur-xl p-4 rounded-2xl w-full max-w-sm shadow-xl grid grid-cols-2 gap-3 text-xs font-bold text-[var(--text-secondary)]">
                 {/* BCV Dólar */}
-                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-white/[0.02] border border-glass-border">
-                  <span className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider mb-1">BCV Dólar</span>
-                  <span className="text-white text-base font-black tracking-tight">{getMarketRateValue('reference').toFixed(2)} Bs.</span>
+                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-[var(--accent-primary)]/5 border border-[var(--accent-primary)]/20 shadow-[0_0_10px_rgba(0,242,254,0.05)]">
+                  <span className="text-[9px] text-[var(--accent-primary)] uppercase tracking-wider mb-1">BCV Dólar</span>
+                  <span className="text-[var(--accent-primary)] text-lg font-black tracking-tight">{getMarketRateValue('reference').toFixed(2)} Bs.</span>
                 </div>
                 {/* BCV Euro */}
-                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-white/[0.02] border border-glass-border">
-                  <span className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider mb-1">BCV Euro</span>
-                  <span className="text-amber-400 text-base font-black tracking-tight">{getMarketRateValue('eur_reference').toFixed(2)} Bs.</span>
-                </div>
-                {/* Paralelo */}
-                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-[var(--accent-primary)]/5 border border-[var(--accent-primary)]/20 shadow-[0_0_10px_rgba(0,242,254,0.05)]">
-                  <span className="text-[9px] text-[var(--accent-primary)] uppercase tracking-wider mb-1">Paralelo</span>
-                  <span className="text-[var(--accent-primary)] text-lg font-black tracking-tight">{getMarketRateValue('parallel').toFixed(2)} Bs.</span>
+                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-purple-500/5 border border-purple-500/20 shadow-[0_0_10px_rgba(124,58,237,0.05)]">
+                  <span className="text-[9px] text-purple-400 uppercase tracking-wider mb-1">BCV Euro</span>
+                  <span className="text-purple-400 text-lg font-black tracking-tight">{getMarketRateValue('eur_reference').toFixed(2)} Bs.</span>
                 </div>
                 {/* Binance P2P */}
                 <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.05)]">
                   <span className="text-[9px] text-emerald-400 uppercase tracking-wider mb-1">Binance P2P</span>
                   <span className="text-emerald-400 text-lg font-black tracking-tight">{getMarketRateValue('binance').toFixed(2)} Bs.</span>
+                </div>
+                {/* Paralelo */}
+                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-white/[0.02] border border-glass-border">
+                  <span className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider mb-1">Paralelo</span>
+                  <span className="text-[var(--text-primary)] text-lg font-black tracking-tight">{getMarketRateValue('parallel').toFixed(2)} Bs.</span>
                 </div>
               </div>
             </div>
@@ -432,6 +475,52 @@ export default function RadarCalculator() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
                   {locale === 'es' ? 'En Vivo' : 'Live'}
                 </div>
+              </div>
+
+              {/* Amount Input */}
+              <div className="mb-4">
+                <label className="flex items-center justify-between text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase mb-2">
+                  <span>{locale === 'es' ? 'Monto a Convertir' : 'Amount to Convert'}</span>
+                  <span className="text-[8px] sm:text-[10px] whitespace-nowrap font-extrabold text-[#10B981] bg-[#10B981]/15 px-2.5 py-0.5 rounded-full border border-[#10B981]/25 animate-pulse">
+                    {locale === 'es' ? 'Ingresa el monto aquí' : 'Enter amount here'}
+                  </span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="radar-input-amount"
+                    type="text"
+                    value={amount}
+                    onChange={(e) => handleAmountChange(e.target.value)}
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setTimeout(() => setIsInputFocused(false), 200)}
+                    placeholder="100"
+                    className="w-full h-14 pl-12 pr-16 bg-[var(--bg-secondary)]/85 border-2 border-[#10B981] shadow-[0_0_20px_rgba(16,185,129,0.2)] rounded-xl text-lg font-bold text-[var(--text-primary)] focus:outline-none focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 transition-all duration-300"
+                  />
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center text-[var(--text-secondary)]/80 font-bold text-sm">
+                    {isUsdToVes ? <DollarSign className="w-5 h-5" /> : <span className="text-xs">Bs.</span>}
+                  </div>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]/50 text-xs font-bold font-mono">
+                    {isUsdToVes ? 'USD' : 'VES'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Shortcut buttons */}
+              <div className="grid grid-cols-5 gap-1.5 mb-6 w-full">
+                {['1', '10', '50', '100', '500'].map((val) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setAmount(val)}
+                    className={`py-2 px-1 rounded-lg border text-[10px] sm:text-xs font-bold transition-all text-center truncate hover:-translate-y-0.5 cursor-pointer w-full min-w-0 ${
+                      amount === val
+                        ? 'bg-[#10B981] text-black border-[#10B981] shadow-md shadow-[#10B981]/20'
+                        : 'bg-white/5 text-[var(--text-primary)] border-glass-border hover:bg-white/10 hover:border-white/10'
+                    }`}
+                  >
+                    {isUsdToVes ? `$${val}` : `${val} Bs.`}
+                  </button>
+                ))}
               </div>
 
               {/* Conversion Direction Selector */}
@@ -464,71 +553,12 @@ export default function RadarCalculator() {
                 </div>
               </div>
 
-              {/* Amount Input */}
-              <div className="mb-4">
-                <label className="flex items-center justify-between text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase mb-2">
-                  <span>{locale === 'es' ? 'Monto a Convertir' : 'Amount to Convert'}</span>
-                  <span className="text-[8px] sm:text-[10px] whitespace-nowrap font-extrabold text-[#10B981] bg-[#10B981]/15 px-2.5 py-0.5 rounded-full border border-[#10B981]/25 animate-pulse">
-                    {locale === 'es' ? 'Ingresa el monto aquí' : 'Enter amount here'}
-                  </span>
-                </label>
-                <div className="relative">
-                  <input
-                    id="radar-input-amount"
-                    type="text"
-                    value={amount}
-                    onChange={(e) => handleAmountChange(e.target.value)}
-                    placeholder="100"
-                    className="w-full h-14 pl-12 pr-16 bg-[var(--bg-secondary)]/85 border-2 border-[#10B981] shadow-[0_0_20px_rgba(16,185,129,0.2)] rounded-xl text-lg font-bold text-[var(--text-primary)] focus:outline-none focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 transition-all duration-300"
-                  />
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center text-[var(--text-secondary)]/80 font-bold text-sm">
-                    {isUsdToVes ? <DollarSign className="w-5 h-5" /> : <span className="text-xs">Bs.</span>}
-                  </div>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]/50 text-xs font-bold font-mono">
-                    {isUsdToVes ? 'USD' : 'VES'}
-                  </div>
-                </div>
-              </div>
-
-              {/* Shortcut buttons */}
-              <div className="flex gap-2 mb-6 flex-wrap">
-                {['1', '10', '50', '100', '500'].map((val) => (
-                  <button
-                    key={val}
-                    type="button"
-                    onClick={() => setAmount(val)}
-                    className={`px-3 py-1.5 rounded-lg border text-xs font-bold transition-all hover:-translate-y-0.5 cursor-pointer ${
-                      amount === val
-                        ? 'bg-[#10B981] text-black border-[#10B981] shadow-md shadow-[#10B981]/20'
-                        : 'bg-white/5 text-[var(--text-primary)] border-glass-border hover:bg-white/10 hover:border-white/10'
-                    }`}
-                  >
-                    {isUsdToVes ? `$${val}` : `${val} Bs.`}
-                  </button>
-                ))}
-              </div>
-
               {/* Active Rate Selector */}
               <div id="radar-rate-selector" className="mb-6">
                 <label className="block text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase mb-2">
                   {locale === 'es' ? 'Tasa de Referencia Activa' : 'Active Exchange Rate'}
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMarket('parallel')}
-                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer ${
-                      selectedMarket === 'parallel'
-                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)]'
-                        : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
-                    }`}
-                  >
-                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Paralelo</span>
-                    <span className="text-sm font-extrabold mt-1 text-[var(--text-primary)]">
-                      {getMarketRateValue('parallel') > 0 ? `${getMarketRateValue('parallel').toFixed(2)} Bs.` : '---'}
-                    </span>
-                  </button>
-
                   <button
                     type="button"
                     onClick={() => setSelectedMarket('reference')}
@@ -554,7 +584,7 @@ export default function RadarCalculator() {
                     }`}
                   >
                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">BCV (Euro)</span>
-                    <span className="text-sm font-extrabold mt-1 text-[var(--text-primary)]">
+                    <span className="text-sm font-extrabold mt-1 text-purple-400">
                       {getMarketRateValue('eur_reference') > 0 ? `${getMarketRateValue('eur_reference').toFixed(2)} Bs.` : '---'}
                     </span>
                   </button>
@@ -569,8 +599,23 @@ export default function RadarCalculator() {
                     }`}
                   >
                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Binance P2P</span>
-                    <span className="text-sm font-extrabold mt-1 text-[var(--text-primary)]">
+                    <span className="text-sm font-extrabold mt-1 text-emerald-400">
                       {getMarketRateValue('binance') > 0 ? `${getMarketRateValue('binance').toFixed(2)} Bs.` : '---'}
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedMarket('parallel')}
+                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer ${
+                      selectedMarket === 'parallel'
+                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)]'
+                        : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
+                    }`}
+                  >
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Paralelo</span>
+                    <span className="text-sm font-extrabold mt-1 text-[var(--accent-primary)]">
+                      {getMarketRateValue('parallel') > 0 ? `${getMarketRateValue('parallel').toFixed(2)} Bs.` : '---'}
                     </span>
                   </button>
 
@@ -696,75 +741,81 @@ export default function RadarCalculator() {
             ) : ratesData ? (
               <div className="space-y-3 flex-1">
                 {/* BCV */}
-                {ratesData.rates.filter(r => ['reference', 'eur_reference', 'parallel', 'binance', 'bybit', 'okx'].includes(r.market)).map((rate) => {
-                  const isSelected = selectedMarket === rate.market;
-                  return (
-                    <div
-                      key={rate.market}
-                      onClick={() => setSelectedMarket(rate.market)}
-                      className={`p-3 rounded-xl border flex items-center justify-between gap-3 cursor-pointer transition-all duration-200 ${
-                        isSelected
-                          ? 'border-[#10B981]/50 bg-[#10B981]/5 shadow-[0_0_15px_rgba(16,185,129,0.05)]'
-                          : 'border-glass-border bg-white/[0.01] hover:border-white/10 hover:bg-white/[0.03]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                          rate.market === 'reference' 
-                            ? 'bg-blue-500/10 text-blue-400' 
-                            : rate.market === 'parallel' 
-                            ? 'bg-purple-500/10 text-purple-400' 
-                            : 'bg-amber-500/10 text-amber-400'
-                        }`}>
-                          {rate.market === 'reference' ? (
-                            <Building2 className="w-4 h-4" />
-                          ) : (
-                            <Coins className="w-4 h-4" />
-                          )}
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-xs font-extrabold text-[var(--text-primary)] truncate">
-                              {formatMarketName(rate.market)}
-                            </span>
-                            {rate.market === 'parallel' && (
-                              <div className="relative group/tooltip inline-flex items-center">
-                                <Info className="w-3.5 h-3.5 text-[var(--text-secondary)]/50 hover:text-[#10B981] transition-colors cursor-help" />
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-60 p-3 bg-[var(--bg-secondary)]/95 backdrop-blur-md border border-glass-border rounded-xl shadow-2xl text-[10px] text-[var(--text-secondary)] leading-relaxed opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-50 whitespace-normal font-normal">
-                                  {locale === 'es' 
-                                    ? 'El dólar paralelo venezolano no es un orderbook. Es un promedio de fuentes públicas que se ajustan varias veces al día, no cada minuto. 25 min captura los movimientos reales sin añadir ruido.'
-                                    : 'The Venezuelan parallel dollar is not an orderbook. It is an average of public sources adjusted a few times a day, not every minute. 25 min captures real movements without adding noise.'}
-                                </div>
+                {(() => {
+                  const orderedMarkets = ['reference', 'eur_reference', 'binance', 'parallel', 'bybit', 'okx', 'bitget', 'mexc', 'bingx', 'saldo'];
+                  return ratesData.rates
+                    .filter(r => orderedMarkets.includes(r.market))
+                    .sort((a, b) => orderedMarkets.indexOf(a.market) - orderedMarkets.indexOf(b.market))
+                    .map((rate) => {
+                      const isSelected = selectedMarket === rate.market;
+                      return (
+                        <div
+                          key={rate.market}
+                          onClick={() => setSelectedMarket(rate.market)}
+                          className={`p-3 rounded-xl border flex items-center justify-between gap-3 cursor-pointer transition-all duration-200 ${
+                            isSelected
+                              ? 'border-[#10B981]/50 bg-[#10B981]/5 shadow-[0_0_15px_rgba(16,185,129,0.05)]'
+                              : 'border-glass-border bg-white/[0.01] hover:border-white/10 hover:bg-white/[0.03]'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                              rate.market === 'reference' 
+                                ? 'bg-[var(--accent-primary)]/15 text-[var(--accent-primary)] border border-[var(--accent-primary)]/20' 
+                                : rate.market === 'parallel' 
+                                ? 'bg-blue-500/10 text-blue-400' 
+                                : 'bg-purple-500/10 text-purple-400'
+                            }`}>
+                              {rate.market === 'reference' ? (
+                                <Building2 className="w-4 h-4" />
+                              ) : (
+                                <Coins className="w-4 h-4" />
+                              )}
+                            </div>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-xs font-extrabold text-[var(--text-primary)] truncate">
+                                  {formatMarketName(rate.market)}
+                                </span>
+                                {rate.market === 'parallel' && (
+                                  <div className="relative group/tooltip inline-flex items-center">
+                                    <Info className="w-3.5 h-3.5 text-[var(--text-secondary)]/50 hover:text-[#10B981] transition-colors cursor-help" />
+                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-60 p-3 bg-[var(--bg-secondary)]/95 backdrop-blur-md border border-glass-border rounded-xl shadow-2xl text-[10px] text-[var(--text-secondary)] leading-relaxed opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-50 whitespace-normal font-normal">
+                                      {locale === 'es' 
+                                        ? 'El dólar paralelo venezolano no es un orderbook. Es un promedio de fuentes públicas que se ajustan varias veces al día, no cada minuto. 25 min captura los movimientos reales sin añadir ruido.'
+                                        : 'The Venezuelan parallel dollar is not an orderbook. It is an average of public sources adjusted a few times a day, not every minute. 25 min captures real movements without adding noise.'}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                              <p className="text-[9px] text-[var(--text-secondary)] font-mono flex items-center gap-1 mt-0.5">
+                                <Calendar className="w-2.5 h-2.5" />
+                                <span>{getRateUpdatedAt(rate.market)}</span>
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="text-right shrink-0 flex items-center gap-2">
+                            <div>
+                              <p className="text-xs font-black text-[var(--text-primary)]">
+                                {rate.mid.toFixed(2)} Bs.
+                              </p>
+                              {rate.ask && rate.bid && (
+                                <p className="text-[8px] text-[var(--text-secondary)] font-mono">
+                                  B: {rate.bid.toFixed(1)} / A: {rate.ask.toFixed(1)}
+                                </p>
+                              )}
+                            </div>
+                            {isSelected && (
+                              <div className="w-4 h-4 rounded-full bg-[#10B981] flex items-center justify-center text-black shadow-sm">
+                                <Check className="w-2.5 h-2.5 stroke-[4px]" />
                               </div>
                             )}
                           </div>
-                          <p className="text-[9px] text-[var(--text-secondary)] font-mono flex items-center gap-1 mt-0.5">
-                            <Calendar className="w-2.5 h-2.5" />
-                            <span>{getRateUpdatedAt(rate.market)}</span>
-                          </p>
                         </div>
-                      </div>
-
-                      <div className="text-right shrink-0 flex items-center gap-2">
-                        <div>
-                          <p className="text-xs font-black text-[var(--text-primary)]">
-                            {rate.mid.toFixed(2)} Bs.
-                          </p>
-                          {rate.ask && rate.bid && (
-                            <p className="text-[8px] text-[var(--text-secondary)] font-mono">
-                              B: {rate.bid.toFixed(1)} / A: {rate.ask.toFixed(1)}
-                            </p>
-                          )}
-                        </div>
-                        {isSelected && (
-                          <div className="w-4 h-4 rounded-full bg-[#10B981] flex items-center justify-center text-black shadow-sm">
-                            <Check className="w-2.5 h-2.5 stroke-[4px]" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                      );
+                    });
+                })()}
               </div>
             ) : null}
 
@@ -814,38 +865,42 @@ export default function RadarCalculator() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-glass-border">
-                  {ratesData.rates
-                    .filter(r => ['reference', 'eur_reference', 'parallel', 'binance', 'bybit'].includes(r.market))
-                    .map((rate) => {
-                      const bcvRate = getMarketRateValue('reference');
-                      const diffPct = bcvRate > 0 ? ((rate.mid - bcvRate) / bcvRate) * 100 : 0;
-                      
-                      return (
-                        <tr
-                          key={rate.market}
-                          className="hover:bg-white/[0.01] transition-colors"
-                        >
-                          <td className="p-4 text-xs font-bold text-[var(--text-primary)]">
-                            {formatMarketName(rate.market)}
-                          </td>
-                          <td className="p-4 text-xs font-mono text-[var(--text-primary)] text-right">
-                            {rate.mid.toFixed(4)} Bs.
-                          </td>
-                          <td className="p-4 text-xs font-bold text-[var(--text-primary)] text-right font-mono">
-                            {isUsdToVes ? 'Bs.' : '$'} {calculateConversion(rate.mid)}
-                          </td>
-                          <td className="p-4 text-xs font-semibold text-center font-mono">
-                            {(rate.market === 'reference' || rate.market === 'eur_reference') ? (
-                              <span className="text-[var(--text-secondary)]/40">-</span>
-                            ) : diffPct >= 0 ? (
-                              <span className="text-emerald-400">+{diffPct.toFixed(2)}%</span>
-                            ) : (
-                              <span className="text-rose-400">{diffPct.toFixed(2)}%</span>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                  {(() => {
+                    const orderedMarkets = ['reference', 'eur_reference', 'binance', 'parallel', 'bybit'];
+                    return ratesData.rates
+                      .filter(r => orderedMarkets.includes(r.market))
+                      .sort((a, b) => orderedMarkets.indexOf(a.market) - orderedMarkets.indexOf(b.market))
+                      .map((rate) => {
+                        const bcvRate = getMarketRateValue('reference');
+                        const diffPct = bcvRate > 0 ? ((rate.mid - bcvRate) / bcvRate) * 100 : 0;
+                        
+                        return (
+                          <tr
+                            key={rate.market}
+                            className="hover:bg-white/[0.01] transition-colors"
+                          >
+                            <td className="p-4 text-xs font-bold text-[var(--text-primary)]">
+                              {formatMarketName(rate.market)}
+                            </td>
+                            <td className="p-4 text-xs font-mono text-[var(--text-primary)] text-right">
+                              {rate.mid.toFixed(4)} Bs.
+                            </td>
+                            <td className="p-4 text-xs font-bold text-[var(--text-primary)] text-right font-mono">
+                              {isUsdToVes ? 'Bs.' : '$'} {calculateConversion(rate.mid)}
+                            </td>
+                            <td className="p-4 text-xs font-semibold text-center font-mono">
+                              {(rate.market === 'reference' || rate.market === 'eur_reference') ? (
+                                <span className="text-[var(--text-secondary)]/40">-</span>
+                              ) : diffPct >= 0 ? (
+                                <span className="text-emerald-400">+{diffPct.toFixed(2)}%</span>
+                              ) : (
+                                <span className="text-rose-400">{diffPct.toFixed(2)}%</span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      });
+                  })()}
                 </tbody>
               </table>
             </div>
