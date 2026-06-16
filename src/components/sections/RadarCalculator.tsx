@@ -399,11 +399,11 @@ export default function RadarCalculator() {
       {/* Interactive Mobile Result Bubble */}
       {isBubbleVisible && (
         <div 
-          className="lg:hidden fixed z-[100] bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none"
+          className="lg:hidden fixed z-40 bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none"
           style={{ 
             top: typeof window !== 'undefined' && window.visualViewport 
-              ? `${viewport.offsetTop + (isInputFocused ? 12 : 96)}px` 
-              : (isInputFocused ? '12px' : '96px'),
+              ? `${viewport.offsetTop + (viewport.offsetTop > 10 ? 12 : 96)}px` 
+              : '96px',
             left: typeof window !== 'undefined' && window.visualViewport && viewport.width > 0
               ? `${viewport.width / 2 + viewport.offsetLeft}px` 
               : '50%',
@@ -804,7 +804,7 @@ export default function RadarCalculator() {
         </div>
 
         {/* Right Panel: Ticker / Rates List */}
-        <div className="lg:col-span-5 flex flex-col space-y-6">
+        <div className="lg:col-span-5 flex flex-col gap-6">
           
           {/* Connection Status & Manual Refresh */}
           <div className="p-4 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl flex items-center justify-between gap-4 shadow-md">
@@ -842,7 +842,7 @@ export default function RadarCalculator() {
           </div>
 
           {/* Rates Ticker List */}
-          <div id="radar-desktop-list" className="p-5 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl lg:flex-1 flex flex-col shadow-lg mt-6 lg:mt-0">
+          <div id="radar-desktop-list" className="p-5 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl lg:flex-1 flex flex-col shadow-lg">
             <h3 className="text-xs font-extrabold tracking-wider text-[var(--text-secondary)] uppercase mb-4 flex items-center gap-2 pb-3 border-b border-glass-border">
               <Activity className="w-4 h-4 text-[#10B981]" />
               <span>{locale === 'es' ? 'Tasas de Cambio Oficiales y P2P' : 'Official & P2P Rates'}</span>
