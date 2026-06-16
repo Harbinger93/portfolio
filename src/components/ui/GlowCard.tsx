@@ -1,4 +1,5 @@
 import { useRef, type MouseEvent, type ReactNode } from 'react';
+import { cn } from '../../lib/utils';
 
 export default function GlowCard({ children, className = '' }: { children: ReactNode; className?: string }) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -15,7 +16,10 @@ export default function GlowCard({ children, className = '' }: { children: React
   return (
     <div
       ref={cardRef}
-      className={`group relative flex h-full rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] hover:border-[var(--glass-border)] overflow-hidden ${className}`}
+      className={cn(
+        "group relative flex h-full rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] hover:border-[var(--glass-border)] overflow-hidden",
+        className
+      )}
       onMouseMove={handleMouseMove}
     >
       <div
@@ -28,7 +32,7 @@ export default function GlowCard({ children, className = '' }: { children: React
           )`,
         }}
       />
-      <div className="relative z-10 p-6 h-full w-full">
+      <div className="relative z-10 p-4 md:p-6 h-full w-full">
         {children}
       </div>
     </div>

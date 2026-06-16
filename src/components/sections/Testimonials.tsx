@@ -2,6 +2,7 @@ import ScrollReveal from '../ui/ScrollReveal';
 import { Quote, Star } from 'lucide-react';
 import karenImage from '../../img/Testimonios/karen.webp';
 import saulImage from '../../img/Testimonios/saul.webp';
+import cynthiaImage from '../../img/Testimonios/cynthia.png';
 
 const testimonials = [
   {
@@ -22,11 +23,11 @@ const testimonials = [
   },
   {
     id: 3,
-    name: "Miguel Torres",
-    role: "Fundador de E-Commerce",
-    content: "Llevábamos meses estancados con otra agencia. Gabriel tomó el proyecto, optimizó la arquitectura y en pocas semanas teníamos un ecosistema digital robusto y escalable.",
+    name: "Cynthia Tafur",
+    role: "Comunicaciones y Mercadeo",
+    content: "Excelentes capacidades técnicas, especialmente en el desarrollo web. Tiene además gran facilidad para trabajar en equipo y aportar soluciones efectivas para cada reto que se presenta en las actividades diarias a modo de optimizar los procesos.",
     rating: 5,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop"
+    image: cynthiaImage
   }
 ];
 

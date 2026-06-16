@@ -540,7 +540,7 @@ export default function RadarCalculator() {
             </div>
           )}
           
-          <GlowCard className="border border-glass-border h-full flex flex-col justify-between">
+          <GlowCard className="border border-glass-border h-auto lg:h-full flex flex-col justify-between">
             <div>
               {/* Card Title Header */}
               <div className="flex justify-between items-center mb-6 pb-4 border-b border-glass-border">
@@ -776,7 +776,7 @@ export default function RadarCalculator() {
             </div>
 
             {/* Conversion Result Block */}
-            <div id="radar-result" className="p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 mt-4">
+            <div id="radar-result" className="p-4 md:p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 mt-4">
               <div className="text-center">
                 <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                   {locale === 'es' ? 'Resultado de Conversión' : 'Conversion Result'}
@@ -867,7 +867,7 @@ export default function RadarCalculator() {
               <div className="space-y-3 flex-1">
                 {/* BCV */}
                 {(() => {
-                  const orderedMarkets = ['reference', 'eur_reference', 'binance', 'parallel', 'bybit', 'okx', 'bitget', 'mexc', 'bingx', 'saldo'];
+                  const orderedMarkets = ['reference', 'eur_reference', 'binance', 'parallel', 'bybit', 'okx', 'bitget', 'mexc'];
                   return ratesData.rates
                     .filter(r => orderedMarkets.includes(r.market))
                     .sort((a, b) => orderedMarkets.indexOf(a.market) - orderedMarkets.indexOf(b.market))
