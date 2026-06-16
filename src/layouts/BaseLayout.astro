@@ -82,15 +82,15 @@ import { ViewTransitions } from 'astro:transitions';
   </head>
   <body class="antialiased">
     <GlowBackground transition:persist />
-    <LenisProvider client:only="react" transition:persist />
+    <LenisProvider client:only="react" />
     <Navbar client:load transition:persist />
     <main>
       <slot />
     </main>
-    <Footer client:visible transition:persist />
-    <ProtectionLayer client:idle transition:persist />
-    <ScrollToTop client:idle transition:persist />
-    <WhatsAppBubble client:idle transition:persist />
-    <ToolsLaunchpad client:idle transition:persist />
+    <Footer client:visible />
+    <ProtectionLayer client:idle />
+    <ScrollToTop client:idle />
+    <WhatsAppBubble client:idle />
+    <ToolsLaunchpad client:idle />
   </body>
 </html>

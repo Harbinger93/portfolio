@@ -60,6 +60,7 @@ export default function RadarCalculator() {
   const [showTechInfo, setShowTechInfo] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
+  const [visualViewportOffset, setVisualViewportOffset] = useState<number>(0);
   const isFirstRender = useRef(true);
 
   const startTutorial = () => {
@@ -140,6 +141,29 @@ export default function RadarCalculator() {
       return () => clearTimeout(timer);
     }
   }, [cooldown]);
+
+  // Track visualViewport top offset for mobile floating result bubble
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const vv = window.visualViewport;
+    if (!vv) return;
+
+    const handleViewportChange = () => {
+      setVisualViewportOffset(vv.offsetTop);
+    };
+
+    vv.addEventListener('resize', handleViewportChange);
+    vv.addEventListener('scroll', handleViewportChange);
+    
+    // Set initial
+    handleViewportChange();
+
+    return () => {
+      vv.removeEventListener('resize', handleViewportChange);
+      vv.removeEventListener('scroll', handleViewportChange);
+    };
+  }, []);
 
   // Interactive bubble auto-fade trigger on mobile
   useEffect(() => {
@@ -370,7 +394,14 @@ export default function RadarCalculator() {
     <div className="max-w-4xl mx-auto px-6">
       {/* Interactive Mobile Result Bubble */}
       {isBubbleVisible && (
-        <div className="lg:hidden fixed top-24 left-1/2 z-[45] bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none">
+        <div 
+          className="lg:hidden fixed left-1/2 -translate-x-1/2 z-[100] bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none"
+          style={{ 
+            top: typeof window !== 'undefined' && window.visualViewport 
+              ? `${visualViewportOffset + (isInputFocused ? 12 : 96)}px` 
+              : (isInputFocused ? '12px' : '96px')
+          }}
+        >
           <span className="text-xs font-bold text-[var(--text-secondary)]/90 uppercase tracking-wider">
             {getShortMarketName(selectedMarket)}:
           </span>

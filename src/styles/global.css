@@ -93,7 +93,6 @@ html.light {
 }
 
 html {
-  scroll-behavior: smooth;
   overflow-x: clip;
 }
 
@@ -125,6 +124,12 @@ body {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   overflow-x: clip;
   transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Disable body theme transition during page swap to prevent background flicker */
+html[data-astro-transition] body,
+html[data-astro-transition] main {
+  transition: none !important;
 }
 
 .text-gradient {
