@@ -14,7 +14,8 @@ import {
   Activity,
   Check,
   HelpCircle,
-  X
+  X,
+  Clipboard
 } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
 import { driver } from 'driver.js';
@@ -254,6 +255,25 @@ export default function RadarCalculator() {
     }
 
     setAmount(sanitized);
+  };
+
+  const handlePaste = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          handleAmountChange(text);
+        }
+      } else {
+        alert(
+          locale === 'es'
+            ? 'Tu navegador no permite acceder al portapapeles automáticamente. Por favor, pega el monto manualmente.'
+            : 'Your browser does not allow clipboard access. Please paste the amount manually.'
+        );
+      }
+    } catch (err) {
+      console.error('Failed to read clipboard:', err);
+    }
   };
 
   const handleCustomRateChange = (val: string) => {
@@ -516,11 +536,19 @@ export default function RadarCalculator() {
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setTimeout(() => setIsInputFocused(false), 200)}
                     placeholder="100"
-                    className="w-full h-14 pl-12 pr-16 bg-[var(--bg-secondary)]/85 border-2 border-[#10B981] shadow-[0_0_20px_rgba(16,185,129,0.2)] rounded-xl text-lg font-bold text-[var(--text-primary)] focus:outline-none focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 transition-all duration-300"
+                    className="w-full h-14 pl-12 pr-24 bg-[var(--bg-secondary)]/85 border-2 border-[#10B981] shadow-[0_0_20px_rgba(16,185,129,0.2)] rounded-xl text-lg font-bold text-[var(--text-primary)] focus:outline-none focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 transition-all duration-300"
                   />
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center text-[var(--text-secondary)]/80 font-bold text-sm">
                     {isUsdToVes ? <DollarSign className="w-5 h-5" /> : <span className="text-xs">Bs.</span>}
                   </div>
+                  <button
+                    type="button"
+                    onClick={handlePaste}
+                    title={locale === 'es' ? 'Pegar desde portapapeles' : 'Paste from clipboard'}
+                    className="absolute right-12 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center text-[var(--text-secondary)]/70 hover:text-[#10B981] hover:bg-white/5 active:scale-95 transition-all cursor-pointer"
+                  >
+                    <Clipboard className="w-4 h-4" />
+                  </button>
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]/50 text-xs font-bold font-mono">
                     {isUsdToVes ? 'USD' : 'VES'}
                   </div>
