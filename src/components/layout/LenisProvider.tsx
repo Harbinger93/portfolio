@@ -35,20 +35,24 @@ export default function LenisProvider({ children }: { children?: ReactNode }) {
             lenis.scrollTo(element, { offset: -80, duration: 1.5, immediate: false });
           }
         }, 100);
-      } else {
-        // Reset scroll position to top on page change
-        lenis.scrollTo(0, { immediate: true });
       }
     };
 
-    // Listen to Astro's client router page-load event
+    const handleAfterSwap = () => {
+      lenis.resize();
+      lenis.scrollTo(0, { immediate: true });
+    };
+
+    // Listen to Astro's client router events
     document.addEventListener('astro:page-load', handlePageLoad);
+    document.addEventListener('astro:after-swap', handleAfterSwap);
 
     // Run once on initial layout mount
     handlePageLoad();
 
     return () => {
       document.removeEventListener('astro:page-load', handlePageLoad);
+      document.removeEventListener('astro:after-swap', handleAfterSwap);
       lenis.destroy();
     };
   }, []);

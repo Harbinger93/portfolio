@@ -68,6 +68,16 @@ import { ViewTransitions } from 'astro:transitions';
 
       applyTheme();
       document.addEventListener("astro:after-swap", applyTheme);
+      
+      // Prevent theme flashing during Astro view transitions
+      document.addEventListener("astro:before-swap", (e) => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light") {
+          e.newDocument.documentElement.classList.add("light");
+        } else {
+          e.newDocument.documentElement.classList.remove("light");
+        }
+      });
     </script>
   </head>
   <body class="antialiased">

@@ -612,73 +612,101 @@ export default function RadarCalculator() {
                   <button
                     type="button"
                     onClick={() => setSelectedMarket('reference')}
-                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer ${
+                    className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'reference'
-                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)]'
+                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)] shadow-[0_0_15px_rgba(16,185,129,0.1)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
-                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">BCV (Dólar)</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 pr-6">BCV (Dólar)</span>
                     <span className="text-sm font-extrabold mt-1 text-[var(--text-primary)]">
                       {getMarketRateValue('reference') > 0 ? `${getMarketRateValue('reference').toFixed(2)} Bs.` : '---'}
                     </span>
+                    <div className={`absolute top-2.5 right-2.5 w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                      selectedMarket === 'reference'
+                        ? 'border-[#10B981] bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.3)]'
+                        : 'border-glass-border bg-white/[0.03]'
+                    }`}>
+                      {selectedMarket === 'reference' && <Check className="w-2.5 h-2.5 text-black stroke-[3.5]" />}
+                    </div>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setSelectedMarket('eur_reference')}
-                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer ${
+                    className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'eur_reference'
-                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)]'
+                        ? 'bg-purple-500/10 border-purple-500 text-[var(--text-primary)] shadow-[0_0_15px_rgba(124,58,237,0.1)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
-                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">BCV (Euro)</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 pr-6">BCV (Euro)</span>
                     <span className="text-sm font-extrabold mt-1 text-purple-400">
                       {getMarketRateValue('eur_reference') > 0 ? `${getMarketRateValue('eur_reference').toFixed(2)} Bs.` : '---'}
                     </span>
+                    <div className={`absolute top-2.5 right-2.5 w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                      selectedMarket === 'eur_reference'
+                        ? 'border-purple-500 bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.3)]'
+                        : 'border-glass-border bg-white/[0.03]'
+                    }`}>
+                      {selectedMarket === 'eur_reference' && <Check className="w-2.5 h-2.5 text-black stroke-[3.5]" />}
+                    </div>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setSelectedMarket('binance')}
-                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer ${
+                    className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'binance'
-                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)]'
+                        ? 'bg-emerald-500/10 border-emerald-500 text-[var(--text-primary)] shadow-[0_0_15px_rgba(16,185,129,0.1)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
-                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Binance P2P</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 pr-6">Binance P2P</span>
                     <span className="text-sm font-extrabold mt-1 text-emerald-400">
                       {getMarketRateValue('binance') > 0 ? `${getMarketRateValue('binance').toFixed(2)} Bs.` : '---'}
                     </span>
+                    <div className={`absolute top-2.5 right-2.5 w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                      selectedMarket === 'binance'
+                        ? 'border-emerald-500 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)]'
+                        : 'border-glass-border bg-white/[0.03]'
+                    }`}>
+                      {selectedMarket === 'binance' && <Check className="w-2.5 h-2.5 text-black stroke-[3.5]" />}
+                    </div>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setSelectedMarket('parallel')}
-                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer ${
+                    className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'parallel'
-                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)]'
+                        ? 'bg-[var(--accent-primary)]/10 border-[var(--accent-primary)] text-[var(--text-primary)] shadow-[0_0_15px_rgba(0,242,254,0.1)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
-                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Paralelo</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 pr-6">Paralelo</span>
                     <span className="text-sm font-extrabold mt-1 text-[var(--accent-primary)]">
                       {getMarketRateValue('parallel') > 0 ? `${getMarketRateValue('parallel').toFixed(2)} Bs.` : '---'}
                     </span>
+                    <div className={`absolute top-2.5 right-2.5 w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                      selectedMarket === 'parallel'
+                        ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)] shadow-[0_0_8px_rgba(0,242,254,0.3)]'
+                        : 'border-glass-border bg-white/[0.03]'
+                    }`}>
+                      {selectedMarket === 'parallel' && <Check className="w-2.5 h-2.5 text-black stroke-[3.5]" />}
+                    </div>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setSelectedMarket('custom')}
-                    className={`p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer col-span-2 sm:col-span-2 ${
+                    className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer col-span-2 sm:col-span-2 hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'custom'
-                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)]'
+                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)] shadow-[0_0_15px_rgba(16,185,129,0.1)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
-                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 pr-6">
                       {locale === 'es' ? 'Tasa Personalizada' : 'Custom Rate'}
                     </span>
                     <div className="flex items-center gap-1 mt-0.5">
@@ -695,6 +723,13 @@ export default function RadarCalculator() {
                         className="bg-transparent border-b border-white/20 text-sm font-extrabold w-16 text-[var(--text-primary)] focus:outline-none focus:border-[#10B981]"
                       />
                       <span className="text-xs">Bs.</span>
+                    </div>
+                    <div className={`absolute top-2.5 right-2.5 w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                      selectedMarket === 'custom'
+                        ? 'border-[#10B981] bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.3)]'
+                        : 'border-glass-border bg-white/[0.03]'
+                    }`}>
+                      {selectedMarket === 'custom' && <Check className="w-2.5 h-2.5 text-black stroke-[3.5]" />}
                     </div>
                   </button>
                 </div>
@@ -730,7 +765,7 @@ export default function RadarCalculator() {
         </div>
 
         {/* Right Panel: Ticker / Rates List */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
+        <div className="lg:col-span-5 flex flex-col space-y-6">
           
           {/* Connection Status & Manual Refresh */}
           <div className="p-4 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl flex items-center justify-between gap-4 shadow-md">
@@ -768,7 +803,7 @@ export default function RadarCalculator() {
           </div>
 
           {/* Rates Ticker List */}
-          <div id="radar-desktop-list" className="p-5 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl lg:flex-1 flex flex-col shadow-lg">
+          <div id="radar-desktop-list" className="p-5 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl lg:flex-1 flex flex-col shadow-lg mt-6 lg:mt-0">
             <h3 className="text-xs font-extrabold tracking-wider text-[var(--text-secondary)] uppercase mb-4 flex items-center gap-2 pb-3 border-b border-glass-border">
               <Activity className="w-4 h-4 text-[#10B981]" />
               <span>{locale === 'es' ? 'Tasas de Cambio Oficiales y P2P' : 'Official & P2P Rates'}</span>

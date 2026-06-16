@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useI18n } from '../../i18n/context';
-import { Gauge, Search, AlertTriangle, ShieldAlert, Cpu, Sparkles, Clock, LayoutGrid, Zap, Clipboard, Mail, Share2, MessageCircle, Info, HelpCircle } from 'lucide-react';
+import { Gauge, Search, AlertTriangle, ShieldAlert, Cpu, Sparkles, Clock, LayoutGrid, Zap, Clipboard, Mail, Share2, MessageCircle, Info, HelpCircle, X } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
+import { RainbowButton } from '../ui/rainbow-button';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 
@@ -403,12 +404,10 @@ export default function WebAnalyzer() {
       <div className="text-center mb-12 flex flex-col items-center justify-center">
         <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative" id="analyzer-title-section">
           <span>{locale === 'es' ? 'Analizador de Velocidad Web' : 'Web Speed Analyzer'}</span>
-          <div className="relative inline-block">
+          <div className="inline-block">
             <button
               type="button"
-              onMouseEnter={() => setShowTechInfo(true)}
-              onMouseLeave={() => setShowTechInfo(false)}
-              onClick={() => setShowTechInfo(!showTechInfo)}
+              onClick={() => setShowTechInfo(true)}
               className="text-[var(--text-secondary)]/50 hover:text-[var(--accent-primary)] transition-colors cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-white/5"
               aria-label="Info"
             >
@@ -416,35 +415,52 @@ export default function WebAnalyzer() {
             </button>
             
             {showTechInfo && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-10 z-50 w-72 md:w-80 p-5 bg-[var(--bg-secondary)]/95 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl text-left text-xs leading-relaxed animate-[fadeIn_0.2s_ease-out_forwards] font-normal">
-                <h4 className="font-extrabold text-xs uppercase tracking-wider text-[var(--accent-primary)] mb-3 border-b border-glass-border pb-2">
-                  {locale === 'es' ? 'Detalles de la Herramienta' : 'Tool Architecture'}
-                </h4>
-                
-                <div className="space-y-3">
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Qué:' : 'The What:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Auditorías de rendimiento y Core Web Vitals en tiempo real utilizando datos de Google Lighthouse.' 
-                        : 'Real-time performance and Core Web Vitals audits using Google Lighthouse data.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Cómo:' : 'The How:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Consume la API oficial de Google PageSpeed de forma asíncrona mediante peticiones HTTPS seguras.' 
-                        : 'Asynchronously queries Google PageSpeed\'s official API via secure HTTPS requests.'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
-                    <p className="text-[var(--text-secondary)] mt-0.5">
-                      {locale === 'es' 
-                        ? 'Input sanitizado que filtra y bloquea caracteres especiales, scripts (XSS) y protocolos maliciosos.' 
-                        : 'Sanitized input filtering out special characters, scripts (XSS), and unsafe protocols.'}
-                    </p>
+              <div 
+                className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]"
+                onClick={() => setShowTechInfo(false)}
+              >
+                <div 
+                  className="bg-[var(--bg-secondary)] border border-glass-border rounded-2xl shadow-2xl w-full max-w-sm p-6 relative text-left text-xs leading-relaxed font-normal animate-[zoomIn_0.2s_ease-out]"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button 
+                    type="button"
+                    onClick={() => setShowTechInfo(false)}
+                    className="absolute top-4 right-4 text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+                    aria-label="Close details"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+
+                  <h4 className="font-extrabold text-sm uppercase tracking-wider text-purple-400 mb-4 border-b border-glass-border pb-2">
+                    {locale === 'es' ? 'Arquitectura del Analizador' : 'Analyzer Architecture'}
+                  </h4>
+                  
+                  <div className="space-y-4 text-sm">
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Qué:' : 'The What:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-1">
+                        {locale === 'es' 
+                          ? 'Auditorías de rendimiento y Core Web Vitals en tiempo real utilizando datos oficiales de Google Lighthouse.' 
+                          : 'Real-time performance and Core Web Vitals audits using Google Lighthouse data.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'El Cómo:' : 'The How:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-1">
+                        {locale === 'es' 
+                          ? 'Consume la API oficial de Google PageSpeed de forma asíncrona mediante peticiones HTTPS seguras.' 
+                          : 'Asynchronously queries Google PageSpeed\'s official API via secure HTTPS requests.'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-[var(--text-primary)]">{locale === 'es' ? 'Seguridad:' : 'Security:'}</span>
+                      <p className="text-[var(--text-secondary)] mt-1">
+                        {locale === 'es' 
+                          ? 'Input sanitizado que filtra y bloquea caracteres especiales, scripts (XSS) y protocolos maliciosos.' 
+                          : 'Sanitized input filtering out special characters, scripts (XSS), and unsafe protocols.'}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -453,15 +469,15 @@ export default function WebAnalyzer() {
         </h1>
 
         <div className="mb-6 flex justify-center">
-          <button
-            type="button"
+          <RainbowButton
+            variant="default"
             onClick={startTutorial}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-black bg-gradient-to-r from-[var(--accent-primary)] to-teal-400 hover:from-[var(--accent-primary)]/90 hover:to-teal-400/90 active:scale-95 transition-all cursor-pointer shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] shrink-0 border-0"
+            className="rounded-full px-6 py-4 text-xs md:text-sm hover:scale-105 active:scale-95 transition-transform duration-300 font-semibold cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.15)] flex items-center gap-1.5 shrink-0"
             title={locale === 'es' ? '¿Cómo usar esta herramienta? - Tutorial interactivo' : 'How to use this tool? - Interactive tour'}
           >
-            <HelpCircle className="w-4 h-4 text-black" />
+            <HelpCircle className="w-4 h-4 text-[var(--accent-primary)] animate-pulse" />
             <span>{locale === 'es' ? '¿Cómo usar?' : 'How to use?'}</span>
-          </button>
+          </RainbowButton>
         </div>
 
         <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
