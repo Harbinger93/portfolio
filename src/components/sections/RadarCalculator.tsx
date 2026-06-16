@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useI18n } from '../../i18n/context';
 import { 
   Radar, 
@@ -58,6 +58,8 @@ export default function RadarCalculator() {
   const [customRate, setCustomRate] = useState<string>('');
   const [showTechInfo, setShowTechInfo] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [isBubbleVisible, setIsBubbleVisible] = useState(false);
+  const isFirstRender = useRef(true);
 
   const startTutorial = () => {
     const driverObj = driver({
@@ -137,6 +139,25 @@ export default function RadarCalculator() {
       return () => clearTimeout(timer);
     }
   }, [cooldown]);
+
+  // Interactive bubble auto-fade trigger on mobile
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      setIsBubbleVisible(true);
+      
+      if (!isInputFocused) {
+        const timer = setTimeout(() => {
+          setIsBubbleVisible(false);
+        }, 3000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [amount, selectedMarket, isUsdToVes, isInputFocused]);
 
   const fetchRates = async (force = false) => {
     setLoading(true);
@@ -328,8 +349,8 @@ export default function RadarCalculator() {
   return (
     <div className="max-w-4xl mx-auto px-6">
       {/* Interactive Mobile Result Bubble */}
-      {isInputFocused && (
-        <div className="lg:hidden fixed top-24 left-1/2 -translate-x-1/2 z-[45] bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none">
+      {isBubbleVisible && (
+        <div className="lg:hidden fixed top-24 left-1/2 z-[45] bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none">
           <span className="text-xs font-bold text-[var(--text-secondary)]/90 uppercase tracking-wider">
             {getShortMarketName(selectedMarket)}:
           </span>
