@@ -510,6 +510,7 @@ export default function RadarCalculator() {
                   <input
                     id="radar-input-amount"
                     type="text"
+                    inputMode="decimal"
                     value={amount}
                     onChange={(e) => handleAmountChange(e.target.value)}
                     onFocus={() => setIsInputFocused(true)}
@@ -655,6 +656,7 @@ export default function RadarCalculator() {
                     <div className="flex items-center gap-1 mt-0.5">
                       <input
                         type="text"
+                        inputMode="decimal"
                         value={customRate}
                         placeholder="0.00"
                         onClick={(e) => {
@@ -738,7 +740,7 @@ export default function RadarCalculator() {
           </div>
 
           {/* Rates Ticker List */}
-          <div id="radar-desktop-list" className="p-5 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl flex-1 flex flex-col shadow-lg">
+          <div id="radar-desktop-list" className="p-5 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl lg:flex-1 flex flex-col shadow-lg">
             <h3 className="text-xs font-extrabold tracking-wider text-[var(--text-secondary)] uppercase mb-4 flex items-center gap-2 pb-3 border-b border-glass-border">
               <Activity className="w-4 h-4 text-[#10B981]" />
               <span>{locale === 'es' ? 'Tasas de Cambio Oficiales y P2P' : 'Official & P2P Rates'}</span>
