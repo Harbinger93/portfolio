@@ -60,7 +60,7 @@ export default function RadarCalculator() {
   const [showTechInfo, setShowTechInfo] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
-  const [visualViewportOffset, setVisualViewportOffset] = useState<number>(0);
+  const [viewport, setViewport] = useState({ offsetLeft: 0, offsetTop: 0, width: 0 });
   const isFirstRender = useRef(true);
 
   const startTutorial = () => {
@@ -142,7 +142,7 @@ export default function RadarCalculator() {
     }
   }, [cooldown]);
 
-  // Track visualViewport top offset for mobile floating result bubble
+  // Track visualViewport dimensions and offset for mobile floating result bubble
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
@@ -150,7 +150,11 @@ export default function RadarCalculator() {
     if (!vv) return;
 
     const handleViewportChange = () => {
-      setVisualViewportOffset(vv.offsetTop);
+      setViewport({
+        offsetLeft: vv.offsetLeft,
+        offsetTop: vv.offsetTop,
+        width: vv.width
+      });
     };
 
     vv.addEventListener('resize', handleViewportChange);
@@ -395,11 +399,15 @@ export default function RadarCalculator() {
       {/* Interactive Mobile Result Bubble */}
       {isBubbleVisible && (
         <div 
-          className="lg:hidden fixed left-1/2 -translate-x-1/2 z-[100] bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none"
+          className="lg:hidden fixed z-[100] bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none"
           style={{ 
             top: typeof window !== 'undefined' && window.visualViewport 
-              ? `${visualViewportOffset + (isInputFocused ? 12 : 96)}px` 
-              : (isInputFocused ? '12px' : '96px')
+              ? `${viewport.offsetTop + (isInputFocused ? 12 : 96)}px` 
+              : (isInputFocused ? '12px' : '96px'),
+            left: typeof window !== 'undefined' && window.visualViewport && viewport.width > 0
+              ? `${viewport.width / 2 + viewport.offsetLeft}px` 
+              : '50%',
+            transform: 'translate(-50%, 0)'
           }}
         >
           <span className="text-xs font-bold text-[var(--text-secondary)]/90 uppercase tracking-wider">
