@@ -81,6 +81,9 @@ export default function Testimonials() {
                   <img 
                     src={getImgSrc(testimonial.image)} 
                     alt={testimonial.name}
+                    width={40}
+                    height={40}
+                    loading="lazy"
                     className="w-10 h-10 rounded-full object-cover border border-[var(--glass-border)]"
                   />
                   <div>
@@ -120,6 +123,9 @@ export default function Testimonials() {
                 <img 
                   src={getImgSrc(testimonial.image)} 
                   alt={testimonial.name}
+                  width={48}
+                  height={48}
+                  loading="lazy"
                   className="w-12 h-12 rounded-full object-cover border-2 border-[var(--bg-primary)] ring-2 ring-[var(--glass-border)] group-hover:ring-[var(--accent-primary)]/50 transition-all"
                 />
                 <div>

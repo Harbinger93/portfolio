@@ -206,6 +206,9 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
                           <img
                             src={activeMedia}
                             alt={t(project.titleKey)}
+                            width={1200}
+                            height={675}
+                            loading="eager"
                             className="w-full min-h-full h-auto object-cover object-top block cursor-zoom-in"
                             onClick={() => setIsZoomOpen(true)}
                           />
@@ -238,6 +241,8 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
                         <img
                           src={img.thumb}
                           alt={`Thumbnail ${i + 1}`}
+                          width={80}
+                          height={45}
                           className="w-full h-full object-cover"
                           loading="lazy"
                           decoding="async"
@@ -417,6 +422,9 @@ export default function ProjectDetail({ id }: ProjectDetailProps) {
               <img
                 src={activeMedia}
                 alt={`Zoomed project view ${activeMediaIndex + 1}`}
+                width={1920}
+                height={1080}
+                loading="lazy"
                 className="w-full h-auto rounded-md"
               />
             )}

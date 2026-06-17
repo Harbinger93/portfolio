@@ -9,6 +9,8 @@ import ScrollToTop from "../components/ui/ScrollToTop";
 import WhatsAppBubble from "../components/ui/WhatsAppBubble";
 import ToolsLaunchpad from "../components/layout/ToolsLaunchpad";
 import { ViewTransitions } from 'astro:transitions';
+
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html' || Astro.url.pathname === '';
 ---
 
 <!doctype html>
@@ -40,21 +42,72 @@ import { ViewTransitions } from 'astro:transitions';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <meta name="theme-color" content="#050505" />
-    <link rel="preload" href="/avatar.webp" as="image" type="image/webp" fetchpriority="high" />
+    {isHome && <link rel="preload" href="/avatar.webp" as="image" type="image/webp" fetchpriority="high" />}
     <link rel="preload" href="/avatar-nav.webp" as="image" type="image/webp" />
     <link rel="preload" href="/fonts/inter-weight-7.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/inter-weight-14.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="/fonts/inter.css" />
+    <style is:inline>
+      /* latin 400 */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(/fonts/inter-weight-7.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      /* latin 700 */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url(/fonts/inter-weight-14.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      /* latin 800 */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 800;
+        font-display: swap;
+        src: url(/fonts/inter-weight-21.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      /* latin 900 */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url(/fonts/inter-weight-28.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    </style>
     <ViewTransitions />
     <title>Gabriel Vazquez | Desarrollador Web front-end</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4KY950MXL"></script>
+    <!-- Google tag (gtag.js) - Deferred loading to prioritize FCP/LCP -->
     <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      const loadGA = () => {
+        if (window.gaLoaded) return;
+        window.gaLoaded = true;
+        
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Y4KY950MXL';
+        document.head.appendChild(script);
 
-      gtag('config', 'G-Y4KY950MXL');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-Y4KY950MXL');
+      };
+
+      if (document.readyState === 'complete') {
+        setTimeout(loadGA, 1000);
+      } else {
+        window.addEventListener('load', () => setTimeout(loadGA, 1000));
+      }
     </script>
     <script is:inline>
       const applyTheme = () => {

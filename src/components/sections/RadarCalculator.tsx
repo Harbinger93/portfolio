@@ -18,7 +18,6 @@ import {
   Clipboard
 } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
-import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import { RainbowButton } from '../ui/rainbow-button';
 
@@ -63,7 +62,8 @@ export default function RadarCalculator() {
   const [viewport, setViewport] = useState({ offsetLeft: 0, offsetTop: 0, width: 0 });
   const isFirstRender = useRef(true);
 
-  const startTutorial = () => {
+  const startTutorial = async () => {
+    const { driver } = await import('driver.js');
     const driverObj = driver({
       showProgress: true,
       nextBtnText: locale === 'es' ? 'Siguiente' : 'Next',
