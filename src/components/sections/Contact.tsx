@@ -57,7 +57,7 @@ export default function Contact() {
         // Ignorar error de parseo si ocurre
       }
 
-      await fetch('https://script.google.com/macros/s/AKfycbxzY-w231HVLeFS4o3YFyl8Wokc0UWwgz7GjZTq2to59U5pHNhmo6RDchwE-IUUNnNMew/exec', {
+      await fetch('https://script.google.com/macros/s/AKfycbwrKgxGDWtPemqy3UXpfdGPXuEG3lXV91evDbB9QKLB7ERqd8aeWoHfHWW_BkYJ3dGe/exec', {
         method: 'POST',
         mode: 'no-cors', // Evita problemas de CORS con Google Scripts
         headers: {

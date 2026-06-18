@@ -191,6 +191,19 @@ html[data-astro-transition] main {
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
+/* ── Animated Progress Bar ─── */
+.progress-bar-animated {
+  background: linear-gradient(90deg, var(--grad-from), var(--grad-to), var(--grad-from));
+  background-size: 200% 100%;
+  animation: progress-shimmer 2.5s linear infinite;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+}
+
+@keyframes progress-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
 /* ── Adaptive form input (works in both dark and light mode) ─── */
 .form-input {
   width: 100%;

@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /onboarding/
+Sitemap: https://gabrielvazquez.dev/sitemap-index.xml

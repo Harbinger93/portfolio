@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import OnboardingForm from '../../components/sections/OnboardingForm';
+
+export function getStaticPaths() {
+  return [
+    { params: { uuid: 'cliente-onboarding' } },
+    { params: { uuid: 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6' } }
+  ];
+}
+
+const { uuid } = Astro.params;
+---
+
+<BaseLayout noindex={true}>
+  <div class="pt-32 pb-24">
+    <OnboardingForm client:load clientUuid={uuid} />
+  </div>
+</BaseLayout>
