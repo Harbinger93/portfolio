@@ -15,7 +15,8 @@ import {
   Check,
   HelpCircle,
   X,
-  Clipboard
+  Clipboard,
+  Copy
 } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
 import 'driver.js/dist/driver.css';
@@ -60,6 +61,7 @@ export default function RadarCalculator() {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const [viewport, setViewport] = useState({ offsetLeft: 0, offsetTop: 0, width: 0 });
+  const [copiedResult, setCopiedResult] = useState(false);
   const isFirstRender = useRef(true);
 
   const startTutorial = async () => {
@@ -301,6 +303,17 @@ export default function RadarCalculator() {
       }
     } catch (err) {
       console.error('Failed to read clipboard:', err);
+    }
+  };
+
+  const handleCopyResult = async () => {
+    const valueToCopy = calculateConversion();
+    try {
+      await navigator.clipboard.writeText(valueToCopy);
+      setCopiedResult(true);
+      setTimeout(() => setCopiedResult(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy result:', err);
     }
   };
 
@@ -788,6 +801,19 @@ export default function RadarCalculator() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] to-teal-400">
                     {calculateConversion()}
                   </span>
+                  <button
+                    type="button"
+                    onClick={handleCopyResult}
+                    className="p-1.5 rounded-lg text-[var(--text-secondary)]/50 hover:text-[#10B981] hover:bg-white/5 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center"
+                    title={locale === 'es' ? 'Copiar al portapapeles' : 'Copy to clipboard'}
+                    aria-label="Copy conversion result"
+                  >
+                    {copiedResult ? (
+                      <Check className="w-5 h-5 text-[#10B981] animate-[zoomIn_0.2s_ease-out]" />
+                    ) : (
+                      <Copy className="w-5 h-5 hover:scale-105 transition-transform" />
+                    )}
+                  </button>
                 </div>
 
                 <div className="text-[10px] font-mono text-[var(--text-secondary)]/80 mt-2 flex items-center justify-center gap-1.5">
