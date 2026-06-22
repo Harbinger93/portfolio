@@ -22,11 +22,11 @@ export default function LegalContent() {
       </ScrollReveal>
 
       <ScrollReveal direction="up" delay={0.2}>
-        <GlowCard className="border border-[var(--glass-border)] p-8 md:p-10 rounded-3xl bg-[var(--bg-secondary)]/40 backdrop-blur-2xl shadow-2xl space-y-12 text-sm leading-relaxed text-[var(--text-secondary)]">
+        <GlowCard className="border border-[var(--glass-border)] p-4 md:p-6 rounded-3xl bg-[var(--bg-secondary)]/40 backdrop-blur-2xl shadow-2xl text-sm leading-relaxed text-[var(--text-secondary)]">
           {locale === 'es' ? (
-            <>
+            <div className="flex flex-col gap-10 md:gap-12">
               {/* Sección 1: Introducción */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   1. Aceptación de los Términos
                 </h2>
@@ -36,7 +36,7 @@ export default function LegalContent() {
               </div>
 
               {/* Sección 2: Uso de Herramientas y Descargo de Responsabilidad */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   2. Descargo de Responsabilidad de las Herramientas (Radar, Analizador, Optimizador)
                 </h2>
@@ -57,7 +57,7 @@ export default function LegalContent() {
               </div>
 
               {/* Sección 3: Política de Privacidad */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   3. Política de Privacidad y Tratamiento de Datos
                 </h2>
@@ -78,7 +78,7 @@ export default function LegalContent() {
               </div>
 
               {/* Sección 4: Propiedad Intelectual */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   4. Propiedad Intelectual
                 </h2>
@@ -88,7 +88,7 @@ export default function LegalContent() {
               </div>
 
               {/* Sección 5: Ley Aplicable */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   5. Modificaciones y Ley Aplicable
                 </h2>
@@ -96,12 +96,11 @@ export default function LegalContent() {
                   Nos reservamos el derecho de revisar y modificar estos términos en cualquier momento sin previo aviso. Al usar este sitio web, usted acepta estar sujeto a la versión vigente de estos Términos y Condiciones de Uso. Cualquier reclamo relacionado con este sitio web se regirá por las leyes y normativas civiles aplicables.
                 </p>
               </div>
-            </>
+            </div>
           ) : (
-            <>
-              {/* English Version */}
+            <div className="flex flex-col gap-10 md:gap-12">
               {/* Section 1: Introduction */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   1. Terms of Use
                 </h2>
@@ -111,7 +110,7 @@ export default function LegalContent() {
               </div>
 
               {/* Section 2: Tools Disclaimer */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   2. Disclaimer for Tools (Radar, Analyzer, Optimizer)
                 </h2>
@@ -132,7 +131,7 @@ export default function LegalContent() {
               </div>
 
               {/* Section 3: Privacy Policy */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   3. Privacy Policy & Data Treatment
                 </h2>
@@ -153,7 +152,7 @@ export default function LegalContent() {
               </div>
 
               {/* Section 4: Intellectual Property */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   4. Intellectual Property
                 </h2>
@@ -163,7 +162,7 @@ export default function LegalContent() {
               </div>
 
               {/* Section 5: Governing Law */}
-              <div className="space-y-5">
+              <div className="flex flex-col gap-5">
                 <h2 className="text-lg font-bold text-[var(--text-primary)] uppercase tracking-wider border-b border-glass-border pb-3">
                   5. Revisions and Governing Law
                 </h2>
@@ -171,7 +170,7 @@ export default function LegalContent() {
                   We reserve the right to revise and modify these terms at any time without notice. By using this website, you agree to be bound by the current version of these Terms and Conditions of Use. Any claim related to this website shall be governed by the applicable civil laws.
                 </p>
               </div>
-            </>
+            </div>
           )}
         </GlowCard>
       </ScrollReveal>
