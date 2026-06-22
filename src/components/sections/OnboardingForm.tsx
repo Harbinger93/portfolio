@@ -853,10 +853,10 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
                   type="checkbox"
                   id="privacyPolicyAccepted"
                   {...register('privacyPolicyAccepted')}
-                  className="w-4 h-4 accent-emerald-500 mt-0.5 rounded cursor-pointer"
+                  className="w-4 h-4 accent-[var(--accent-primary)] mt-0.5 rounded cursor-pointer"
                 />
                 <label htmlFor="privacyPolicyAccepted" className="text-[10px] leading-relaxed text-[var(--text-secondary)] select-none cursor-pointer">
-                  He leído y acepto la Política de Privacidad de Datos para el procesamiento de este briefing técnico.
+                  He leído y acepto la <a href="/legal" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="underline hover:text-[var(--accent-primary)] transition-colors">Política de Privacidad de Datos</a> para el procesamiento de este briefing técnico.
                 </label>
               </div>
               {errors.privacyPolicyAccepted && <span className="text-[10px] text-rose-400 block mt-1">{errors.privacyPolicyAccepted.message}</span>}
