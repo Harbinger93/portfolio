@@ -308,11 +308,29 @@ export default function OnboardingForm({ clientUuid = 'default-client-uuid' }: O
     const isValid = await trigger(fieldsToValidate);
     if (isValid) {
       setStep(prev => prev + 1);
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 50);
     }
   };
 
   const prevStep = () => {
     setStep(prev => Math.max(prev - 1, 1));
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 50);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter') {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'SELECT') {
+        e.preventDefault();
+        if (step < 5) {
+          nextStep();
+        }
+      }
+    }
   };
 
   const onSubmit = async (data: OnboardingData) => {
@@ -907,17 +925,20 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
         </p>
 
         {/* Progress Bar Container */}
-        <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mt-4 relative">
+        <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden mt-4 relative">
           <div 
-            className="h-full progress-bar-animated transition-all duration-300 ease-out" 
+            className="h-full progress-bar-animated transition-all duration-300 ease-out relative" 
             style={{ width: `${(step / 5) * 100}%` }}
-          />
+          >
+            {/* Glowing head indicator */}
+            <div className="absolute right-0 top-0 h-full w-2 bg-white blur-[2px] opacity-80" />
+          </div>
         </div>
       </div>
 
       {/* Main Form container */}
       <GlowCard className="border border-glass-border p-6 md:p-8 rounded-3xl bg-[var(--bg-secondary)]/50 shadow-2xl relative">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown} className="space-y-6">
           
           {/* Honeypot hidden input (Spam Prevention) */}
           <div className="hidden">
