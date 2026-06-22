@@ -67,6 +67,94 @@ const isCloudUrl = (url: string) => {
   }
 };
 
+// Pure JS lightweight ZIP archive generator for empty folders (requires no external libraries)
+function createSimpleZip(folders: string[]): Blob {
+  const fileData: Uint8Array[] = [];
+  const localHeaders: { name: string; offset: number }[] = [];
+  let currentOffset = 0;
+
+  const writeU16 = (val: number, arr: Uint8Array, offset: number) => {
+    arr[offset] = val & 0xff;
+    arr[offset + 1] = (val >> 8) & 0xff;
+  };
+
+  const writeU32 = (val: number, arr: Uint8Array, offset: number) => {
+    arr[offset] = val & 0xff;
+    arr[offset + 1] = (val >> 8) & 0xff;
+    arr[offset + 2] = (val >> 16) & 0xff;
+    arr[offset + 3] = (val >> 24) & 0xff;
+  };
+
+  const textEncoder = new TextEncoder();
+
+  for (const name of folders) {
+    const folderName = name.endsWith('/') ? name : name + '/';
+    const nameBytes = textEncoder.encode(folderName);
+    const header = new Uint8Array(30 + nameBytes.length);
+
+    writeU32(0x04034b50, header, 0);
+    writeU16(10, header, 4);
+    writeU16(0, header, 6);
+    writeU16(0, header, 8);
+    writeU32(0, header, 10);
+    writeU32(0, header, 14);
+    writeU32(0, header, 18);
+    writeU32(0, header, 22);
+    writeU16(nameBytes.length, header, 26);
+    writeU16(0, header, 28);
+    header.set(nameBytes, 30);
+
+    fileData.push(header);
+    localHeaders.push({ name: folderName, offset: currentOffset });
+    currentOffset += header.length;
+  }
+
+  const centralDirectoryOffset = currentOffset;
+  let centralDirectorySize = 0;
+
+  for (let i = 0; i < localHeaders.length; i++) {
+    const item = localHeaders[i];
+    const nameBytes = textEncoder.encode(item.name);
+    const cdHeader = new Uint8Array(46 + nameBytes.length);
+
+    writeU32(0x02014b50, cdHeader, 0);
+    writeU16(20, cdHeader, 4);
+    writeU16(10, cdHeader, 6);
+    writeU16(0, cdHeader, 8);
+    writeU16(0, cdHeader, 10);
+    writeU32(0, cdHeader, 12);
+    writeU32(0, cdHeader, 16);
+    writeU32(0, cdHeader, 20);
+    writeU32(0, cdHeader, 24);
+    writeU16(nameBytes.length, cdHeader, 28);
+    writeU16(0, cdHeader, 30);
+    writeU16(0, cdHeader, 32);
+    writeU16(0, cdHeader, 34);
+    writeU16(0, cdHeader, 36);
+    writeU32(16, cdHeader, 38);
+    writeU32(item.offset, cdHeader, 42);
+    cdHeader.set(nameBytes, 46);
+
+    fileData.push(cdHeader);
+    centralDirectorySize += cdHeader.length;
+    currentOffset += cdHeader.length;
+  }
+
+  const eocd = new Uint8Array(22);
+  writeU32(0x06054b50, eocd, 0);
+  writeU16(0, eocd, 4);
+  writeU16(0, eocd, 6);
+  writeU16(folders.length, eocd, 8);
+  writeU16(folders.length, eocd, 10);
+  writeU32(centralDirectorySize, eocd, 12);
+  writeU32(centralDirectoryOffset, eocd, 16);
+  writeU16(0, eocd, 20);
+
+  fileData.push(eocd);
+
+  return new Blob(fileData, { type: 'application/zip' });
+}
+
 // Form Validation Schema
 const onboardingSchema = z.object({
   // Step 1: Info Básica
@@ -123,6 +211,7 @@ export default function OnboardingForm({ clientUuid = 'default-client-uuid' }: O
   const [submissionId, setSubmissionId] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const [submittedData, setSubmittedData] = useState<OnboardingData | null>(null);
   
   // Phase 2 states
   const [driveLink, setDriveLink] = useState('');
@@ -335,6 +424,7 @@ export default function OnboardingForm({ clientUuid = 'default-client-uuid' }: O
       
       setSubmissionId(uniqueId);
       setIsSubmitted(true);
+      setSubmittedData(data);
     } catch (err: any) {
       setSubmissionError(
         'Ha ocurrido un error al procesar tu solicitud. Por favor, vuelve a intentarlo.'
@@ -440,11 +530,33 @@ export default function OnboardingForm({ clientUuid = 'default-client-uuid' }: O
     document.body.removeChild(textArea);
   };
 
+  const handleDownloadZip = () => {
+    const rootName = `${watchCompanyName} - Proyecto Web`;
+    const folders = [
+      `${rootName}/`,
+      `${rootName}/01. Identidad Visual/`,
+      `${rootName}/02. Textos/`,
+      `${rootName}/03. Multimedia/`
+    ];
+
+    try {
+      const blob = createSimpleZip(folders);
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${watchCompanyName} - Estructura de Carpetas.zip`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Error generating zip:', err);
+    }
+  };
+
   const handleCopyStructure = () => {
     const text = `Estructura de Carpetas Recomendada para ${watchCompanyName}:
-├── 01. Identidad Visual (Logos SVG/PNG, Paleta de Colores, Fuentes)
-├── 02. Textos (Archivos Word/Google Docs para Inicio, Nosotros, Servicios, etc.)
-└── 03. Multimedia (Fotografías del equipo, productos, vídeos de apoyo)`;
+├── 01. Identidad Visual
+├── 02. Textos
+└── 03. Multimedia`;
     copyToClipboard(text, setCopiedStructure);
   };
 
@@ -499,9 +611,33 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
     copyToClipboard(text, setCopiedInstructions);
   };
 
-  const handleSimulateEmail = () => {
+  const handleSimulateEmail = async () => {
+    const emailToUse = submittedData?.email || watch('email');
+    const contactPersonToUse = submittedData?.contactPerson || watch('contactPerson');
+    const companyNameToUse = submittedData?.companyName || watch('companyName');
+    const requiredSectionsToUse = submittedData?.requiredSections || watchRequiredSections;
+
     setEmailSentSimulation(true);
-    setTimeout(() => setEmailSentSimulation(false), 5000);
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbwrKgxGDWtPemqy3UXpfdGPXuEG3lXV91evDbB9QKLB7ERqd8aeWoHfHWW_BkYJ3dGe/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+        body: JSON.stringify({
+          action: 'onboarding_resend_email',
+          email: emailToUse,
+          contactPerson: contactPersonToUse,
+          companyName: companyNameToUse,
+          requiredSections: requiredSectionsToUse ? requiredSectionsToUse.join(', ') : 'Inicio'
+        }),
+      });
+      setTimeout(() => setEmailSentSimulation(false), 5000);
+    } catch (e) {
+      console.error('Error sending email request:', e);
+      setEmailSentSimulation(false);
+    }
   };
 
   // --- RENDER FRONTEND ---
@@ -574,23 +710,32 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
                   Paso 1: Tu espacio de trabajo en la nube
                 </h3>
                 <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-4">
-                  Crea una carpeta raíz en tu servicio favorito (Google Drive, Dropbox o OneDrive) llamada <strong className="text-[var(--text-primary)]">"{watchCompanyName} - Proyecto Web"</strong>. Organiza las subcarpetas internas para ordenar tu material de forma óptima.
+                  Crea una carpeta raíz en tu servicio de almacenamiento en la nube (Google Drive, Dropbox o OneDrive) llamada <strong className="text-[var(--text-primary)]">"{watchCompanyName} - Proyecto Web"</strong>. Adentro debes organizar tres subcarpetas esenciales para tu material. Puedes **crearlas de forma manual** o bien hacer clic abajo para **descargar la estructura ya organizada en un archivo .zip** listo para descomprimir y subir a tu nube.
                 </p>
-                <button
-                  type="button"
-                  onClick={handleCopyStructure}
-                  className="px-4 py-2.5 rounded-xl border border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 transition-all font-semibold text-xs flex items-center gap-2 cursor-pointer"
-                >
-                  {copiedStructure ? (
-                    <>
-                      <Check className="w-3.5 h-3.5" /> Estructura copiada
-                    </>
-                  ) : (
-                    <>
-                      <Clipboard className="w-3.5 h-3.5" /> Generar estructura en portapapeles
-                    </>
-                  )}
-                </button>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={handleDownloadZip}
+                    className="px-4 py-2.5 rounded-xl border border-[var(--accent-primary)]/30 bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/20 transition-all font-semibold text-xs flex items-center gap-2 cursor-pointer"
+                  >
+                    <FolderOpen className="w-3.5 h-3.5" /> Descargar estructura (.zip)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCopyStructure}
+                    className="px-4 py-2.5 rounded-xl border border-glass-border hover:bg-white/5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all font-semibold text-xs flex items-center gap-2 cursor-pointer"
+                  >
+                    {copiedStructure ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-400" /> Copiado con éxito
+                      </>
+                    ) : (
+                      <>
+                        <Clipboard className="w-3.5 h-3.5" /> Copiar nombres como referencia
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </GlowCard>
