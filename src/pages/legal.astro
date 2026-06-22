@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalContent from '../components/sections/LegalContent';
+---
+
+<BaseLayout>
+  <div class="pt-32 pb-24">
+    <LegalContent client:load />
+  </div>
+</BaseLayout>

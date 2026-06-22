@@ -16,9 +16,18 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col md:flex-row items-center justify-between w-full mt-4 pt-8 border-t border-[var(--glass-border)] gap-4">
-            <p>
-              &copy; {new Date().getFullYear()} Gabriel Vazquez. {t('footer.rights')}
-            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <p>
+                &copy; {new Date().getFullYear()} Gabriel Vazquez. {t('footer.rights')}
+              </p>
+              <span className="hidden sm:inline opacity-30">|</span>
+              <a 
+                href="/legal" 
+                className="hover:text-[var(--accent-primary)] transition-colors duration-300 font-bold uppercase tracking-wider text-[10px]"
+              >
+                {t('legal.link')}
+              </a>
+            </div>
             <p className="flex items-center gap-1">
               {t('footer.built')} <Heart className="w-3 h-3 text-rose-500 animate-pulse" /> con Astro, React & Tailwind
             </p>

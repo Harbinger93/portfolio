@@ -121,7 +121,23 @@ const en = {
   "404.subtitle": "Page Not Found",
   "404.message": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
   "404.cta": "Back to Home",
-  "404.suggested": "Or check out my free performance tools:"
+  "404.suggested": "Or check out my free performance tools:",
+  "faqs.title": "Frequently Asked Questions",
+  "faqs.subtitle": "Resolving Doubts",
+  "faqs.desc": "Find answers to typical questions about my technical stack, scopes, and local and international services.",
+  "faqs.q1": "What types of web development do you do from Caracas for local and international clients?",
+  "faqs.a1": "I design and code custom web solutions tailored to each business's needs: from high-conversion landing pages and one-page sites, to e-commerce stores, e-learning platforms, custom web applications (webapps), and API & database integrations. Everything is focused on loading speed and scalability.",
+  "faqs.q2": "What technologies do you work with? Do you only build WordPress sites?",
+  "faqs.a2": "I am not limited to WordPress. While I use it for self-managed sites when clients request it, I specialize in custom high-performance developments using a modern stack: React, Astro, Tailwind CSS, Node.js, and Javascript/Typescript. This allows me to build extremely fast, secure websites free from the constraints of generic templates.",
+  "faqs.q3": "How do you ensure the websites you develop load fast in Venezuela despite local bandwidth limitations?",
+  "faqs.a3": "As a web performance specialist (WPO), I optimize every asset: compressing images to next-gen formats (WebP), using static rendering (SSG) via Astro, minimizing Javascript, and serving assets through global distribution networks (CDNs). This ensures that your users in Caracas and all of Venezuela enjoy an ultra-fast loading speed, even on standard mobile connections.",
+  "faqs.q4": "Do you provide web development and SEO services in Caracas, or do you work remotely?",
+  "faqs.a4": "I provide technical and local SEO consulting and optimizations in Caracas (for businesses looking to rank in Venezuela), but I work 100% remotely and asynchronously with clients in Latin America, the US, and Europe using agile workflows and Git version control.",
+  "faqs.q5": "What payment methods do you accept for web projects?",
+  "faqs.a5": "I offer flexible options for clients in Venezuela and abroad. I accept local bank transfers (Bolivars / Pago Movil), cash in foreign currency, international bank transfers (Zelle / Panama accounts), and cryptocurrencies (USDT).",
+  "legal.link": "Terms & Privacy Policy",
+  "legal.title": "Terms and Conditions & Privacy Policy",
+  "legal.lastUpdated": "Last updated: June 2026"
 };
 
 const es = {
@@ -247,7 +263,23 @@ const es = {
   "404.subtitle": "Página no encontrada",
   "404.message": "Es posible que la página que estás buscando haya sido eliminada, haya cambiado de nombre o no esté disponible temporalmente.",
   "404.cta": "Volver al Inicio",
-  "404.suggested": "O explora mis herramientas de rendimiento:"
+  "404.suggested": "Or explora mis herramientas de rendimiento:",
+  "faqs.title": "Preguntas Frecuentes",
+  "faqs.subtitle": "Resolviendo Dudas",
+  "faqs.desc": "Encuentra respuestas a las consultas más comunes sobre mi stack técnico, alcances de proyectos y servicios locales e internacionales.",
+  "faqs.q1": "¿Qué tipos de desarrollo web realizas desde Caracas para tus clientes locales e internacionales?",
+  "faqs.a1": "Diseño y programo soluciones web a medida según la necesidad de cada negocio: desde landing pages y sitios one-page optimizados para conversión, hasta tiendas online (e-commerce), plataformas de e-learning, aplicaciones web (webapps) a medida e integración de APIs y bases de datos. Todo enfocado en velocidad de carga y escalabilidad.",
+  "faqs.q2": "¿Con qué tecnologías trabajas? ¿Haces solo desarrollos en WordPress?",
+  "faqs.a2": "No me limito a WordPress. Aunque lo utilizo para sitios autogestionables cuando el cliente lo requiere, me especializo en desarrollos a medida de alto rendimiento utilizando un stack moderno: React, Astro, Tailwind CSS, Node.js y Javascript/Typescript. Esto me permite crear sitios web extremadamente rápidos, seguros y libres de las limitaciones de plantillas genéricas.",
+  "faqs.q3": "¿Cómo garantizas que las páginas web que desarrollas carguen rápido en Venezuela dado el ancho de banda local?",
+  "faqs.a3": "Al especializarme en rendimiento web (WPO), optimizo cada elemento: comprimo imágenes a formatos de última generación (WebP), utilizo renderizado estático (SSG) mediante Astro, minimizo el Javascript y sirvo el contenido a través de redes globales de distribución (CDNs). Esto asegura que tus usuarios en Caracas y toda Venezuela disfruten de una velocidad de carga ultrarrápida, incluso bajo conexiones móviles estándar.",
+  "faqs.q4": "¿Ofreces servicios de desarrollo web y posicionamiento SEO local en Caracas o trabajas en remoto?",
+  "faqs.a4": "Realizo consultorías y optimizaciones SEO técnico y SEO local en Caracas (para negocios que buscan posicionarse en Venezuela), pero trabajo de forma 100% remota y asíncrona con clientes de Latinoamérica, Estados Unidos y Europa utilizando flujos ágiles y control de versiones con Git.",
+  "faqs.q5": "¿Cuáles son los métodos de pago que aceptas para los proyectos de desarrollo?",
+  "faqs.a5": "Ofrezco flexibilidad para clientes en Venezuela y el extranjero. Acepto transferencias nacionales (Bolívares / Pago Móvil), divisas en efectivo, transferencias bancarias internacionales (Zelle / Cuentas en Panamá) y criptomonedas (USDT).",
+  "legal.link": "Términos y Políticas de Privacidad",
+  "legal.title": "Términos y Condiciones & Política de Privacidad",
+  "legal.lastUpdated": "Última actualización: Junio de 2026"
 };
 
 const translations = { en, es };

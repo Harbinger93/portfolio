@@ -1058,6 +1058,22 @@ export default function RadarCalculator() {
           </div>
         </div>
       )}
+
+      {/* Legal Disclaimer */}
+      <div className="mt-12 p-5 rounded-2xl border border-glass-border bg-white/[0.01] text-[10px] md:text-xs text-[var(--text-secondary)] leading-relaxed text-center w-full backdrop-blur-sm animate-[fadeIn_0.5s_ease-out_forwards]">
+        <p>
+          {locale === 'es' ? (
+            <strong>Aviso de Responsabilidad:</strong>
+          ) : (
+            <strong>Disclaimer:</strong>
+          )}{' '}
+          {locale === 'es' ? (
+            'Esta calculadora es una herramienta referencial y educativa sin fines de lucro. Los montos reflejados son de carácter estrictamente informativo. La tasa del dólar promedio paralelo es calculada mediante promedios matemáticos de cotizaciones públicas e informales recopiladas por terceros, y el resto de las tasas oficiales son tomadas automáticamente de APIs públicas (como cotizave.com) y entes reguladores oficiales. No nos hacemos responsables bajo ninguna circunstancia por las decisiones financieras, comerciales o legales tomadas por terceros en base a los datos de este sitio.'
+          ) : (
+            'This calculator is a non-profit, educational reference utility. All displayed rates and values are strictly for informational purposes. The parallel dollar rate is calculated from mathematical averages of public and informal quotes sourced by third parties, while official rates are automatically retrieved from public APIs (such as cotizave.com) and regulatory agencies. Under no circumstances do we assume liability for financial, commercial, or legal decisions made by users based on this data.'
+          )}
+        </p>
+      </div>
     </div>
   );
 }
