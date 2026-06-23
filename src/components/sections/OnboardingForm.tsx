@@ -26,6 +26,7 @@ import {
   Share2,
   Clock
 } from 'lucide-react';
+import { Backlight } from '../ui/backlight';
 
 // Safe SHA-256 implementation using Web Crypto API
 async function sha256(message: string): Promise<string> {
@@ -193,7 +194,7 @@ const onboardingSchema = z.object({
 
   // Step 5: Tiempos y Presupuesto
   deadline: z.string().optional(),
-  estimatedBudgetRange: z.enum(['range_low', 'range_medium', 'range_high']),
+  estimatedBudgetRange: z.enum(['range_low', 'range_medium', 'range_high', 'range_other']),
   
   // Honeypot anti-spam field
   website_honeypot: z.string().max(0, { message: 'Spam detected' }).optional()
@@ -392,7 +393,8 @@ export default function OnboardingForm({ clientUuid = 'default-client-uuid' }: O
       const budgetRangeLabel =
         data.estimatedBudgetRange === 'range_low' ? '$1,000 - $2,000' :
         data.estimatedBudgetRange === 'range_medium' ? '$2,000 - $5,000' :
-        '$5,000+';
+        data.estimatedBudgetRange === 'range_high' ? '$5,000+' :
+        'Otro';
 
       const payload = {
         action: 'onboarding',
@@ -663,16 +665,28 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
   if (isSubmitted) {
     return (
       <div className="max-w-3xl mx-auto px-6 animate-[fadeIn_0.5s_ease-out]">
-        {/* Banner de Éxito */}
-        <div className="glass p-8 rounded-3xl border border-emerald-500/30 bg-emerald-500/5 shadow-2xl relative overflow-hidden mb-8 text-center">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500 animate-pulse"></div>
-          <CheckCircle className="w-16 h-16 text-emerald-400 mx-auto mb-4 animate-[bounce_1s_ease-in-out_infinite]" />
-          <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)] mb-3">
-            ¡Formulario recibido con éxito! 🚀
-          </h2>
-          <p className="text-sm text-[var(--text-secondary)] leading-relaxed max-w-xl mx-auto">
-            El diseño de tu web depende de tu contenido. Empecemos a prepararlo hoy mismo siguiendo los siguientes pasos interactivos.
-          </p>
+        {/* Banner de Éxito con Backlight */}
+        <div className="relative mb-8">
+          <Backlight 
+            blur={40} 
+            color="#10b981" 
+            opacity={0.15} 
+            glowOnly 
+            className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none"
+            glowClassName="w-[80%] h-[80%] bg-emerald-500 rounded-full"
+          >
+            <div className="w-[80%] h-[80%] bg-emerald-500 rounded-full" />
+          </Backlight>
+
+          <div className="glass p-8 rounded-3xl border border-glass-border bg-emerald-500/5 shadow-2xl relative overflow-hidden text-center">
+            <CheckCircle className="w-16 h-16 text-emerald-400 mx-auto mb-4 animate-[bounce_1s_ease-in-out_infinite]" />
+            <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)] mb-3">
+              ¡Formulario recibido con éxito!
+            </h2>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed max-w-xl mx-auto">
+              El diseño de tu web depende de tu contenido. Empecemos a prepararlo hoy mismo siguiendo los siguientes pasos interactivos.
+            </p>
+          </div>
         </div>
 
         {/* Tracker de Progreso del Proyecto */}
@@ -1309,7 +1323,7 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
                   {...register('deadline')}
                   type="date"
                   id="deadline"
-                  className="text-xs"
+                  className="text-xs custom-date-input"
                 />
               </div>
 
@@ -1319,7 +1333,8 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
                   {[
                     { key: 'range_low', val: 'Rango Inicial ($1,000 - $2,000)' },
                     { key: 'range_medium', val: 'Rango Medio ($2,000 - $5,000)' },
-                    { key: 'range_high', val: 'Rango Avanzado ($5,000+)' }
+                    { key: 'range_high', val: 'Rango Avanzado ($5,000+)' },
+                    { key: 'range_other', val: 'Otro' }
                   ].map(option => (
                     <div key={option.key} className="flex items-center gap-2 text-xs">
                       <input
@@ -1364,6 +1379,7 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
 
             {step < 5 ? (
               <Button
+                key="btn-next"
                 type="button"
                 onClick={nextStep}
                 className="h-10 px-5 rounded-xl bg-gradient-primary hover:scale-[1.02] active:scale-[0.98] transition-all font-semibold text-xs flex items-center gap-1 text-white shadow-lg hover:shadow-[0_0_15px_rgba(0,242,254,0.3)] cursor-pointer"
@@ -1372,6 +1388,7 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
               </Button>
             ) : (
               <Button
+                key="btn-submit"
                 type="submit"
                 disabled={loading}
                 className="h-10 px-6 rounded-xl bg-gradient-primary hover:bg-gradient-primary/95 text-white font-semibold shadow-lg hover:shadow-[0_0_24px_rgba(0,242,254,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center gap-2 border border-white/20 cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed text-xs"
