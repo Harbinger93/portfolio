@@ -66,7 +66,7 @@ export default function LegalContent() {
                 </p>
                 <ul className="list-disc pl-6 space-y-3">
                   <li>
-                    <strong>Procesamiento Local:</strong> Las herramientas de optimización de imágenes/PDF y la calculadora Radar procesan toda la información y archivos de forma 100% local en tu navegador. Tus archivos y datos financieros nunca se suben a nuestros servidores.
+                    <strong>Procesamiento Local:</strong> Las herramientas de optimización de imágenes/PDF y la calculadora Radar procesan toda la información y archivos de forma 100% local en tu navegador. Tus archivos y datos financieros nunca se suben a ningún servidor externo.
                   </li>
                   <li>
                     <strong>Formularios de Contacto y Onboarding:</strong> La información provista a través de formularios (nombre, correo electrónico, teléfono, datos del proyecto) se envía de forma encriptada y segura hacia una base de datos privada en Google Sheets para coordinar la relación de servicio técnico. No compartimos, vendemos ni alquilamos tus datos personales a terceros.
@@ -93,7 +93,7 @@ export default function LegalContent() {
                   5. Modificaciones y Ley Aplicable
                 </h2>
                 <p>
-                  Nos reservamos el derecho de revisar y modificar estos términos en cualquier momento sin previo aviso. Al usar este sitio web, usted acepta estar sujeto a la versión vigente de estos Términos y Condiciones de Uso. Cualquier reclamo relacionado con este sitio web se regirá por las leyes y normativas civiles aplicables.
+                  Me reservo el derecho de revisar y modificar estos términos en cualquier momento sin previo aviso. Al usar este sitio web, usted acepta estar sujeto a la versión vigente de estos Términos y Condiciones de Uso. Cualquier reclamo relacionado con este sitio web se regirá por las leyes y normativas civiles aplicables.
                 </p>
               </div>
             </div>
@@ -140,7 +140,7 @@ export default function LegalContent() {
                 </p>
                 <ul className="list-disc pl-6 space-y-3">
                   <li>
-                    <strong>Local Processing:</strong> Asset optimization tools and the Radar calculator process all files and data 100% locally in your browser. Your files and financial values are never uploaded to our servers.
+                    <strong>Local Processing:</strong> Asset optimization tools and the Radar calculator process all files and data 100% locally in your browser. Your files and financial values are never uploaded to any external server.
                   </li>
                   <li>
                     <strong>Contact & Onboarding Forms:</strong> Information submitted via forms (name, email, phone, project details) is securely sent encrypted to a private Google Sheets database to coordinate the service relationship. We do not sell, rent, or share your personal data with third parties.
@@ -167,7 +167,7 @@ export default function LegalContent() {
                   5. Revisions and Governing Law
                 </h2>
                 <p>
-                  We reserve the right to revise and modify these terms at any time without notice. By using this website, you agree to be bound by the current version of these Terms and Conditions of Use. Any claim related to this website shall be governed by the applicable civil laws.
+                  I reserve the right to revise and modify these terms at any time without notice. By using this website, you agree to be bound by the current version of these Terms and Conditions of Use. Any claim related to this website shall be governed by the applicable civil laws.
                 </p>
               </div>
             </div>

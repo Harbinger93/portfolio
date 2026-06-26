@@ -57,11 +57,10 @@ export default function Contact() {
         // Ignorar error de parseo si ocurre
       }
 
-      await fetch('https://script.google.com/macros/s/AKfycbwrKgxGDWtPemqy3UXpfdGPXuEG3lXV91evDbB9QKLB7ERqd8aeWoHfHWW_BkYJ3dGe/exec', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
-        mode: 'no-cors', // Evita problemas de CORS con Google Scripts
         headers: {
-          'Content-Type': 'text/plain', // Usamos text/plain para evitar el preflight de CORS
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           nombre: data.name,
@@ -72,6 +71,10 @@ export default function Contact() {
           fecha: new Date().toLocaleString()
         }),
       });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar mensaje');
+      }
 
       setSubmitStatus('success');
       reset();

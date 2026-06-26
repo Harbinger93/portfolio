@@ -11,31 +11,31 @@ const processSteps = {
     {
       id: "01",
       title: "Diagnóstico y Estrategia",
-      description: "Todo comienza entendiendo tu visión y tus cuellos de botella actuales. Diseñamos la estrategia tecnológica y definimos el alcance ideal para tu negocio antes de tocar la primera línea de código.",
+      description: "Todo comienza entendiendo tu visión y tus cuellos de botella actuales. Diseño la estrategia tecnológica y defino el alcance ideal para tu negocio antes de tocar la primera línea de código.",
       time: "DÍA 1-3"
     },
     {
       id: "02",
       title: "Diseño y Prototipado",
-      description: "Creamos la arquitectura visual y técnica de la solución. Validamos contigo la estructura, los flujos de usuario y el rendimiento proyectado para asegurarnos de que el resultado final sea exactamente lo que esperas.",
+      description: "Creo la arquitectura visual y técnica de la solución. Valido contigo la estructura, los flujos de usuario y el rendimiento proyectado para asegurarme de que el resultado final sea exactamente lo que esperas.",
       time: "DÍA 4-8"
     },
     {
       id: "03",
       title: "Desarrollo y Optimización",
-      description: "Traducimos la estrategia en código sólido, seguro y altamente optimizado. Desarrollamos soluciones a medida, libres de plantillas genéricas, enfocadas al 100% en la velocidad y escalabilidad de tu plataforma.",
+      description: "Traduzco la estrategia en código sólido, seguro y altamente optimizado. Desarrollo soluciones a medida, libres de plantillas genéricas, enfocadas al 100% en la velocidad y escalabilidad de tu plataforma.",
       time: "DÍA 9-25"
     },
     {
       id: "04",
       title: "Despliegue y Acompañamiento",
-      description: "Lanzamos tu plataforma bajo los más altos estándares de producción. Pero no te dejamos solo: monitoreamos el impacto inicial y te acompañamos con soporte continuo para asegurar que tu inversión sea rentable a largo plazo.",
+      description: "Lanzo tu plataforma bajo los más altos estándares de producción. Pero no te dejo solo: monitoreo el impacto inicial y te acompaño con soporte continuo para asegurar que tu inversión sea rentable a largo plazo.",
       time: "DÍA 26-30"
     },
     {
       id: "05",
       title: "Soporte & capacitación",
-      description: "Sesión 1:1 contigo para que puedas editar lo básico y te acompañamos con 30 días de soporte continuo sin costo extra para asegurar tu retorno.",
+      description: "Sesión 1:1 contigo para que puedas editar lo básico y te acompaño con 30 días de soporte continuo sin costo extra para asegurar tu retorno.",
       time: "+30 DÍAS"
     }
   ],
@@ -43,25 +43,25 @@ const processSteps = {
     {
       id: "01",
       title: "Diagnosis & Strategy",
-      description: "It all starts by understanding your vision and current bottlenecks. We design the technological strategy and define the ideal scope for your business before writing the first line of code.",
+      description: "It all starts by understanding your vision and current bottlenecks. I design the technological strategy and define the ideal scope for your business before writing the first line of code.",
       time: "DAY 1-3"
     },
     {
       id: "02",
       title: "Design & Prototyping",
-      description: "We create the visual and technical architecture of the solution. We validate the structure, user flows, and projected performance with you to ensure that the final result is exactly what you expect.",
+      description: "I create the visual and technical architecture of the solution. I validate the structure, user flows, and projected performance with you to ensure that the final result is exactly what you expect.",
       time: "DAY 4-8"
     },
     {
       id: "03",
       title: "Development & Optimization",
-      description: "We translate the strategy into solid, secure, and highly optimized code. We develop custom solutions, free of generic templates, focused 100% on the speed and scalability of your platform.",
+      description: "I translate the strategy into solid, secure, and highly optimized code. I develop custom solutions, free of generic templates, focused 100% on the speed and scalability of your platform.",
       time: "DAY 9-25"
     },
     {
       id: "04",
       title: "Deployment & Support",
-      description: "We launch your platform under the highest production standards. But we do not leave you alone: we monitor the initial impact and accompany you with continuous support to ensure your investment is profitable in the long term.",
+      description: "I launch your platform under the highest production standards. But I do not leave you alone: I monitor the initial impact and accompany you with continuous support to ensure your investment is profitable in the long term.",
       time: "DAY 26-30"
     },
     {

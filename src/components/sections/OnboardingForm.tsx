@@ -27,6 +27,12 @@ import {
   Clock
 } from 'lucide-react';
 import { Backlight } from '../ui/backlight';
+import { cn } from '../../lib/utils';
+import { Calendar } from '../ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 // Safe SHA-256 implementation using Web Crypto API
 async function sha256(message: string): Promise<string> {
@@ -429,15 +435,18 @@ export default function OnboardingForm({ clientUuid = 'default-client-uuid' }: O
         status: 'Awaiting_Content'
       };
 
-      // Send to the Google Apps Script Web App
-      const res = await fetch('https://script.google.com/macros/s/AKfycbwrKgxGDWtPemqy3UXpfdGPXuEG3lXV91evDbB9QKLB7ERqd8aeWoHfHWW_BkYJ3dGe/exec', {
+      // Send to the local Vercel API
+      const res = await fetch('/api/onboarding', {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
-          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
+
+      if (!res.ok) {
+        throw new Error('Error al guardar el onboarding');
+      }
 
       // Register successful submission timestamp for client-side rate limiting
       registerSubmission();
@@ -487,14 +496,17 @@ export default function OnboardingForm({ clientUuid = 'default-client-uuid' }: O
         updatedAt: new Date().toISOString()
       };
 
-      await fetch('https://script.google.com/macros/s/AKfycbwrKgxGDWtPemqy3UXpfdGPXuEG3lXV91evDbB9QKLB7ERqd8aeWoHfHWW_BkYJ3dGe/exec', {
+      const res = await fetch('/api/onboarding', {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
-          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
+
+      if (!res.ok) {
+        throw new Error('Error al actualizar el enlace de Drive');
+      }
 
       setIsDriveSubmitted(true);
       setDriveSuccess(true);
@@ -1317,13 +1329,43 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
           {/* STEP 5: Timeline & Budget */}
           {step === 5 && (
             <div className="space-y-5">
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 flex flex-col">
                 <Label htmlFor="deadline">¿Tienes alguna fecha límite o evento para el lanzamiento?</Label>
-                <Input
-                  {...register('deadline')}
-                  type="date"
-                  id="deadline"
-                  className="text-xs custom-date-input"
+                <Controller
+                  name="deadline"
+                  control={control}
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          type="button"
+                          className={cn(
+                            "w-full h-11 px-4 justify-start text-left font-normal border-glass-border bg-[var(--bg-primary)]/45 text-[var(--text-secondary)] hover:bg-white/5 hover:text-[var(--text-primary)] rounded-xl text-xs flex items-center gap-2",
+                            field.value && "text-[var(--text-primary)] font-medium"
+                          )}
+                        >
+                          <CalendarIcon className="h-4 w-4 text-[var(--accent-primary)] shrink-0" />
+                          {field.value ? (
+                            format(new Date(field.value + 'T00:00:00'), "PPP", { locale: es })
+                          ) : (
+                            <span>Selecciona una fecha</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0 border-glass-border bg-[var(--bg-secondary)]/95 shadow-2xl rounded-2xl z-[100]" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value ? new Date(field.value + 'T00:00:00') : undefined}
+                          onSelect={(date) => {
+                            field.onChange(date ? format(date, 'yyyy-MM-dd') : '');
+                          }}
+                          disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  )}
                 />
               </div>
 
