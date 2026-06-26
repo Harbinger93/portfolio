@@ -2,12 +2,21 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import { loadEnv } from 'vite';
+import sentry from '@sentry/astro';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 const apiKey = env.COTIZAVE_API_KEY;
 
 export default defineConfig({
-  integrations: [react()],
+  integrations: [
+    react(),
+    sentry({
+      dsn: "https://c9cdc427796ce08ddcc2087c7776fbd0@o4501632557555216.ingest.us.sentry.io/4501632694894352",
+      project: "javascript-astro",
+      org: "gabrielvazquezdev",
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+    }),
+  ],
   vite: {
     plugins: [
       tailwindcss(),

@@ -9,6 +9,7 @@ import ScrollToTop from "../components/ui/ScrollToTop";
 import WhatsAppBubble from "../components/ui/WhatsAppBubble";
 import ToolsLaunchpad from "../components/layout/ToolsLaunchpad";
 import { ViewTransitions } from 'astro:transitions';
+import Analytics from '@vercel/analytics/astro';
 
 const { noindex = false } = Astro.props;
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html' || Astro.url.pathname === '';
@@ -147,5 +148,6 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html
     <ScrollToTop client:idle />
     <WhatsAppBubble client:idle />
     <ToolsLaunchpad client:idle />
+    <Analytics />
   </body>
 </html>
