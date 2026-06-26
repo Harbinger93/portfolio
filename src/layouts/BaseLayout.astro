@@ -10,6 +10,7 @@ import WhatsAppBubble from "../components/ui/WhatsAppBubble";
 import ToolsLaunchpad from "../components/layout/ToolsLaunchpad";
 import { ViewTransitions } from 'astro:transitions';
 import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 
 const { noindex = false } = Astro.props;
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html' || Astro.url.pathname === '';
@@ -149,5 +150,6 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html
     <WhatsAppBubble client:idle />
     <ToolsLaunchpad client:idle />
     <Analytics />
+    <SpeedInsights />
   </body>
 </html>
