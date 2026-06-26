@@ -17,14 +17,14 @@ create table if not exists public.contact (
 -- Habilitar RLS para la tabla contact
 alter table public.contact enable row level security;
 
--- Política de RLS: Permitir inserciones anónimas (cualquier visitante)
-create policy "Permitir inserciones de contactos anónimos" on public.contact
-  for insert to anon
+-- Política de RLS: Permitir inserciones (cualquier visitante)
+create policy "Permitir inserciones de contactos" on public.contact
+  for insert
   with check (true);
 
--- Política de RLS: Bloquear lecturas anónimas para evitar fuga de datos
-create policy "Bloquear lecturas de contactos anónimos" on public.contact
-  for select to anon
+-- Política de RLS: Bloquear lecturas para evitar fuga de datos
+create policy "Bloquear lecturas de contactos" on public.contact
+  for select
   using (false);
 
 
@@ -59,20 +59,18 @@ create table if not exists public.onboarding (
 -- Habilitar RLS para la tabla onboarding
 alter table public.onboarding enable row level security;
 
--- Política de RLS: Permitir inserciones anónimas
-create policy "Permitir inserciones de onboarding anónimos" on public.onboarding
-  for insert to anon
+-- Política de RLS: Permitir inserciones
+create policy "Permitir inserciones de onboarding" on public.onboarding
+  for insert
   with check (true);
 
--- Política de RLS: Bloquear lecturas anónimas para proteger los briefings
-create policy "Bloquear lecturas de onboarding anónimos" on public.onboarding
-  for select to anon
+-- Política de RLS: Bloquear lecturas para proteger los briefings
+create policy "Bloquear lecturas de onboarding" on public.onboarding
+  for select
   using (false);
 
 -- Política de RLS: Permitir actualizar el enlace de Drive en base al ID
--- (Se permite para el rol anónimo para dar flexibilidad si la API de Vercel usa la anon key.
--- Si la API de Vercel usa la Service Role Key, esta política no es necesaria ya que la sobrepasa).
 create policy "Permitir actualizar enlace de Drive" on public.onboarding
-  for update to anon
+  for update
   using (true)
   with check (true);
