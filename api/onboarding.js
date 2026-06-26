@@ -1,3 +1,4 @@
+// Serverless function to handle onboarding briefings. Deployed to Vercel.
 export default async function handler(req, res) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
