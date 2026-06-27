@@ -75,18 +75,28 @@ export default async function handler(req, res) {
     try {
       const resendApiKey = process.env.RESEND_API_KEY;
       if (resendApiKey) {
-        // Read HTML template
-        const templatePath = path.join(process.cwd(), 'templates', 'plantilla-email.html');
-        let htmlBase = '';
+        // Resolve templates paths
+        const internalTemplatePath = path.join(process.cwd(), 'templates', 'plantilla-email.html');
+        const clientTemplatePath = path.join(process.cwd(), 'templates', 'email-contacto-cliente.html');
+
+        let internalHtmlBase = '';
+        let clientHtmlBase = '';
+
         try {
-          htmlBase = fs.readFileSync(templatePath, 'utf8');
+          internalHtmlBase = fs.readFileSync(internalTemplatePath, 'utf8');
         } catch (readErr) {
-          console.error('Error reading email template, using fallback:', readErr);
+          console.error('Error reading internal template:', readErr);
+        }
+
+        try {
+          clientHtmlBase = fs.readFileSync(clientTemplatePath, 'utf8');
+        } catch (readErr) {
+          console.error('Error reading client contact template:', readErr);
         }
 
         // 1. Notification to Gabriel
-        let gabrielEmailHtml = htmlBase;
-        if (htmlBase) {
+        let gabrielEmailHtml = '';
+        if (internalHtmlBase) {
           const content = `
             <p>¡Hola Gabriel! Tienes un nuevo mensaje desde el formulario de contacto de tu portafolio. Aquí tienes los detalles:</p>
             <div style="background-color: rgba(0, 242, 254, 0.05); border-left: 4px solid #00f2fe; padding: 15px; border-radius: 8px; margin: 20px 0;">
@@ -100,13 +110,12 @@ export default async function handler(req, res) {
               ${mensaje}
             </div>
           `;
-          gabrielEmailHtml = htmlBase
+          gabrielEmailHtml = internalHtmlBase
             .replace('{{ASUNTO}}', `Nuevo contacto de ${nombre}`)
             .replace('{{TITULO}}', '📬 Nuevo Mensaje de Contacto')
             .replace('{{CONTENIDO_PRINCIPAL}}', content);
         } else {
-          // Fallback if template is not found
-          gabrielEmailHtml = `Nuevo mensaje de ${nombre}: ${mensaje}`;
+          gabrielEmailHtml = `Nuevo mensaje de ${nombre} (${email}): ${mensaje}`;
         }
 
         await fetch('https://api.resend.com/emails', {
@@ -125,23 +134,10 @@ export default async function handler(req, res) {
 
         // 2. Confirmation to Client (wrapped in try/catch for Sandbox restrictions)
         try {
-          let clientEmailHtml = htmlBase;
-          if (htmlBase) {
-            const content = `
-              <p>¡Hola ${nombre}! Espero que estés muy bien.</p>
-              <p>Quería confirmarte que he recibido tu mensaje correctamente. Muchas gracias por escribir e interesarte en mi trabajo.</p>
-              <p>Me pondré en contacto contigo lo antes posible (generalmente en menos de 24 horas) para que conversemos con calma sobre tu idea.</p>
-              <p>Mientras te escribo, te invito a que eches un vistazo a mis perfiles de redes donde suelo compartir proyectos y procesos de diseño:</p>
-              <div style="text-align: center; margin: 30px 0;">
-                <a href="https://www.linkedin.com/in/gabriel-jesse-vazquez/" style="display: inline-block; padding: 12px 24px; background-color: #00f2fe; color: #000000; text-decoration: none; border-radius: 8px; font-weight: bold; margin-right: 10px;">LinkedIn</a>
-                <a href="https://www.instagram.com/gjvo23/" style="display: inline-block; padding: 12px 24px; background-color: #7c3aed; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">Instagram</a>
-              </div>
-              <p>¡Hablamos pronto!</p>
-            `;
-            clientEmailHtml = htmlBase
-              .replace('{{ASUNTO}}', '¡Mensaje recibido con éxito!')
-              .replace('{{TITULO}}', `¡Hola ${nombre}!`)
-              .replace('{{CONTENIDO_PRINCIPAL}}', content);
+          let clientEmailHtml = '';
+          if (clientHtmlBase) {
+            clientEmailHtml = clientHtmlBase
+              .replace('{{NOMBRE}}', nombre);
           } else {
             clientEmailHtml = `¡Hola ${nombre}! He recibido tu mensaje correctamente.`;
           }
@@ -168,7 +164,6 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({ success: true });
-
   } catch (error) {
     return res.status(500).json({ error: error.message || 'Server error' });
   }

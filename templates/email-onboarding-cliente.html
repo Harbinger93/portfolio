@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>¡Briefing recibido! Siguientes pasos</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      supported-color-schemes: light dark;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100% !important;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+    }
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+      background-color: #f8fafc;
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Header & Brand */
+    .header-logo {
+      padding: 25px 30px 15px 30px;
+      text-align: left;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #0f172a;
+      text-decoration: none;
+    }
+    .logo-dot {
+      color: #7c3aed;
+    }
+
+    /* Hero Banner style */
+    .hero-banner {
+      background: linear-gradient(135deg, #090d16 0%, #1e1b4b 100%);
+      padding: 40px 30px;
+      text-align: left;
+      border-bottom: 4px solid #7c3aed;
+    }
+    .hero-pretitle {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #00f2fe;
+      margin-bottom: 8px;
+    }
+    .hero-title {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.2;
+      color: #ffffff;
+      margin: 0 0 12px 0;
+    }
+    .hero-subtitle {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #94a3b8;
+      margin: 0;
+    }
+
+    .content {
+      padding: 35px 30px;
+    }
+    .welcome-text {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #334155;
+      margin-top: 0;
+      margin-bottom: 25px;
+    }
+
+    /* Section titles */
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #64748b;
+      margin-top: 35px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 8px;
+    }
+
+    /* Checklist Steps Styling */
+    .step-item {
+      margin-bottom: 25px;
+    }
+    .step-header {
+      margin-bottom: 6px;
+    }
+    .step-badge {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      background-color: #7c3aed;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .step-desc {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #475569;
+      margin: 0 0 0 36px;
+    }
+    .step-sublist {
+      margin: 8px 0 0 36px;
+      padding-left: 20px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #64748b;
+    }
+    .step-sublist li {
+      margin-bottom: 4px;
+    }
+
+    /* Action CTAs Layout */
+    .actions-box {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      margin: 35px 0;
+      text-align: center;
+    }
+    .actions-title {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #0f172a;
+      margin: 0 0 15px 0;
+    }
+    .btn-main {
+      display: block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      color: #000000 !important;
+      font-weight: 700;
+      font-size: 13.5px;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2);
+    }
+    .btn-secondary {
+      display: block;
+      padding: 12px 24px;
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #0f172a !important;
+      font-weight: 700;
+      font-size: 13.5px;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    /* Promo Banner Upsell */
+    .promo-box {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(0, 242, 254, 0.05) 100%);
+      border: 1px dashed rgba(124, 58, 237, 0.3);
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 30px;
+      text-align: left;
+    }
+    .promo-tag {
+      display: inline-block;
+      padding: 3px 8px;
+      background-color: #00f2fe;
+      color: #000000;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    .promo-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0 0 6px 0;
+    }
+    .promo-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #475569;
+      margin: 0;
+    }
+
+    .signature-section {
+      margin-top: 35px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #334155;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 30px;
+      background-color: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+    }
+    .footer-text {
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.5;
+      margin: 0 0 15px 0;
+    }
+    .social-link {
+      font-size: 11px;
+      font-weight: 700;
+      color: #7c3aed;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    /* ==========================================
+       MEDIA QUERY PARA MODO OSCURO DEL SISTEMA
+       ========================================== */
+    @media (prefers-color-scheme: dark) {
+      body, .wrapper {
+        background-color: #090d16 !important;
+        color: #94a3b8 !important;
+      }
+      .container {
+        background-color: #0d1527 !important;
+        border-color: #1e293b !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      }
+      .logo-text {
+        color: #ffffff !important;
+      }
+      .welcome-text, .signature-section {
+        color: #94a3b8 !important;
+      }
+      .section-title {
+        color: #475569 !important;
+        border-bottom-color: #1e293b !important;
+      }
+      .step-title {
+        color: #f8fafc !important;
+      }
+      .step-desc {
+        color: #94a3b8 !important;
+      }
+      .step-sublist {
+        color: #64748b !important;
+      }
+      .actions-box {
+        background-color: #070c18 !important;
+        border-color: #1e293b !important;
+      }
+      .actions-title {
+        color: #f8fafc !important;
+      }
+      .btn-secondary {
+        background-color: #0d1527 !important;
+        border-color: #475569 !important;
+        color: #ffffff !important;
+      }
+      .promo-box {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%) !important;
+        border-color: rgba(124, 58, 237, 0.4) !important;
+      }
+      .promo-title {
+        color: #f8fafc !important;
+      }
+      .promo-text {
+        color: #94a3b8 !important;
+      }
+      .footer {
+        background-color: #070c18 !important;
+        border-top-color: #1e293b !important;
+      }
+      .footer-text {
+        color: #475569 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      
+      <!-- Brand Header -->
+      <div class="header-logo">
+        <a href="https://gabrielvazquez.dev" class="logo-text">gabrielvazquez<span class="logo-dot">.dev</span></a>
+      </div>
+
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-pretitle">BRIEFING RECIBIDO</div>
+        <h1 class="hero-title">¡Comencemos con<br>tu nuevo sitio web!</h1>
+        <p class="hero-subtitle">He recibido el briefing de <strong>{{COMPANIA}}</strong> correctamente. Aquí tienes los pasos a seguir.</p>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="content">
+        <p class="welcome-text">
+          ¡Hola, <strong>{{NOMBRE}}</strong>! Qué gran noticia.<br><br>
+          Estoy muy entusiasmado de trabajar en este proyecto web contigo. El briefing que has enviado me da una idea genial de lo que buscas.
+          Para que construyamos un sitio web sumamente premium y de alto impacto, el contenido organizado es vital. 
+          Aquí tienes la ruta de trabajo que seguiremos desde hoy:
+        </p>
+
+        <!-- Timeline Steps -->
+        <h2 class="section-title">Tu ruta de proyecto</h2>
+        
+        <!-- Step 1 -->
+        <div class="step-item">
+          <div class="step-header">
+            <span class="step-badge">1</span>
+            <h3 class="step-title">Recopila e identifica tus materiales</h3>
+          </div>
+          <p class="step-desc">
+            Organiza tus archivos en tu computadora. Te sugiero armar 3 carpetas sencillas:
+          </p>
+          <ul class="step-sublist">
+            <li><strong>01. Identidad Visual:</strong> Tus logotipos vectoriales (SVG, AI, PDF) o en alta resolución, manual de marca o referencias de color.</li>
+            <li><strong>02. Textos:</strong> Archivos de Word o documentos con el texto que quieres en cada sección (<em>{{SECCIONES}}</em>).</li>
+            <li><strong>03. Multimedia:</strong> Fotografías reales de tus servicios/oficina, videos o material gráfico que quieras lucir.</li>
+          </ul>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-item">
+          <div class="step-header">
+            <span class="step-badge">2</span>
+            <h3 class="step-title">Carga todo a tu espacio de Drive</h3>
+          </div>
+          <p class="step-desc">
+            Sube el material a la carpeta compartida en la nube que he creado para tu proyecto. El enlace seguro está aquí abajo.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-item">
+          <div class="step-header">
+            <span class="step-badge">3</span>
+            <h3 class="step-title">Agenda tu sesión de Kick-Off 🗓️</h3>
+          </div>
+          <p class="step-desc">
+            Agenda una llamada rápida conmigo en el calendario. Analizaremos tu material y definiremos las bases visuales en Figma antes de programar la web.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-item">
+          <div class="step-header">
+            <span class="step-badge">4</span>
+            <h3 class="step-title">¡Desarrollo y Lanzamiento! 🚀</h3>
+          </div>
+          <p class="step-desc">
+            Empiezo a escribir código en React / Tailwind / Supabase, refinando detalles contigo hasta el día del despliegue y lanzamiento oficial.
+          </p>
+        </div>
+
+        <!-- Action Box (CTAs) -->
+        <div class="actions-box">
+          <h3 class="actions-title">Acciones Inmediatas</h3>
+          <a href="{{DRIVE_LINK}}" class="btn-main" target="_blank">📁 Cargar mis materiales en Google Drive</a>
+          <a href="https://gabrielvazquez.dev/#calendar" class="btn-secondary" target="_blank">🗓️ Agendar sesión de Kick-Off</a>
+        </div>
+
+        <!-- Special Promotion (Upsell) -->
+        <div class="promo-box">
+          <span class="promo-tag">Servicio Adicional</span>
+          <h4 class="promo-title">¿Vendes productos o servicios recurrentes? 🛍️</h4>
+          <p class="promo-text">
+            Si tu negocio requiere cobros por suscripción mensual, reservas automáticas en línea, o un catálogo completo de productos con carrito, aún estamos a tiempo de integrar **E-commerce Premium (Stripe o Shopify)**. ¡Lo podemos definir en nuestra llamada de Kick-Off!
+          </p>
+        </div>
+
+        <!-- Friendly Sign-off -->
+        <div class="signature-section">
+          ¡Hablemos pronto para comenzar!<br>
+          <span style="font-style: italic; font-weight: bold; color: #7c3aed;">Gabriel Jesse Vazquez</span>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p class="footer-text">
+          Recibes este correo porque iniciaste el proceso de onboarding en gabrielvazquez.dev para tu proyecto web.<br>
+          © 2026 Gabriel J. Vazquez. Todos los derechos reservados.
+        </p>
+        <div>
+          <a href="https://www.linkedin.com/in/gabriel-jesse-vazquez/" class="social-link">LinkedIn</a>
+          <a href="https://www.instagram.com/gjvo23/" class="social-link">Instagram</a>
+          <a href="https://github.com/Harbinger93" class="social-link">GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

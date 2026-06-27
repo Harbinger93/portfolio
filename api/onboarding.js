@@ -46,13 +46,23 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'El ID de onboarding es obligatorio.' });
     }
 
-    // Read HTML template
-    const templatePath = path.join(process.cwd(), 'templates', 'plantilla-email.html');
-    let htmlBase = '';
+    // Resolve templates paths
+    const internalTemplatePath = path.join(process.cwd(), 'templates', 'plantilla-email.html');
+    const clientTemplatePath = path.join(process.cwd(), 'templates', 'email-onboarding-cliente.html');
+
+    let internalHtmlBase = '';
+    let clientHtmlBase = '';
+
     try {
-      htmlBase = fs.readFileSync(templatePath, 'utf8');
+      internalHtmlBase = fs.readFileSync(internalTemplatePath, 'utf8');
     } catch (readErr) {
-      console.error('Error reading email template, using fallback:', readErr);
+      console.error('Error reading internal template:', readErr);
+    }
+
+    try {
+      clientHtmlBase = fs.readFileSync(clientTemplatePath, 'utf8');
+    } catch (readErr) {
+      console.error('Error reading client onboarding template:', readErr);
     }
 
     if (action === 'onboarding_update_drive') {
@@ -88,8 +98,8 @@ export default async function handler(req, res) {
       try {
         const resendApiKey = process.env.RESEND_API_KEY;
         if (resendApiKey) {
-          let driveEmailHtml = htmlBase;
-          if (htmlBase) {
+          let driveEmailHtml = '';
+          if (internalHtmlBase) {
             const content = `
               <p>¡Hola Gabriel Jesse! El cliente del proyecto ha actualizado su briefing de onboarding cargando la carpeta de trabajo del proyecto.</p>
               <div style="background-color: rgba(0, 242, 254, 0.05); border-left: 4px solid #00f2fe; padding: 15px; border-radius: 8px; margin: 20px 0;">
@@ -100,7 +110,7 @@ export default async function handler(req, res) {
                 <a href="${driveFolderLink}" target="_blank" style="display: inline-block; padding: 12px 28px; background: linear-gradient(135deg, #00f2fe 0%, #7c3aed 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.25); text-transform: uppercase; font-size: 12px;">Abrir carpeta en Google Drive / Nube</a>
               </div>
             `;
-            driveEmailHtml = htmlBase
+            driveEmailHtml = internalHtmlBase
               .replace('{{ASUNTO}}', `Carpeta de Drive cargada para Onboarding: ${id}`)
               .replace('{{TITULO}}', '📂 Enlace de Drive Recibido')
               .replace('{{CONTENIDO_PRINCIPAL}}', content);
@@ -203,10 +213,10 @@ export default async function handler(req, res) {
         const resendApiKey = process.env.RESEND_API_KEY;
         if (resendApiKey) {
           // 1. Notification to Gabriel with briefing details
-          let gabrielOnboardingHtml = htmlBase;
-          if (htmlBase) {
+          let gabrielOnboardingHtml = '';
+          if (internalHtmlBase) {
             const content = `
-              <p>¡Hola Gabriel Jesse! Has recibido un nuevo briefing detallado para el desarrollo de la web de <strong>${companyName}</strong>:</p>
+              <p>¡Hola Gabriel! Has recibido un nuevo briefing detallado para el desarrollo de la web de <strong>${companyName}</strong>:</p>
               <div style="background-color: rgba(0, 242, 254, 0.05); border-left: 4px solid #00f2fe; padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 14px; line-height: 1.5;">
                 <p style="margin: 5px 0;"><strong>Empresa:</strong> ${companyName}</p>
                 <p style="margin: 5px 0;"><strong>Persona de Contacto:</strong> ${contactPerson}</p>
@@ -224,7 +234,7 @@ export default async function handler(req, res) {
                 <p style="margin: 5px 0;"><strong>Rango de Presupuesto:</strong> ${estimatedBudgetRange}</p>
               </div>
             `;
-            gabrielOnboardingHtml = htmlBase
+            gabrielOnboardingHtml = internalHtmlBase
               .replace('{{ASUNTO}}', `Nuevo Briefing: ${companyName}`)
               .replace('{{TITULO}}', '🚀 Nuevo Briefing Recibido')
               .replace('{{CONTENIDO_PRINCIPAL}}', content);
@@ -248,35 +258,15 @@ export default async function handler(req, res) {
 
           // 2. Welcome and instructions to the Client
           try {
-            let clientOnboardingHtml = htmlBase;
-            if (htmlBase) {
-              const content = `
-                <p>¡Hola ${contactPerson}!</p>
-                <p>He recibido correctamente el briefing para el desarrollo de la web de <strong>${companyName}</strong>. ¡Muchas gracias por confiar en mi trabajo!</p>
-                
-                <p>El diseño y éxito de tu sitio web depende enormemente de la organización de tu contenido. Para comenzar a trabajar de la manera más ágil, te recomiendo seguir estos sencillos pasos:</p>
-                
-                <h3 style="color: #00f2fe; margin-top: 25px; font-size: 16px;">Pasos sugeridos para organizar tu material:</h3>
-                <ol style="padding-left: 20px; line-height: 1.6; font-size: 14px;">
-                  <li style="margin-bottom: 10px;"><strong>Workspace en la Nube:</strong> Crea una carpeta en Google Drive, Dropbox o OneDrive llamada "<em>${companyName} - Proyecto Web</em>".</li>
-                  <li style="margin-bottom: 10px;"><strong>Estructura de Carpetas:</strong> Dentro de esa carpeta principal, organiza tres subcarpetas:
-                    <ul style="padding-left: 20px; margin-top: 5px; list-style-type: square;">
-                      <li><code>01. Identidad Visual</code> (Logotípos en alta resolución, manual de marca, paleta de colores).</li>
-                      <li><code>02. Textos</code> (Los textos explicativos de tus secciones elegidas: ${requiredSections}).</li>
-                      <li><code>03. Multimedia</code> (Imágenes de tus servicios, oficinas, equipo o gráficos relevantes).</li>
-                    </ul>
-                  </li>
-                  <li style="margin-bottom: 10px;"><strong>Comparte el enlace:</strong> Configura la carpeta como <em>"Cualquier persona con el enlace puede editar"</em> y pega ese enlace en la pantalla final de tu proceso de onboarding para que quede vinculado a tu briefing.</li>
-                </ol>
-                <p style="margin-top: 25px;">Si tienes alguna pregunta inicial, puedes responder directamente a este correo electrónico.</p>
-                <p>¡Hablamos pronto!</p>
-              `;
-              clientOnboardingHtml = htmlBase
-                .replace('{{ASUNTO}}', '¡Briefing recibido! Comencemos con tu proyecto web')
-                .replace('{{TITULO}}', `¡Hola ${contactPerson}!`)
-                .replace('{{CONTENIDO_PRINCIPAL}}', content);
+            let clientOnboardingHtml = '';
+            if (clientHtmlBase) {
+              clientOnboardingHtml = clientHtmlBase
+                .replace('{{NOMBRE}}', contactPerson)
+                .replace('{{COMPANIA}}', companyName)
+                .replace('{{SECCIONES}}', requiredSections)
+                .replace('{{DRIVE_LINK}}', driveFolderLink || 'https://drive.google.com');
             } else {
-              clientOnboardingHtml = `¡Hola ${contactPerson}! He recibido el briefing de ${companyName}.`;
+              clientOnboardingHtml = `¡Hola ${contactPerson}! He recibido el briefing de ${companyName} correctamente.`;
             }
 
             await fetch('https://api.resend.com/emails', {
