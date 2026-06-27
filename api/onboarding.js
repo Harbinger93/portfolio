@@ -1,4 +1,6 @@
-// Serverless function to handle onboarding briefings. Deployed to Vercel.
+import fs from 'fs';
+import path from 'path';
+
 export default async function handler(req, res) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -44,6 +46,15 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'El ID de onboarding es obligatorio.' });
     }
 
+    // Read HTML template
+    const templatePath = path.join(process.cwd(), 'templates', 'plantilla-email.html');
+    let htmlBase = '';
+    try {
+      htmlBase = fs.readFileSync(templatePath, 'utf8');
+    } catch (readErr) {
+      console.error('Error reading email template, using fallback:', readErr);
+    }
+
     if (action === 'onboarding_update_drive') {
       const { driveFolderLink, updatedAt } = bodyData;
 
@@ -77,6 +88,26 @@ export default async function handler(req, res) {
       try {
         const resendApiKey = process.env.RESEND_API_KEY;
         if (resendApiKey) {
+          let driveEmailHtml = htmlBase;
+          if (htmlBase) {
+            const content = `
+              <p>¡Hola Gabriel Jesse! El cliente del proyecto ha actualizado su briefing de onboarding cargando la carpeta de trabajo del proyecto.</p>
+              <div style="background-color: rgba(0, 242, 254, 0.05); border-left: 4px solid #00f2fe; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <p style="margin: 5px 0;"><strong>ID del Onboarding:</strong> ${id}</p>
+              </div>
+              <p><strong>Enlace del Espacio de Trabajo:</strong></p>
+              <div style="text-align: center; margin: 25px 0;">
+                <a href="${driveFolderLink}" target="_blank" style="display: inline-block; padding: 12px 28px; background: linear-gradient(135deg, #00f2fe 0%, #7c3aed 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.25); text-transform: uppercase; font-size: 12px;">Abrir carpeta en Google Drive / Nube</a>
+              </div>
+            `;
+            driveEmailHtml = htmlBase
+              .replace('{{ASUNTO}}', `Carpeta de Drive cargada para Onboarding: ${id}`)
+              .replace('{{TITULO}}', '📂 Enlace de Drive Recibido')
+              .replace('{{CONTENIDO_PRINCIPAL}}', content);
+          } else {
+            driveEmailHtml = `Drive Link for ${id}: ${driveFolderLink}`;
+          }
+
           await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
@@ -87,19 +118,7 @@ export default async function handler(req, res) {
               from: 'Briefing Web <onboarding@resend.dev>',
               to: ['dev.gabo23@gmail.com'],
               subject: `📂 Carpeta de Drive cargada para Onboarding: ${id}`,
-              html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-                  <h2 style="color: #0f172a; margin-bottom: 20px; border-bottom: 2px solid #00f2fe; padding-bottom: 10px;">Enlace de Drive Recibido</h2>
-                  <p>Un cliente ha actualizado su briefing de onboarding cargando la carpeta de trabajo del proyecto.</p>
-                  <p><strong>ID del Onboarding:</strong> ${id}</p>
-                  <p><strong>Enlace del Espacio de Trabajo:</strong></p>
-                  <div style="padding: 15px; background-color: #f8fafc; border-radius: 6px; text-align: center; border: 1px solid #e2e8f0; margin-top: 15px;">
-                    <a href="${driveFolderLink}" target="_blank" style="color: #00f2fe; font-weight: bold; text-decoration: none; font-size: 14px;">Abrir carpeta en Google Drive / Nube</a>
-                  </div>
-                  <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-                  <p style="font-size: 11px; color: #64748b; text-align: center;">Enviado desde el sistema de briefings de Gabriel Jesse.</p>
-                </div>
-              `
+              html: driveEmailHtml
             })
           });
         }
@@ -184,6 +203,35 @@ export default async function handler(req, res) {
         const resendApiKey = process.env.RESEND_API_KEY;
         if (resendApiKey) {
           // 1. Notification to Gabriel with briefing details
+          let gabrielOnboardingHtml = htmlBase;
+          if (htmlBase) {
+            const content = `
+              <p>¡Hola Gabriel Jesse! Has recibido un nuevo briefing detallado para el desarrollo de la web de <strong>${companyName}</strong>:</p>
+              <div style="background-color: rgba(0, 242, 254, 0.05); border-left: 4px solid #00f2fe; padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 14px; line-height: 1.5;">
+                <p style="margin: 5px 0;"><strong>Empresa:</strong> ${companyName}</p>
+                <p style="margin: 5px 0;"><strong>Persona de Contacto:</strong> ${contactPerson}</p>
+                <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #00f2fe; text-decoration: none;">${email}</a></p>
+                <p style="margin: 5px 0;"><strong>Teléfono:</strong> ${phone || 'No provisto'}</p>
+                <p style="margin: 5px 0;"><strong>Sitio Web Actual:</strong> ${currentWebsite || 'No tiene'}</p>
+                <p style="margin: 5px 0;"><strong>Propósito / Negocio:</strong> ${businessDescription}</p>
+                <p style="margin: 5px 0;"><strong>Público Objetivo:</strong> ${targetAudience}</p>
+                <p style="margin: 5px 0;"><strong>Objetivo Principal:</strong> ${primaryGoal}</p>
+                <p style="margin: 5px 0;"><strong>Hosting y Dominio:</strong> ${hostingStatus}</p>
+                <p style="margin: 5px 0;"><strong>Identidad Visual:</strong> ${brandAssetsStatus}</p>
+                <p style="margin: 5px 0;"><strong>Secciones Solicitadas:</strong> ${requiredSections}</p>
+                <p style="margin: 5px 0;"><strong>Funciones Especiales:</strong> ${featuresSelected || 'Ninguna'}</p>
+                <p style="margin: 5px 0;"><strong>Fecha Límite:</strong> ${deadline || 'No especificada'}</p>
+                <p style="margin: 5px 0;"><strong>Rango de Presupuesto:</strong> ${estimatedBudgetRange}</p>
+              </div>
+            `;
+            gabrielOnboardingHtml = htmlBase
+              .replace('{{ASUNTO}}', `Nuevo Briefing: ${companyName}`)
+              .replace('{{TITULO}}', '🚀 Nuevo Briefing Recibido')
+              .replace('{{CONTENIDO_PRINCIPAL}}', content);
+          } else {
+            gabrielOnboardingHtml = `Nuevo Briefing de ${companyName} (${contactPerson})`;
+          }
+
           await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
@@ -194,32 +242,43 @@ export default async function handler(req, res) {
               from: 'Briefing Web <onboarding@resend.dev>',
               to: ['dev.gabo23@gmail.com'],
               subject: `🚀 Nuevo Briefing: ${companyName} (${contactPerson})`,
-              html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-                  <h2 style="color: #0f172a; margin-bottom: 20px; border-bottom: 2px solid #00f2fe; padding-bottom: 10px;">Nuevo Briefing Recibido</h2>
-                  <p><strong>Empresa:</strong> ${companyName}</p>
-                  <p><strong>Persona de Contacto:</strong> ${contactPerson}</p>
-                  <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                  <p><strong>Teléfono:</strong> ${phone || 'No provisto'}</p>
-                  <p><strong>Sitio Web Actual:</strong> ${currentWebsite || 'No tiene'}</p>
-                  <p><strong>Propósito / Negocio:</strong> ${businessDescription}</p>
-                  <p><strong>Público Objetivo:</strong> ${targetAudience}</p>
-                  <p><strong>Objetivo Principal:</strong> ${primaryGoal}</p>
-                  <p><strong>Hosting y Dominio:</strong> ${hostingStatus}</p>
-                  <p><strong>Identidad Visual:</strong> ${brandAssetsStatus}</p>
-                  <p><strong>Secciones Solicitadas:</strong> ${requiredSections}</p>
-                  <p><strong>Funciones Especiales:</strong> ${featuresSelected || 'Ninguna'}</p>
-                  <p><strong>Fecha Límite:</strong> ${deadline || 'No especificada'}</p>
-                  <p><strong>Rango de Presupuesto:</strong> ${estimatedBudgetRange}</p>
-                  <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-                  <p style="font-size: 11px; color: #64748b; text-align: center;">ID del Briefing: ${id}</p>
-                </div>
-              `
+              html: gabrielOnboardingHtml
             })
           });
 
           // 2. Welcome and instructions to the Client
           try {
+            let clientOnboardingHtml = htmlBase;
+            if (htmlBase) {
+              const content = `
+                <p>¡Hola ${contactPerson}!</p>
+                <p>He recibido correctamente el briefing para el desarrollo de la web de <strong>${companyName}</strong>. ¡Muchas gracias por confiar en mi trabajo!</p>
+                
+                <p>El diseño y éxito de tu sitio web depende enormemente de la organización de tu contenido. Para comenzar a trabajar de la manera más ágil, te recomiendo seguir estos sencillos pasos:</p>
+                
+                <h3 style="color: #00f2fe; margin-top: 25px; font-size: 16px;">Pasos sugeridos para organizar tu material:</h3>
+                <ol style="padding-left: 20px; line-height: 1.6; font-size: 14px;">
+                  <li style="margin-bottom: 10px;"><strong>Workspace en la Nube:</strong> Crea una carpeta en Google Drive, Dropbox o OneDrive llamada "<em>${companyName} - Proyecto Web</em>".</li>
+                  <li style="margin-bottom: 10px;"><strong>Estructura de Carpetas:</strong> Dentro de esa carpeta principal, organiza tres subcarpetas:
+                    <ul style="padding-left: 20px; margin-top: 5px; list-style-type: square;">
+                      <li><code>01. Identidad Visual</code> (Logotípos en alta resolución, manual de marca, paleta de colores).</li>
+                      <li><code>02. Textos</code> (Los textos explicativos de tus secciones elegidas: ${requiredSections}).</li>
+                      <li><code>03. Multimedia</code> (Imágenes de tus servicios, oficinas, equipo o gráficos relevantes).</li>
+                    </ul>
+                  </li>
+                  <li style="margin-bottom: 10px;"><strong>Comparte el enlace:</strong> Configura la carpeta como <em>"Cualquier persona con el enlace puede editar"</em> y pega ese enlace en la pantalla final de tu proceso de onboarding para que quede vinculado a tu briefing.</li>
+                </ol>
+                <p style="margin-top: 25px;">Si tienes alguna pregunta inicial, puedes responder directamente a este correo electrónico.</p>
+                <p>¡Hablamos pronto!</p>
+              `;
+              clientOnboardingHtml = htmlBase
+                .replace('{{ASUNTO}}', '¡Briefing recibido! Comencemos con tu proyecto web')
+                .replace('{{TITULO}}', `¡Hola ${contactPerson}!`)
+                .replace('{{CONTENIDO_PRINCIPAL}}', content);
+            } else {
+              clientOnboardingHtml = `¡Hola ${contactPerson}! He recibido el briefing de ${companyName}.`;
+            }
+
             await fetch('https://api.resend.com/emails', {
               method: 'POST',
               headers: {
@@ -230,31 +289,7 @@ export default async function handler(req, res) {
                 from: 'Gabriel J. Vazquez <onboarding@resend.dev>',
                 to: [email],
                 subject: '¡Briefing recibido! Comencemos con tu proyecto web',
-                html: `
-                  <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #334155; line-height: 1.6;">
-                    <h2 style="color: #0f172a; border-bottom: 2px solid #00f2fe; padding-bottom: 10px;">¡Hola ${contactPerson}!</h2>
-                    <p>He recibido correctamente el briefing para el desarrollo de la web de <strong>${companyName}</strong>. ¡Muchas gracias por confiar en mi trabajo!</p>
-                    
-                    <p>El diseño y éxito de tu sitio web depende de la organización de tu contenido. Para comenzar a trabajar de la manera más ágil, te recomiendo seguir estos sencillos pasos:</p>
-                    
-                    <h3 style="color: #0f172a; margin-top: 20px;">Pasos sugeridos para organizar tu material:</h3>
-                    <ol>
-                      <li><strong>Workspace en la Nube:</strong> Crea una carpeta en Google Drive, Dropbox o OneDrive llamada "<em>${companyName} - Proyecto Web</em>".</li>
-                      <li><strong>Estructura:</strong> Dentro de esa carpeta principal, organiza tres subcarpetas:
-                        <ul>
-                          <li><code>01. Identidad Visual</code> (Logotipos en alta resolución, manual de marca, paleta de colores).</li>
-                          <li><code>02. Textos</code> (Los textos explicativos de las secciones: ${requiredSections}).</li>
-                          <li><code>03. Multimedia</code> (Imágenes reales de tu negocio, videos, gráficos).</li>
-                        </ul>
-                      </li>
-                      <li><strong>Comparte el enlace:</strong> Configura la carpeta como <em>"Cualquier persona con el enlace puede editar"</em> y pega ese enlace en la pantalla final de onboarding de tu navegador para que se vincule a tu proyecto.</li>
-                    </ol>
-
-                    <p>Si tienes alguna consulta, puedes responder directamente a este correo electrónico.</p>
-                    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-                    <p style="font-size: 11px; color: #64748b; text-align: center;">Gabriel Jesse Vazquez — Desarrollador Web Frontend</p>
-                  </div>
-                `
+                html: clientOnboardingHtml
               })
             });
           } catch (clientEmailErr) {

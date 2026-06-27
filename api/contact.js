@@ -1,4 +1,6 @@
-// Serverless function to handle contact form submissions. Deployed to Vercel.
+import fs from 'fs';
+import path from 'path';
+
 export default async function handler(req, res) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -73,7 +75,40 @@ export default async function handler(req, res) {
     try {
       const resendApiKey = process.env.RESEND_API_KEY;
       if (resendApiKey) {
+        // Read HTML template
+        const templatePath = path.join(process.cwd(), 'templates', 'plantilla-email.html');
+        let htmlBase = '';
+        try {
+          htmlBase = fs.readFileSync(templatePath, 'utf8');
+        } catch (readErr) {
+          console.error('Error reading email template, using fallback:', readErr);
+        }
+
         // 1. Notification to Gabriel
+        let gabrielEmailHtml = htmlBase;
+        if (htmlBase) {
+          const content = `
+            <p>¡Hola Gabriel! Tienes un nuevo mensaje desde el formulario de contacto de tu portafolio. Aquí tienes los detalles:</p>
+            <div style="background-color: rgba(0, 242, 254, 0.05); border-left: 4px solid #00f2fe; padding: 15px; border-radius: 8px; margin: 20px 0;">
+              <p style="margin: 5px 0;"><strong>Nombre:</strong> ${nombre}</p>
+              <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #00f2fe; text-decoration: none;">${email}</a></p>
+              <p style="margin: 5px 0;"><strong>Teléfono:</strong> ${telefono || 'No provisto'}</p>
+              <p style="margin: 5px 0;"><strong>País:</strong> ${pais || 'Desconocido'}</p>
+            </div>
+            <p><strong>Mensaje escrito:</strong></p>
+            <div style="background-color: rgba(0, 0, 0, 0.02); border: 1px solid rgba(0, 0, 0, 0.06); padding: 15px; border-radius: 8px; font-style: italic; white-space: pre-wrap; line-height: 1.5;">
+              ${mensaje}
+            </div>
+          `;
+          gabrielEmailHtml = htmlBase
+            .replace('{{ASUNTO}}', `Nuevo contacto de ${nombre}`)
+            .replace('{{TITULO}}', '📬 Nuevo Mensaje de Contacto')
+            .replace('{{CONTENIDO_PRINCIPAL}}', content);
+        } else {
+          // Fallback if template is not found
+          gabrielEmailHtml = `Nuevo mensaje de ${nombre}: ${mensaje}`;
+        }
+
         await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
@@ -84,26 +119,33 @@ export default async function handler(req, res) {
             from: 'Portafolio <onboarding@resend.dev>',
             to: ['dev.gabo23@gmail.com'],
             subject: `📬 Nuevo contacto de ${nombre}`,
-            html: `
-              <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-                <h2 style="color: #0f172a; margin-bottom: 20px; border-bottom: 2px solid #00f2fe; padding-bottom: 10px;">Nuevo Mensaje de Contacto</h2>
-                <p><strong>Nombre:</strong> ${nombre}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                <p><strong>Teléfono:</strong> ${telefono || 'No provisto'}</p>
-                <p><strong>País:</strong> ${pais || 'Desconocido'}</p>
-                <p><strong>Mensaje:</strong></p>
-                <div style="padding: 15px; background-color: #f8fafc; border-left: 4px solid #00f2fe; border-radius: 4px; font-style: italic; white-space: pre-wrap; color: #334155;">
-                  ${mensaje}
-                </div>
-                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-                <p style="font-size: 11px; color: #64748b; text-align: center;">Enviado desde el formulario de contacto del Portafolio.</p>
-              </div>
-            `
+            html: gabrielEmailHtml
           })
         });
 
         // 2. Confirmation to Client (wrapped in try/catch for Sandbox restrictions)
         try {
+          let clientEmailHtml = htmlBase;
+          if (htmlBase) {
+            const content = `
+              <p>¡Hola ${nombre}! Espero que estés muy bien.</p>
+              <p>Quería confirmarte que he recibido tu mensaje correctamente. Muchas gracias por escribir e interesarte en mi trabajo.</p>
+              <p>Me pondré en contacto contigo lo antes posible (generalmente en menos de 24 horas) para que conversemos con calma sobre tu idea.</p>
+              <p>Mientras te escribo, te invito a que eches un vistazo a mis perfiles de redes donde suelo compartir proyectos y procesos de diseño:</p>
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="https://www.linkedin.com/in/gabriel-jesse-vazquez/" style="display: inline-block; padding: 12px 24px; background-color: #00f2fe; color: #000000; text-decoration: none; border-radius: 8px; font-weight: bold; margin-right: 10px;">LinkedIn</a>
+                <a href="https://www.instagram.com/gjvo23/" style="display: inline-block; padding: 12px 24px; background-color: #7c3aed; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">Instagram</a>
+              </div>
+              <p>¡Hablamos pronto!</p>
+            `;
+            clientEmailHtml = htmlBase
+              .replace('{{ASUNTO}}', '¡Mensaje recibido con éxito!')
+              .replace('{{TITULO}}', `¡Hola ${nombre}!`)
+              .replace('{{CONTENIDO_PRINCIPAL}}', content);
+          } else {
+            clientEmailHtml = `¡Hola ${nombre}! He recibido tu mensaje correctamente.`;
+          }
+
           await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
@@ -114,19 +156,7 @@ export default async function handler(req, res) {
               from: 'Gabriel J. Vazquez <onboarding@resend.dev>',
               to: [email],
               subject: '¡Mensaje recibido con éxito!',
-              html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #334155;">
-                  <h2 style="color: #0f172a;">¡Hola ${nombre}!</h2>
-                  <p>Gracias por ponerte en contacto conmigo. He recibido tu mensaje correctamente y te responderé lo antes posible (generalmente en menos de 24 horas).</p>
-                  <p>Mientras tanto, si quieres ver más de mi trabajo o seguir en comunicación, te invito a visitar mis redes sociales:</p>
-                  <p>
-                    <a href="https://www.linkedin.com/in/gabriel-jesse-vazquez/" style="color: #00f2fe; text-decoration: none; font-weight: bold; margin-right: 15px;">LinkedIn</a>
-                    <a href="https://www.instagram.com/gjvo23/" style="color: #7c3aed; text-decoration: none; font-weight: bold;">Instagram</a>
-                  </p>
-                  <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-                  <p style="font-size: 11px; color: #64748b; text-align: center;">Gabriel Jesse Vazquez — Desarrollador Frontend</p>
-                </div>
-              `
+              html: clientEmailHtml
             })
           });
         } catch (clientEmailErr) {

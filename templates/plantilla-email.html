@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Soporte para modo oscuro en clientes de correo modernos -->
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>{{ASUNTO}}</title>
+  <style>
+    /* Estilos base del sistema */
+    :root {
+      color-scheme: light dark;
+      supported-color-schemes: light dark;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100% !important;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+    }
+
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+      background-color: #f8fafc;
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 24px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Línea superior con gradiente de luces de neón */
+    .gradient-bar {
+      height: 6px;
+      background: linear-gradient(90deg, #00f2fe 0%, #4facfe 50%, #7c3aed 100%);
+    }
+
+    .content {
+      padding: 40px 30px;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #00f2fe 0%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #0f172a;
+      text-decoration: none;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.3;
+      color: #0f172a;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .paragraph {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #475569;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    /* Bloque destacado para datos o alertas */
+    .highlight-box {
+      background-color: #f8fafc;
+      border-left: 4px solid #00f2fe;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 25px;
+      margin-bottom: 25px;
+    }
+
+    .highlight-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 0;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Botón CTA premium */
+    .button-container {
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #7c3aed 100%);
+      color: #ffffff !important;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px 0 rgba(0, 242, 254, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .footer {
+      padding: 30px;
+      background-color: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .social-links {
+      margin-top: 15px;
+    }
+
+    .social-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: #7c3aed;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    /* ==========================================
+       MEDIA QUERY PARA MODO OSCURO DEL SISTEMA
+       ========================================== */
+    @media (prefers-color-scheme: dark) {
+      body, .wrapper {
+        background-color: #090d16 !important;
+        color: #94a3b8 !important;
+      }
+
+      .container {
+        background-color: #0d1527 !important;
+        border-color: #1e293b !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      }
+
+      .title {
+        color: #f8fafc !important;
+      }
+
+      .paragraph {
+        color: #94a3b8 !important;
+      }
+
+      .logo-text {
+        color: #ffffff !important;
+      }
+
+      .highlight-box {
+        background-color: #070c18 !important;
+        border-left-color: #00f2fe !important;
+      }
+
+      .highlight-title {
+        color: #f8fafc !important;
+      }
+
+      .footer {
+        background-color: #070c18 !important;
+        border-top-color: #1e293b !important;
+      }
+
+      .footer-text {
+        color: #475569 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <!-- Barra superior decorativa -->
+      <div class="gradient-bar"></div>
+      
+      <div class="content">
+        <!-- Logo / Marca -->
+        <div class="header-logo">
+          <a href="https://gabrielvazquez.dev" class="logo-text">gabrielvazquez.dev</a>
+        </div>
+
+        <!-- Título -->
+        <h1 class="title">{{TITULO}}</h1>
+
+        <!-- Contenido principal -->
+        <div class="paragraph">
+          {{CONTENIDO_PRINCIPAL}}
+        </div>
+
+        <!-- Bloque destacado (Opcional) -->
+        <!-- 
+        <div class="highlight-box">
+          <h4 class="highlight-title">Resumen de Datos</h4>
+          <p class="paragraph" style="margin: 0; font-size: 14px;">
+            {{DETALLE_DESTACADO}}
+          </p>
+        </div>
+        -->
+
+        <!-- Botón CTA (Opcional) -->
+        <!--
+        <div class="button-container">
+          <a href="{{ENLACE_CTA}}" class="btn-cta">{{TEXTO_CTA}}</a>
+        </div>
+        -->
+
+        <!-- Mensaje de despedida cercano -->
+        <p class="paragraph" style="margin-top: 30px; margin-bottom: 0; font-style: italic;">
+          Un abrazo,<br>
+          <strong>Gabriel Jesse</strong>
+        </p>
+      </div>
+
+      <!-- Pie de página -->
+      <div class="footer">
+        <p class="footer-text">
+          Estás recibiendo este correo porque solicitaste información o iniciaste un proceso de onboarding con Gabriel J. Vazquez.<br>
+          © 2026 Gabriel J. Vazquez. Todos los derechos reservados.
+        </p>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/gabriel-jesse-vazquez/" class="social-link">LinkedIn</a>
+          <a href="https://www.instagram.com/gjvo23/" class="social-link">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
