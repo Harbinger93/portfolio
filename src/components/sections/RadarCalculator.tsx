@@ -16,7 +16,9 @@ import {
   HelpCircle,
   X,
   Clipboard,
-  Copy
+  Copy,
+  ArrowUp,
+  ArrowDown
 } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
 import 'driver.js/dist/driver.css';
@@ -51,6 +53,7 @@ export default function RadarCalculator() {
   const [error, setError] = useState<string | null>(null);
   const [cachedStatus, setCachedStatus] = useState<boolean>(false);
   const [cooldown, setCooldown] = useState(0);
+  const [previousRates, setPreviousRates] = useState<Record<string, number>>({});
 
   // Calculator State
   const [amount, setAmount] = useState<string>('100');
@@ -133,6 +136,14 @@ export default function RadarCalculator() {
 
   // Load rates on mount
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const prevCached = localStorage.getItem(CACHE_KEY + '_prev');
+      if (prevCached) {
+        try {
+          setPreviousRates(JSON.parse(prevCached));
+        } catch (e) {}
+      }
+    }
     fetchRates();
   }, []);
 
@@ -229,6 +240,21 @@ export default function RadarCalculator() {
         throw new Error(
           locale === 'es' ? 'Datos de tasas vacíos o inválidos.' : 'Empty or invalid rates data.'
         );
+      }
+
+      const currentCache = localStorage.getItem(CACHE_KEY);
+      if (currentCache) {
+        try {
+          const { data: oldData } = JSON.parse(currentCache);
+          if (oldData && oldData.rates) {
+            const prev: Record<string, number> = {};
+            oldData.rates.forEach((r: Rate) => {
+              prev[r.market] = r.mid;
+            });
+            setPreviousRates(prev);
+            localStorage.setItem(CACHE_KEY + '_prev', JSON.stringify(prev));
+          }
+        } catch (e) {}
       }
 
       setRatesData(data);
@@ -407,6 +433,20 @@ export default function RadarCalculator() {
     setIsUsdToVes(!isUsdToVes);
   };
 
+  const renderTrendIndicator = (market: string) => {
+    if (!ratesData || !previousRates[market]) return null;
+    const currentRate = ratesData.rates.find(r => r.market === market)?.mid;
+    if (!currentRate) return null;
+    
+    const prevRate = previousRates[market];
+    if (currentRate - prevRate > 0.0001) {
+      return <ArrowUp className="w-3.5 h-3.5 text-emerald-500 inline-block ml-1 animate-[fadeIn_0.5s_ease-out]" title={locale === 'es' ? 'Subió respecto a la actualización anterior' : 'Increased since last update'} />;
+    } else if (prevRate - currentRate > 0.0001) {
+      return <ArrowDown className="w-3.5 h-3.5 text-rose-500 inline-block ml-1 animate-[fadeIn_0.5s_ease-out]" title={locale === 'es' ? 'Bajó respecto a la actualización anterior' : 'Decreased since last update'} />;
+    }
+    return null;
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-6">
       {/* Interactive Mobile Result Bubble */}
@@ -532,22 +572,22 @@ export default function RadarCalculator() {
                 {/* BCV Dólar */}
                 <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-[var(--accent-primary)]/5 border border-[var(--accent-primary)]/20 shadow-[0_0_10px_rgba(0,242,254,0.05)]">
                   <span className="text-[9px] text-[var(--accent-primary)] uppercase tracking-wider mb-1">BCV Dólar</span>
-                  <span className="text-[var(--accent-primary)] text-lg font-black tracking-tight">{getMarketRateValue('reference').toFixed(2)} Bs.</span>
+                  <span className="text-[var(--accent-primary)] text-lg font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('reference').toFixed(2)} Bs.{renderTrendIndicator('reference')}</span>
                 </div>
                 {/* BCV Euro */}
                 <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-purple-500/5 border border-purple-500/20 shadow-[0_0_10px_rgba(124,58,237,0.05)]">
                   <span className="text-[9px] text-purple-400 uppercase tracking-wider mb-1">BCV Euro</span>
-                  <span className="text-purple-400 text-lg font-black tracking-tight">{getMarketRateValue('eur_reference').toFixed(2)} Bs.</span>
+                  <span className="text-purple-400 text-lg font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('eur_reference').toFixed(2)} Bs.{renderTrendIndicator('eur_reference')}</span>
                 </div>
                 {/* Binance P2P */}
                 <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.05)]">
                   <span className="text-[9px] text-emerald-400 uppercase tracking-wider mb-1">Binance P2P</span>
-                  <span className="text-emerald-400 text-lg font-black tracking-tight">{getMarketRateValue('binance').toFixed(2)} Bs.</span>
+                  <span className="text-emerald-400 text-lg font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('binance').toFixed(2)} Bs.{renderTrendIndicator('binance')}</span>
                 </div>
                 {/* Paralelo */}
                 <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-white/[0.02] border border-glass-border">
                   <span className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider mb-1">Paralelo</span>
-                  <span className="text-[var(--text-primary)] text-lg font-black tracking-tight">{getMarketRateValue('parallel').toFixed(2)} Bs.</span>
+                  <span className="text-[var(--text-primary)] text-lg font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('parallel').toFixed(2)} Bs.{renderTrendIndicator('parallel')}</span>
                 </div>
               </div>
             </div>
@@ -671,8 +711,10 @@ export default function RadarCalculator() {
                     }`}
                   >
                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 pr-6">BCV (Dólar)</span>
-                    <span className="text-sm font-extrabold mt-1 text-[var(--text-primary)]">
-                      {getMarketRateValue('reference') > 0 ? `${getMarketRateValue('reference').toFixed(2)} Bs.` : '---'}
+                    <span className="text-sm font-extrabold mt-1 text-[var(--text-primary)] flex items-center">
+                      {getMarketRateValue('reference') > 0 ? (
+                        <>{getMarketRateValue('reference').toFixed(2)} Bs.{renderTrendIndicator('reference')}</>
+                      ) : '---'}
                     </span>
                     <div className={`absolute top-2.5 right-2.5 w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
                       selectedMarket === 'reference'
@@ -693,8 +735,10 @@ export default function RadarCalculator() {
                     }`}
                   >
                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 pr-6">BCV (Euro)</span>
-                    <span className="text-sm font-extrabold mt-1 text-purple-400">
-                      {getMarketRateValue('eur_reference') > 0 ? `${getMarketRateValue('eur_reference').toFixed(2)} Bs.` : '---'}
+                    <span className="text-sm font-extrabold mt-1 text-purple-400 flex items-center">
+                      {getMarketRateValue('eur_reference') > 0 ? (
+                        <>{getMarketRateValue('eur_reference').toFixed(2)} Bs.{renderTrendIndicator('eur_reference')}</>
+                      ) : '---'}
                     </span>
                     <div className={`absolute top-2.5 right-2.5 w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
                       selectedMarket === 'eur_reference'
@@ -715,8 +759,10 @@ export default function RadarCalculator() {
                     }`}
                   >
                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 pr-6">Binance P2P</span>
-                    <span className="text-sm font-extrabold mt-1 text-emerald-400">
-                      {getMarketRateValue('binance') > 0 ? `${getMarketRateValue('binance').toFixed(2)} Bs.` : '---'}
+                    <span className="text-sm font-extrabold mt-1 text-emerald-400 flex items-center">
+                      {getMarketRateValue('binance') > 0 ? (
+                        <>{getMarketRateValue('binance').toFixed(2)} Bs.{renderTrendIndicator('binance')}</>
+                      ) : '---'}
                     </span>
                     <div className={`absolute top-2.5 right-2.5 w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
                       selectedMarket === 'binance'
@@ -737,8 +783,10 @@ export default function RadarCalculator() {
                     }`}
                   >
                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 pr-6">Paralelo</span>
-                    <span className="text-sm font-extrabold mt-1 text-[var(--accent-primary)]">
-                      {getMarketRateValue('parallel') > 0 ? `${getMarketRateValue('parallel').toFixed(2)} Bs.` : '---'}
+                    <span className="text-sm font-extrabold mt-1 text-[var(--accent-primary)] flex items-center">
+                      {getMarketRateValue('parallel') > 0 ? (
+                        <>{getMarketRateValue('parallel').toFixed(2)} Bs.{renderTrendIndicator('parallel')}</>
+                      ) : '---'}
                     </span>
                     <div className={`absolute top-2.5 right-2.5 w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-200 ${
                       selectedMarket === 'parallel'
@@ -948,8 +996,8 @@ export default function RadarCalculator() {
 
                           <div className="text-right shrink-0 flex items-center gap-2">
                             <div>
-                              <p className="text-xs font-black text-[var(--text-primary)]">
-                                {rate.mid.toFixed(2)} Bs.
+                              <p className="text-xs font-black text-[var(--text-primary)] flex items-center justify-end">
+                                {rate.mid.toFixed(2)} Bs.{renderTrendIndicator(rate.market)}
                               </p>
                               {rate.ask && rate.bid && (
                                 <p className="text-[8px] text-[var(--text-secondary)] font-mono">
@@ -1033,8 +1081,8 @@ export default function RadarCalculator() {
                             <td className="p-4 text-xs font-bold text-[var(--text-primary)]">
                               {formatMarketName(rate.market)}
                             </td>
-                            <td className="p-4 text-xs font-mono text-[var(--text-primary)] text-right">
-                              {rate.mid.toFixed(4)} Bs.
+                            <td className="p-4 text-xs font-mono text-[var(--text-primary)] text-right flex items-center justify-end">
+                              {rate.mid.toFixed(4)} Bs.{renderTrendIndicator(rate.market)}
                             </td>
                             <td className="p-4 text-xs font-bold text-[var(--text-primary)] text-right font-mono">
                               {isUsdToVes ? 'Bs.' : '$'} {calculateConversion(rate.mid)}

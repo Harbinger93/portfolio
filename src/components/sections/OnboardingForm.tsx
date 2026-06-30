@@ -811,6 +811,7 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
                         {sect.includes('Blog') && 'Redacta los primeros artículos informativos con sus títulos y categorías correspondientes.'}
                         {sect.includes('Contacto') && 'Prepara tus teléfonos de soporte, correo, redes oficiales y dirección física.'}
                         {sect.includes('Preguntas') && 'Escribe las preguntas más comunes de tus clientes y sus respuestas correspondientes.'}
+                        {sect.includes('Tienda') && 'Sube fotos de tus productos, descripciones, precios e inventario inicial.'}
                       </span>
                     </div>
                   ))}
@@ -1191,7 +1192,8 @@ Configura tu carpeta en la nube como "Cualquier persona con el enlace puede edit
                     'Portafolio / Casos de éxito',
                     'Blog / Artículos',
                     'Contacto / Ubicación',
-                    'Preguntas Frecuentes (FAQ)'
+                    'Preguntas Frecuentes (FAQ)',
+                    'Tienda (Stock, checkout, pasarelas de pago)'
                   ].map((section) => (
                     <div key={section} className="flex items-center gap-2 text-xs">
                       <input
