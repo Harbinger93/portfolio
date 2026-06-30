@@ -1,4 +1,5 @@
 ---
+import { pwaInfo } from 'virtual:pwa-info';
 import "../styles/global.css";
 import GlowBackground from "../components/ui/GlowBackground";
 import Navbar from "../components/layout/Navbar";
@@ -44,6 +45,7 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
     <meta name="theme-color" content="#050505" />
     {isHome && <link rel="preload" href="/avatar.webp" as="image" type="image/webp" fetchpriority="high" />}
     <link rel="preload" href="/avatar-nav.webp" as="image" type="image/webp" />

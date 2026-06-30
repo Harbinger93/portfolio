@@ -18,7 +18,9 @@ import {
   Clipboard,
   Copy,
   ArrowUp,
-  ArrowDown
+  ArrowDown,
+  Download,
+  Home
 } from 'lucide-react';
 import GlowCard from '../ui/GlowCard';
 import 'driver.js/dist/driver.css';
@@ -66,6 +68,34 @@ export default function RadarCalculator() {
   const [viewport, setViewport] = useState({ offsetLeft: 0, offsetTop: 0, width: 0 });
   const [copiedResult, setCopiedResult] = useState(false);
   const isFirstRender = useRef(true);
+
+  // PWA Install State
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstallable, setIsInstallable] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setIsInstallable(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setIsInstallable(false);
+    }
+    setDeferredPrompt(null);
+  };
 
   const startTutorial = async () => {
     const { driver } = await import('driver.js');
@@ -475,8 +505,30 @@ export default function RadarCalculator() {
         </div>
       )}
       {/* Header */}
-      <div className="text-center mb-12 flex flex-col items-center justify-center">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative" id="radar-title-section">
+      <div className="text-center mb-12 flex flex-col items-center justify-center relative pt-8">
+        {/* Top Navigation / App Actions */}
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-between">
+          <a
+            href="/"
+            className="flex items-center gap-1.5 text-xs font-bold text-[var(--text-secondary)] hover:text-[#10B981] transition-colors p-2 bg-[var(--bg-secondary)] border border-glass-border rounded-xl"
+            title={locale === 'es' ? 'Volver al Inicio' : 'Back to Home'}
+          >
+            <Home className="w-4 h-4" />
+            <span className="hidden sm:inline">{locale === 'es' ? 'Inicio' : 'Home'}</span>
+          </a>
+
+          {isInstallable && (
+            <button
+              onClick={handleInstallClick}
+              className="flex items-center gap-1.5 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 px-3 py-1.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all"
+            >
+              <Download className="w-4 h-4" />
+              <span>{locale === 'es' ? 'Instalar App' : 'Install App'}</span>
+            </button>
+          )}
+        </div>
+
+        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative mt-8 md:mt-4" id="radar-title-section">
           <span>{locale === 'es' ? 'Radar de Cotizaciones' : 'Rates Radar'}</span>
           <div className="inline-block">
             <button

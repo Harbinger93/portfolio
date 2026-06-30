@@ -3,6 +3,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import { loadEnv } from 'vite';
 import sentry from '@sentry/astro';
+import AstroPWA from '@vite-pwa/astro';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 const apiKey = env.COTIZAVE_API_KEY;
@@ -15,6 +16,54 @@ export default defineConfig({
       project: "javascript-astro",
       org: "gabrielvazquezdev",
       authToken: process.env.SENTRY_AUTH_TOKEN,
+    }),
+    AstroPWA({
+      registerType: 'autoUpdate',
+      injectRegister: 'script',
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
+        navigateFallback: '/herramientas/radar',
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/api\.cotizave\.com\/.*$/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'cotizave-api-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 15 // 15 minutes
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          }
+        ]
+      },
+      manifest: {
+        name: 'Radar',
+        short_name: 'Radar BCV',
+        description: 'Calculadora de conversiones y tasas BCV / Paralelo',
+        theme_color: '#090d16',
+        background_color: '#090d16',
+        display: 'standalone',
+        start_url: '/herramientas/radar',
+        scope: '/herramientas/',
+        icons: [
+          {
+            src: '/radar-icon.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
+          {
+            src: '/radar-icon.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
+          }
+        ]
+      }
     }),
   ],
   vite: {
