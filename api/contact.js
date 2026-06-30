@@ -118,19 +118,24 @@ export default async function handler(req, res) {
           gabrielEmailHtml = `Nuevo mensaje de ${nombre} (${email}): ${mensaje}`;
         }
 
-        await fetch('https://api.resend.com/emails', {
+        const resGabriel = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${resendApiKey}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: 'Portafolio <onboarding@resend.dev>',
+            from: 'Portafolio <hola@gabrielvazquez.dev>',
             to: ['dev.gabo23@gmail.com'],
             subject: `📬 Nuevo contacto de ${nombre}`,
             html: gabrielEmailHtml
           })
         });
+
+        if (!resGabriel.ok) {
+          const errData = await resGabriel.json();
+          console.error('Error from Resend (Gabriel notification):', errData);
+        }
 
         // 2. Confirmation to Client (wrapped in try/catch for Sandbox restrictions)
         try {
@@ -142,19 +147,24 @@ export default async function handler(req, res) {
             clientEmailHtml = `¡Hola ${nombre}! He recibido tu mensaje correctamente.`;
           }
 
-          await fetch('https://api.resend.com/emails', {
+          const resClient = await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${resendApiKey}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              from: 'Gabriel J. Vazquez <onboarding@resend.dev>',
+              from: 'Gabriel J. Vazquez <hola@gabrielvazquez.dev>',
               to: [email],
               subject: '¡Mensaje recibido con éxito!',
               html: clientEmailHtml
             })
           });
+
+          if (!resClient.ok) {
+            const errData = await resClient.json();
+            console.error('Error from Resend (Client confirmation):', errData);
+          }
         } catch (clientEmailErr) {
           console.error('Error sending confirmation email to client:', clientEmailErr);
         }

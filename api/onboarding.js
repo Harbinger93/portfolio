@@ -118,19 +118,24 @@ export default async function handler(req, res) {
             driveEmailHtml = `Drive Link for ${id}: ${driveFolderLink}`;
           }
 
-          await fetch('https://api.resend.com/emails', {
+          const resDrive = await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${resendApiKey}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              from: 'Briefing Web <onboarding@resend.dev>',
+              from: 'Briefing Web <hola@gabrielvazquez.dev>',
               to: ['dev.gabo23@gmail.com'],
               subject: `📂 Carpeta de Drive cargada para Onboarding: ${id}`,
               html: driveEmailHtml
             })
           });
+
+          if (!resDrive.ok) {
+            const errData = await resDrive.json();
+            console.error('Error from Resend (Drive notification):', errData);
+          }
         }
       } catch (emailErr) {
         console.error('Error sending Drive update email via Resend:', emailErr);
@@ -242,19 +247,24 @@ export default async function handler(req, res) {
             gabrielOnboardingHtml = `Nuevo Briefing de ${companyName} (${contactPerson})`;
           }
 
-          await fetch('https://api.resend.com/emails', {
+          const resGabriel = await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${resendApiKey}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              from: 'Briefing Web <onboarding@resend.dev>',
+              from: 'Briefing Web <hola@gabrielvazquez.dev>',
               to: ['dev.gabo23@gmail.com'],
               subject: `🚀 Nuevo Briefing: ${companyName} (${contactPerson})`,
               html: gabrielOnboardingHtml
             })
           });
+
+          if (!resGabriel.ok) {
+            const errData = await resGabriel.json();
+            console.error('Error from Resend (Gabriel notification):', errData);
+          }
 
           // 2. Welcome and instructions to the Client
           try {
@@ -269,19 +279,24 @@ export default async function handler(req, res) {
               clientOnboardingHtml = `¡Hola ${contactPerson}! He recibido el briefing de ${companyName} correctamente.`;
             }
 
-            await fetch('https://api.resend.com/emails', {
+            const resClient = await fetch('https://api.resend.com/emails', {
               method: 'POST',
               headers: {
                 'Authorization': `Bearer ${resendApiKey}`,
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                from: 'Gabriel J. Vazquez <onboarding@resend.dev>',
+                from: 'Gabriel J. Vazquez <hola@gabrielvazquez.dev>',
                 to: [email],
                 subject: '¡Briefing recibido! Comencemos con tu proyecto web',
                 html: clientOnboardingHtml
               })
             });
+
+            if (!resClient.ok) {
+              const errData = await resClient.json();
+              console.error('Error from Resend (Client confirmation):', errData);
+            }
           } catch (clientEmailErr) {
             console.error('Error sending welcome email to client:', clientEmailErr);
           }
