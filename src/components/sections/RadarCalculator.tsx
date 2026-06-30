@@ -48,7 +48,7 @@ const CACHE_KEY = 'cotizave_rates_cache';
 const CACHE_TIME = 10 * 60 * 1000; // 10 minutes in milliseconds
 const COOLDOWN_TIME = 15; // Cooldown in seconds for manual refresh
 
-export default function RadarCalculator() {
+export default function RadarCalculator({ standalone = false }: { standalone?: boolean }) {
   const { locale } = useI18n();
   const [ratesData, setRatesData] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState(false);
@@ -507,28 +507,30 @@ export default function RadarCalculator() {
       {/* Header */}
       <div className="text-center mb-12 flex flex-col items-center justify-center relative pt-8">
         {/* Top Navigation / App Actions */}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between">
-          <a
-            href="/"
-            className="flex items-center gap-1.5 text-xs font-bold text-[var(--text-secondary)] hover:text-[#10B981] transition-colors p-2 bg-[var(--bg-secondary)] border border-glass-border rounded-xl"
-            title={locale === 'es' ? 'Volver al Inicio' : 'Back to Home'}
-          >
-            <Home className="w-4 h-4" />
-            <span className="hidden sm:inline">{locale === 'es' ? 'Inicio' : 'Home'}</span>
-          </a>
-
-          {isInstallable && (
-            <button
-              onClick={handleInstallClick}
-              className="flex items-center gap-1.5 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 px-3 py-1.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all"
+        {!standalone && (
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-between">
+            <a
+              href="/"
+              className="flex items-center gap-1.5 text-xs font-bold text-[var(--text-secondary)] hover:text-[#10B981] transition-colors p-2 bg-[var(--bg-secondary)] border border-glass-border rounded-xl"
+              title={locale === 'es' ? 'Volver al Inicio' : 'Back to Home'}
             >
-              <Download className="w-4 h-4" />
-              <span>{locale === 'es' ? 'Instalar App' : 'Install App'}</span>
-            </button>
-          )}
-        </div>
+              <Home className="w-4 h-4" />
+              <span className="hidden sm:inline">{locale === 'es' ? 'Inicio' : 'Home'}</span>
+            </a>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative mt-8 md:mt-4" id="radar-title-section">
+            {isInstallable && (
+              <button
+                onClick={handleInstallClick}
+                className="flex items-center gap-1.5 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 px-3 py-1.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all"
+              >
+                <Download className="w-4 h-4" />
+                <span>{locale === 'es' ? 'Instalar App' : 'Install App'}</span>
+              </button>
+            )}
+          </div>
+        )}
+
+        <h1 className={`text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative ${standalone ? 'mt-2' : 'mt-8 md:mt-4'}`} id="radar-title-section">
           <span>{locale === 'es' ? 'Radar de Cotizaciones' : 'Rates Radar'}</span>
           <div className="inline-block">
             <button
@@ -1089,7 +1091,7 @@ export default function RadarCalculator() {
       </div>
 
       {/* Cross-Market Equivalency Table */}
-      {ratesData && (
+      {ratesData && !standalone && (
         <div className="animate-[fadeIn_0.5s_ease-out_forwards] mb-12">
           <h3 className="text-sm font-extrabold tracking-wider text-[var(--text-secondary)] uppercase mb-4 flex items-center gap-2">
             <Building2 className="w-4 h-4 text-[#10B981]" />
@@ -1160,7 +1162,8 @@ export default function RadarCalculator() {
       )}
 
       {/* Legal Disclaimer */}
-      <div className="mt-12 p-5 rounded-2xl border border-glass-border bg-white/[0.01] text-[10px] md:text-xs text-[var(--text-secondary)] leading-relaxed text-center w-full backdrop-blur-sm animate-[fadeIn_0.5s_ease-out_forwards]">
+      {!standalone && (
+        <div className="mt-12 p-5 rounded-2xl border border-glass-border bg-white/[0.01] text-[10px] md:text-xs text-[var(--text-secondary)] leading-relaxed text-center w-full backdrop-blur-sm animate-[fadeIn_0.5s_ease-out_forwards]">
         <p>
           {locale === 'es' ? (
             <strong>Aviso de Responsabilidad:</strong>
@@ -1174,6 +1177,7 @@ export default function RadarCalculator() {
           )}
         </p>
       </div>
+      )}
     </div>
   );
 }

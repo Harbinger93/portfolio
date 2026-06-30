@@ -1,10 +1,10 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppLayout from '../../layouts/AppLayout.astro';
 import RadarCalculator from '../../components/sections/RadarCalculator';
 ---
 
-<BaseLayout>
-  <div class="pt-32 pb-24">
-    <RadarCalculator client:load />
+<AppLayout title="Radar de Cotizaciones | Gabriel Vazquez" noindex={true}>
+  <div class="w-full h-full p-2 sm:p-4 max-h-[100vh] overflow-y-auto overflow-x-hidden custom-scrollbar">
+    <RadarCalculator client:load standalone={true} />
   </div>
-</BaseLayout>
+</AppLayout>

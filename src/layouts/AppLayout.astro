@@ -1,0 +1,112 @@
+---
+import { pwaInfo } from 'virtual:pwa-info';
+import "../styles/global.css";
+import GlowBackground from "../components/ui/GlowBackground";
+import { ViewTransitions } from 'astro:transitions';
+import Analytics from '@vercel/analytics/astro';
+
+const { noindex = false, title = "Gabriel Vazquez" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    {noindex && <meta name="robots" content="noindex, nofollow, noarchive" />}
+    <meta name="theme-color" content="#050505" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
+    <link rel="preload" href="/fonts/inter-weight-7.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-weight-14.woff2" as="font" type="font/woff2" crossorigin />
+    <style is:inline>
+      /* latin 400 */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(/fonts/inter-weight-7.woff2) format('woff2');
+      }
+      /* latin 700 */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url(/fonts/inter-weight-14.woff2) format('woff2');
+      }
+      /* latin 800 */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 800;
+        font-display: swap;
+        src: url(/fonts/inter-weight-21.woff2) format('woff2');
+      }
+      /* latin 900 */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url(/fonts/inter-weight-28.woff2) format('woff2');
+      }
+    </style>
+    <ViewTransitions />
+    <title>{title}</title>
+    <!-- Google tag (gtag.js) - Deferred loading to prioritize FCP/LCP -->
+    <script is:inline>
+      const loadGA = () => {
+        if (window.gaLoaded) return;
+        window.gaLoaded = true;
+        
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Y4KY950MXL';
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-Y4KY950MXL');
+      };
+
+      if (document.readyState === 'complete') {
+        setTimeout(loadGA, 1000);
+      } else {
+        window.addEventListener('load', () => setTimeout(loadGA, 1000));
+      }
+    </script>
+    <script is:inline>
+      const applyTheme = () => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light") {
+          document.documentElement.classList.add("light");
+        } else {
+          document.documentElement.classList.remove("light");
+        }
+      };
+
+      applyTheme();
+      document.addEventListener("astro:after-swap", applyTheme);
+      
+      // Prevent theme flashing during Astro view transitions
+      document.addEventListener("astro:before-swap", (e) => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light") {
+          e.newDocument.documentElement.classList.add("light");
+        } else {
+          e.newDocument.documentElement.classList.remove("light");
+        }
+      });
+    </script>
+  </head>
+  <body class="antialiased h-screen w-screen overflow-hidden flex flex-col bg-[#050505]">
+    <GlowBackground transition:persist />
+    <main class="flex-1 h-full w-full flex items-center justify-center overflow-hidden">
+      <slot />
+    </main>
+    <Analytics />
+  </body>
+</html>
