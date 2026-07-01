@@ -497,12 +497,50 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
       return <ArrowDown className="w-3.5 h-3.5 text-rose-500 inline-block ml-1 animate-[fadeIn_0.5s_ease-out]" title={locale === 'es' ? 'Bajó respecto a la actualización anterior' : 'Decreased since last update'} />;
     }
     return null;
-  };
+  const resultBlock = (
+    <div id="radar-result" className={`p-4 md:p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 ${pwaMode ? 'mb-4 w-full animate-[fadeIn_0.3s_ease-out]' : 'mt-4'}`}>
+      <div className="text-center">
+        <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+          {locale === 'es' ? 'Resultado de Conversión' : 'Conversion Result'}
+        </span>
+        
+        {/* Grand Conversion Value */}
+        <div className="text-3xl md:text-4xl font-black text-[var(--text-primary)] mt-2 tracking-tight flex items-center justify-center gap-2">
+          <span>{isUsdToVes ? 'Bs.' : '$'}</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] to-teal-400">
+            {calculateConversion()}
+          </span>
+          <button
+            type="button"
+            onClick={handleCopyResult}
+            className="p-1.5 rounded-lg text-[var(--text-secondary)]/50 hover:text-[#10B981] hover:bg-white/5 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center"
+            title={locale === 'es' ? 'Copiar al portapapeles' : 'Copy to clipboard'}
+            aria-label="Copy conversion result"
+          >
+            {copiedResult ? (
+              <Check className="w-5 h-5 text-[#10B981] animate-[zoomIn_0.2s_ease-out]" />
+            ) : (
+              <Copy className="w-5 h-5 hover:scale-105 transition-transform" />
+            )}
+          </button>
+        </div>
+
+        <div className="text-[10px] font-mono text-[var(--text-secondary)]/80 mt-2 flex items-center justify-center gap-1.5">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
+          <span>
+            {locale === 'es' 
+              ? `Calculado a tasa: ${formatMarketName(selectedMarket)} (${getActiveRate().toFixed(2)} Bs.)`
+              : `Calculated at rate: ${formatMarketName(selectedMarket)} (${getActiveRate().toFixed(2)} Bs.)`}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="max-w-4xl mx-auto px-6">
       {/* Interactive Mobile Result Bubble */}
-      {(isBubbleVisible || pwaMode) && (
+      {isBubbleVisible && !pwaMode && (
         <div 
           className={`lg:hidden fixed z-40 bg-[var(--glass-bg)] backdrop-blur-xl border border-emerald-500/40 shadow-[0_8px_30px_rgba(16,185,129,0.25)] px-5 py-2.5 rounded-full flex items-center gap-2.5 whitespace-nowrap select-none transition-all duration-300 ${!pwaMode ? 'animate-bounce-in' : ''}`}
           style={{ 
@@ -654,7 +692,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
         
         {/* Left Panel: Calculator Card */}
         <div className="lg:col-span-7">
-          {ratesData && (
+          {ratesData && !pwaMode && (
             <div className="lg:hidden flex justify-center mb-3 w-full animate-[fadeIn_0.3s_ease-out]" id="radar-mobile-pill">
               <div className="bg-[var(--glass-bg)] border border-glass-border backdrop-blur-xl p-2.5 rounded-2xl w-full max-w-sm shadow-xl grid grid-cols-2 gap-2 text-xs font-bold text-[var(--text-secondary)]">
                 {/* BCV Dólar */}
@@ -680,6 +718,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
               </div>
             </div>
           )}
+          {pwaMode && resultBlock}
           
           <GlowCard className="border border-glass-border h-auto lg:h-full flex flex-col justify-between">
             <div>
@@ -754,7 +793,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
               </div>
 
               {/* Conversion Direction Selector */}
-              <div id="radar-direction-selector" className="flex items-center justify-between gap-4 mb-6 p-4 rounded-xl bg-white/[0.02] border border-glass-border">
+              <div id="radar-direction-selector" className="flex items-center justify-between gap-3 mb-4 p-3 rounded-xl bg-white/[0.02] border border-glass-border">
                 <div className="flex-1 text-center">
                   <span className="block text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1">
                     {locale === 'es' ? 'Tengo' : 'From'}
@@ -794,7 +833,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
                     onClick={() => setSelectedMarket('reference')}
                     className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'reference'
-                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)] shadow-[0_0_15px_rgba(16,185,129,0.1)]'
+                        ? 'bg-[#10B981]/25 border-[#10B981] text-[var(--text-primary)] shadow-[0_0_15px_rgba(16,185,129,0.15)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
@@ -818,7 +857,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
                     onClick={() => setSelectedMarket('eur_reference')}
                     className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'eur_reference'
-                        ? 'bg-purple-500/10 border-purple-500 text-[var(--text-primary)] shadow-[0_0_15px_rgba(124,58,237,0.1)]'
+                        ? 'bg-purple-500/25 border-purple-500 text-[var(--text-primary)] shadow-[0_0_15px_rgba(124,58,237,0.15)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
@@ -842,7 +881,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
                     onClick={() => setSelectedMarket('binance')}
                     className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'binance'
-                        ? 'bg-emerald-500/10 border-emerald-500 text-[var(--text-primary)] shadow-[0_0_15px_rgba(16,185,129,0.1)]'
+                        ? 'bg-emerald-500/25 border-emerald-500 text-[var(--text-primary)] shadow-[0_0_15px_rgba(16,185,129,0.15)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
@@ -866,7 +905,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
                     onClick={() => setSelectedMarket('parallel')}
                     className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'parallel'
-                        ? 'bg-[var(--accent-primary)]/10 border-[var(--accent-primary)] text-[var(--text-primary)] shadow-[0_0_15px_rgba(0,242,254,0.1)]'
+                        ? 'bg-[var(--accent-primary)]/25 border-[var(--accent-primary)] text-[var(--text-primary)] shadow-[0_0_15px_rgba(0,242,254,0.15)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
@@ -890,7 +929,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
                     onClick={() => setSelectedMarket('custom')}
                     className={`relative p-3 rounded-xl border text-left flex flex-col transition-all cursor-pointer col-span-2 sm:col-span-2 hover:scale-[1.02] active:scale-[0.98] duration-200 ${
                       selectedMarket === 'custom'
-                        ? 'bg-[#10B981]/10 border-[#10B981] text-[var(--text-primary)] shadow-[0_0_15px_rgba(16,185,129,0.1)]'
+                        ? 'bg-[#10B981]/25 border-[#10B981] text-[var(--text-primary)] shadow-[0_0_15px_rgba(16,185,129,0.15)]'
                         : 'bg-white/[0.02] border-glass-border text-[var(--text-secondary)] hover:bg-white/5'
                     }`}
                   >
@@ -925,43 +964,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
             </div>
 
             {/* Conversion Result Block */}
-            <div id="radar-result" className={`p-4 md:p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 mt-4 ${pwaMode ? 'hidden lg:block' : ''}`}>
-              <div className="text-center">
-                <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
-                  {locale === 'es' ? 'Resultado de Conversión' : 'Conversion Result'}
-                </span>
-                
-                {/* Grand Conversion Value */}
-                <div className="text-3xl md:text-4xl font-black text-[var(--text-primary)] mt-2 tracking-tight flex items-center justify-center gap-2">
-                  <span>{isUsdToVes ? 'Bs.' : '$'}</span>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] to-teal-400">
-                    {calculateConversion()}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={handleCopyResult}
-                    className="p-1.5 rounded-lg text-[var(--text-secondary)]/50 hover:text-[#10B981] hover:bg-white/5 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center"
-                    title={locale === 'es' ? 'Copiar al portapapeles' : 'Copy to clipboard'}
-                    aria-label="Copy conversion result"
-                  >
-                    {copiedResult ? (
-                      <Check className="w-5 h-5 text-[#10B981] animate-[zoomIn_0.2s_ease-out]" />
-                    ) : (
-                      <Copy className="w-5 h-5 hover:scale-105 transition-transform" />
-                    )}
-                  </button>
-                </div>
-
-                <div className="text-[10px] font-mono text-[var(--text-secondary)]/80 mt-2 flex items-center justify-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
-                  <span>
-                    {locale === 'es' 
-                      ? `Calculado a tasa: ${formatMarketName(selectedMarket)} (${getActiveRate().toFixed(2)} Bs.)`
-                      : `Calculated at rate: ${formatMarketName(selectedMarket)} (${getActiveRate().toFixed(2)} Bs.)`}
-                  </span>
-                </div>
-              </div>
-            </div>
+            {!pwaMode && resultBlock}
           </GlowCard>
         </div>
 
