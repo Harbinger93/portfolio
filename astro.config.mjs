@@ -22,7 +22,7 @@ export default defineConfig({
       injectRegister: 'script',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
-        navigateFallback: '/pwa/radar',
+        navigateFallback: '/pwa/radar/index.html',
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/api\.cotizave\.com\/.*$/i,
@@ -47,7 +47,7 @@ export default defineConfig({
         theme_color: '#090d16',
         background_color: '#090d16',
         display: 'standalone',
-        start_url: '/pwa/radar',
+        start_url: '/pwa/radar/',
         scope: '/',
         icons: [
           {
