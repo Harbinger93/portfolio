@@ -502,9 +502,9 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
   return (
     <div className="max-w-4xl mx-auto px-6">
       {/* Interactive Mobile Result Bubble */}
-      {isBubbleVisible && (
+      {(isBubbleVisible || pwaMode) && (
         <div 
-          className="lg:hidden fixed z-40 bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_30px_rgba(16,185,129,0.2)] px-6 py-3 rounded-full flex items-center gap-3 whitespace-nowrap animate-bounce-in select-none"
+          className={`lg:hidden fixed z-40 bg-[var(--glass-bg)] backdrop-blur-xl border border-emerald-500/40 shadow-[0_8px_30px_rgba(16,185,129,0.25)] px-5 py-2.5 rounded-full flex items-center gap-2.5 whitespace-nowrap select-none transition-all duration-300 ${!pwaMode ? 'animate-bounce-in' : ''}`}
           style={{ 
             top: typeof window !== 'undefined' && window.visualViewport 
               ? `${viewport.offsetTop + (viewport.offsetTop > 10 ? 12 : 96)}px` 
@@ -515,15 +515,24 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
             transform: 'translate(-50%, 0)'
           }}
         >
-          <span className="text-xs font-bold text-[var(--text-secondary)]/90 uppercase tracking-wider">
+          <span className="text-[10px] font-bold text-[var(--text-secondary)]/90 uppercase tracking-wider">
             {getShortMarketName(selectedMarket)}:
           </span>
-          <span className="text-base font-black text-[var(--text-primary)]">
+          <span className="text-sm font-black text-[var(--text-primary)]">
             {isUsdToVes ? 'Bs.' : '$'}
           </span>
           <span className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
             {calculateConversion()}
           </span>
+          <div className="w-px h-4 bg-glass-border mx-1"></div>
+          <button
+            type="button"
+            onClick={handleCopyResult}
+            className="text-[var(--text-secondary)] hover:text-[#10B981] active:scale-95 transition-all p-1"
+            aria-label="Copy result"
+          >
+            {copiedResult ? <Check className="w-4 h-4 text-[#10B981]" /> : <Copy className="w-4 h-4" />}
+          </button>
         </div>
       )}
       {/* Header */}
@@ -916,7 +925,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
             </div>
 
             {/* Conversion Result Block */}
-            <div id="radar-result" className="p-4 md:p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 mt-4">
+            <div id="radar-result" className={`p-4 md:p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 mt-4 ${pwaMode ? 'hidden lg:block' : ''}`}>
               <div className="text-center">
                 <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                   {locale === 'es' ? 'Resultado de Conversión' : 'Conversion Result'}
