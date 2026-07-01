@@ -102,14 +102,19 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
   }, []);
 
   const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        setIsInstallable(false);
+    try {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          setIsInstallable(false);
+        }
+        setDeferredPrompt(null);
+      } else {
+        setShowInstallGuide(true);
       }
-      setDeferredPrompt(null);
-    } else {
+    } catch (error) {
+      console.error('Error with native install prompt:', error);
       setShowInstallGuide(true);
     }
   };
@@ -537,8 +542,9 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
 
             {isInstallable && (
               <button
+                type="button"
                 onClick={handleInstallClick}
-                className="flex items-center gap-1.5 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 px-3 py-1.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all"
+                className="flex items-center gap-1.5 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 px-3 py-1.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all cursor-pointer relative z-50"
               >
                 <Download className="w-4 h-4" />
                 <span>{locale === 'es' ? 'Instalar App' : 'Install App'}</span>
