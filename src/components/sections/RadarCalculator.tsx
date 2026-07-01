@@ -644,27 +644,27 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
         {/* Left Panel: Calculator Card */}
         <div className="lg:col-span-7">
           {ratesData && (
-            <div className="lg:hidden flex justify-center mb-6 w-full animate-[fadeIn_0.3s_ease-out]" id="radar-mobile-pill">
-              <div className="bg-[var(--glass-bg)] border border-glass-border backdrop-blur-xl p-4 rounded-2xl w-full max-w-sm shadow-xl grid grid-cols-2 gap-3 text-xs font-bold text-[var(--text-secondary)]">
+            <div className="lg:hidden flex justify-center mb-3 w-full animate-[fadeIn_0.3s_ease-out]" id="radar-mobile-pill">
+              <div className="bg-[var(--glass-bg)] border border-glass-border backdrop-blur-xl p-2.5 rounded-2xl w-full max-w-sm shadow-xl grid grid-cols-2 gap-2 text-xs font-bold text-[var(--text-secondary)]">
                 {/* BCV Dólar */}
-                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-[var(--accent-primary)]/5 border border-[var(--accent-primary)]/20 shadow-[0_0_10px_rgba(0,242,254,0.05)]">
-                  <span className="text-[9px] text-[var(--accent-primary)] uppercase tracking-wider mb-1">BCV Dólar</span>
-                  <span className="text-[var(--accent-primary)] text-lg font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('reference').toFixed(2)} Bs.{renderTrendIndicator('reference')}</span>
+                <div className="flex flex-col items-center justify-center p-1.5 rounded-xl bg-[var(--accent-primary)]/5 border border-[var(--accent-primary)]/20 shadow-[0_0_10px_rgba(0,242,254,0.05)]">
+                  <span className="text-[8px] text-[var(--accent-primary)] uppercase tracking-wider mb-0.5">BCV Dólar</span>
+                  <span className="text-[var(--accent-primary)] text-sm sm:text-base font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('reference').toFixed(2)} Bs.{renderTrendIndicator('reference')}</span>
                 </div>
                 {/* BCV Euro */}
-                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-purple-500/5 border border-purple-500/20 shadow-[0_0_10px_rgba(124,58,237,0.05)]">
-                  <span className="text-[9px] text-purple-400 uppercase tracking-wider mb-1">BCV Euro</span>
-                  <span className="text-purple-400 text-lg font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('eur_reference').toFixed(2)} Bs.{renderTrendIndicator('eur_reference')}</span>
+                <div className="flex flex-col items-center justify-center p-1.5 rounded-xl bg-purple-500/5 border border-purple-500/20 shadow-[0_0_10px_rgba(124,58,237,0.05)]">
+                  <span className="text-[8px] text-purple-400 uppercase tracking-wider mb-0.5">BCV Euro</span>
+                  <span className="text-purple-400 text-sm sm:text-base font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('eur_reference').toFixed(2)} Bs.{renderTrendIndicator('eur_reference')}</span>
                 </div>
                 {/* Binance P2P */}
-                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.05)]">
-                  <span className="text-[9px] text-emerald-400 uppercase tracking-wider mb-1">Binance P2P</span>
-                  <span className="text-emerald-400 text-lg font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('binance').toFixed(2)} Bs.{renderTrendIndicator('binance')}</span>
+                <div className="flex flex-col items-center justify-center p-1.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.05)]">
+                  <span className="text-[8px] text-emerald-400 uppercase tracking-wider mb-0.5">Binance P2P</span>
+                  <span className="text-emerald-400 text-sm sm:text-base font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('binance').toFixed(2)} Bs.{renderTrendIndicator('binance')}</span>
                 </div>
                 {/* Paralelo */}
-                <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-white/[0.02] border border-glass-border">
-                  <span className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wider mb-1">Paralelo</span>
-                  <span className="text-[var(--text-primary)] text-lg font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('parallel').toFixed(2)} Bs.{renderTrendIndicator('parallel')}</span>
+                <div className="flex flex-col items-center justify-center p-1.5 rounded-xl bg-white/[0.02] border border-glass-border">
+                  <span className="text-[8px] text-[var(--text-secondary)] uppercase tracking-wider mb-0.5">Paralelo</span>
+                  <span className="text-[var(--text-primary)] text-sm sm:text-base font-black tracking-tight flex items-center justify-center gap-1">{getMarketRateValue('parallel').toFixed(2)} Bs.{renderTrendIndicator('parallel')}</span>
                 </div>
               </div>
             </div>
