@@ -9,7 +9,7 @@ Sentry.init({
   // },
   integrations: [
     Sentry.browserTracingIntegration(),
-    Sentry.replayIntegration(),
+    // Sentry.replayIntegration(), // Disabled to improve PageSpeed
   ],
   // Enable logs to be sent to Sentry
   enableLogs: true,
