@@ -497,6 +497,8 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
       return <ArrowDown className="w-3.5 h-3.5 text-rose-500 inline-block ml-1 animate-[fadeIn_0.5s_ease-out]" title={locale === 'es' ? 'Bajó respecto a la actualización anterior' : 'Decreased since last update'} />;
     }
     return null;
+  };
+
   const resultBlock = (
     <div id="radar-result" className={`p-4 md:p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 ${pwaMode ? 'mb-4 w-full animate-[fadeIn_0.3s_ease-out]' : 'mt-4'}`}>
       <div className="text-center">
