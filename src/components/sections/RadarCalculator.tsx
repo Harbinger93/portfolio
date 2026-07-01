@@ -591,7 +591,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
               <button
                 type="button"
                 onClick={handleInstallClick}
-                className="flex items-center gap-1.5 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 px-3 py-1.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all cursor-pointer relative z-50"
+                className="flex items-center gap-1.5 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 px-3 py-1.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all cursor-pointer relative z-10"
               >
                 <Download className="w-4 h-4" />
                 <span>{locale === 'es' ? 'Instalar App' : 'Install App'}</span>
