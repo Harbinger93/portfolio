@@ -1,0 +1,10 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import RadarCalculator from '../../components/sections/RadarCalculator';
+---
+
+<AppLayout title="Radar | PWA" noindex={true}>
+  <div class="w-full h-[100dvh] p-2 sm:p-4 overflow-hidden touch-none flex flex-col justify-center">
+    <RadarCalculator client:load standalone={true} pwaMode={true} />
+  </div>
+</AppLayout>

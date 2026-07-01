@@ -48,7 +48,7 @@ const CACHE_KEY = 'cotizave_rates_cache';
 const CACHE_TIME = 10 * 60 * 1000; // 10 minutes in milliseconds
 const COOLDOWN_TIME = 15; // Cooldown in seconds for manual refresh
 
-export default function RadarCalculator({ standalone = false }: { standalone?: boolean }) {
+export default function RadarCalculator({ standalone = false, pwaMode = false }: { standalone?: boolean; pwaMode?: boolean }) {
   const { locale } = useI18n();
   const [ratesData, setRatesData] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState(false);
@@ -72,9 +72,23 @@ export default function RadarCalculator({ standalone = false }: { standalone?: b
   // PWA Install State
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
+  const [showInstallGuide, setShowInstallGuide] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    // Detect OS
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent);
+    setIsIOS(isIOSDevice);
+
+    // Check if already in standalone mode
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone || document.referrer.includes('android-app://');
+    if (!isStandalone) {
+      setIsInstallable(true);
+    }
+
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -88,13 +102,16 @@ export default function RadarCalculator({ standalone = false }: { standalone?: b
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setIsInstallable(false);
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setIsInstallable(false);
+      }
+      setDeferredPrompt(null);
+    } else {
+      setShowInstallGuide(true);
     }
-    setDeferredPrompt(null);
   };
 
   const startTutorial = async () => {
@@ -616,7 +633,7 @@ export default function RadarCalculator({ standalone = false }: { standalone?: b
       </div>
 
       {/* Main Grid: Calculator & Rates Ticker */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+      <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 ${pwaMode ? 'mb-0 lg:mb-12' : 'mb-12'}`}>
         
         {/* Left Panel: Calculator Card */}
         <div className="lg:col-span-7">
@@ -932,7 +949,7 @@ export default function RadarCalculator({ standalone = false }: { standalone?: b
         </div>
 
         {/* Right Panel: Ticker / Rates List */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
+        <div className={`lg:col-span-5 flex-col gap-6 ${pwaMode ? 'hidden lg:flex' : 'flex'}`}>
           
           {/* Connection Status & Manual Refresh */}
           <div className="p-4 bg-[var(--bg-secondary)] border border-glass-border rounded-2xl flex items-center justify-between gap-4 shadow-md">
@@ -1177,6 +1194,61 @@ export default function RadarCalculator({ standalone = false }: { standalone?: b
           )}
         </p>
       </div>
+      )}
+
+      {/* Install Guide Modal */}
+      {showInstallGuide && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]"
+          onClick={() => setShowInstallGuide(false)}
+        >
+          <div 
+            className="bg-[var(--bg-secondary)] border border-glass-border rounded-2xl shadow-2xl w-full max-w-sm p-6 relative text-left text-sm leading-relaxed font-normal animate-[zoomIn_0.2s_ease-out]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              type="button"
+              onClick={() => setShowInstallGuide(false)}
+              className="absolute top-4 right-4 text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+              aria-label="Close details"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <h4 className="font-extrabold text-base uppercase tracking-wider text-[#10B981] mb-4 border-b border-glass-border pb-3 flex items-center gap-2">
+              <Download className="w-5 h-5" />
+              {locale === 'es' ? 'Instalar App' : 'Install App'}
+            </h4>
+            
+            <div className="space-y-4">
+              <p className="text-[var(--text-primary)] font-bold">
+                {locale === 'es' 
+                  ? 'Para instalar esta herramienta y usarla sin conexión:' 
+                  : 'To install this tool for offline use:'}
+              </p>
+              
+              {isIOS ? (
+                <ol className="list-decimal pl-5 text-[var(--text-secondary)] space-y-2">
+                  <li>{locale === 'es' ? 'Toca' : 'Tap'} <strong className="text-[var(--text-primary)]">{locale === 'es' ? 'Compartir' : 'Share'}</strong> {locale === 'es' ? 'en la barra de navegación inferior.' : 'in the bottom navigation bar.'}</li>
+                  <li>{locale === 'es' ? 'Selecciona' : 'Select'} <strong className="text-[var(--text-primary)]">{locale === 'es' ? 'Agregar a Inicio' : 'Add to Home Screen'}</strong>.</li>
+                  <li>{locale === 'es' ? 'Confirma tocando' : 'Confirm by tapping'} <strong className="text-[var(--text-primary)]">{locale === 'es' ? 'Agregar' : 'Add'}</strong>.</li>
+                </ol>
+              ) : (
+                <ol className="list-decimal pl-5 text-[var(--text-secondary)] space-y-2">
+                  <li>{locale === 'es' ? 'Toca el menú de opciones (tres puntos) en tu navegador.' : 'Tap the browser menu (three dots).'}</li>
+                  <li>{locale === 'es' ? 'Selecciona' : 'Select'} <strong className="text-[var(--text-primary)]">{locale === 'es' ? 'Instalar aplicación' : 'Install app'}</strong> {locale === 'es' ? 'o' : 'or'} <strong className="text-[var(--text-primary)]">{locale === 'es' ? 'Agregar a inicio' : 'Add to Home screen'}</strong>.</li>
+                </ol>
+              )}
+            </div>
+
+            <button
+              onClick={() => setShowInstallGuide(false)}
+              className="mt-6 w-full py-3 bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20 rounded-xl font-bold uppercase tracking-widest hover:bg-[#10B981]/20 transition-colors cursor-pointer"
+            >
+              {locale === 'es' ? 'Entendido' : 'Got it'}
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
