@@ -106,9 +106,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
       if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          setIsInstallable(false);
-        }
+        // Desktop install button will remain visible, or fallback if needed
         setDeferredPrompt(null);
       } else {
         setShowInstallGuide(true);
@@ -500,7 +498,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
   };
 
   const resultBlock = (
-    <div id="radar-result" className={`p-4 md:p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 ${pwaMode ? 'mb-4 w-full animate-[fadeIn_0.3s_ease-out]' : 'mt-4'}`}>
+    <div id="radar-result" className={`p-4 md:p-6 rounded-2xl bg-gradient-to-br from-[#10B981]/10 to-teal-500/5 border border-[#10B981]/25 ${pwaMode ? 'mb-3 w-full animate-[fadeIn_0.3s_ease-out] !p-3' : 'mt-4'}`}>
       <div className="text-center">
         <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
           {locale === 'es' ? 'Resultado de Conversión' : 'Conversion Result'}
@@ -576,7 +574,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
         </div>
       )}
       {/* Header */}
-      <div className={`text-center flex flex-col items-center justify-center relative pt-8 ${pwaMode ? 'mb-4' : 'mb-12'}`}>
+      <div className={`text-center flex flex-col items-center justify-center relative ${pwaMode ? 'pt-4 mb-2' : 'pt-8 mb-12'}`}>
         {/* Top Navigation / App Actions */}
         {!standalone && (
           <div className="absolute top-0 left-0 right-0 flex items-center justify-between">
@@ -602,7 +600,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
           </div>
         )}
 
-        <h1 className={`text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative ${standalone ? 'mt-2' : 'mt-8 md:mt-4'}`} id="radar-title-section">
+        <h1 className={`text-3xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight flex items-center justify-center gap-2 relative ${standalone ? 'mt-2' : 'mt-8 md:mt-4'} ${pwaMode ? 'hidden' : ''}`} id="radar-title-section">
           <span>{locale === 'es' ? 'Radar de Cotizaciones' : 'Rates Radar'}</span>
           <div className="inline-block">
             <button
@@ -668,7 +666,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
           </div>
         </h1>
 
-        <div className="mb-6 flex justify-center">
+        <div className={`mb-6 flex justify-center ${pwaMode ? 'hidden' : ''}`}>
           <RainbowButton
             variant="default"
             onClick={startTutorial}
@@ -690,7 +688,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
       </div>
 
       {/* Main Grid: Calculator & Rates Ticker */}
-      <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 ${pwaMode ? 'mb-0 lg:mb-12' : 'mb-12'}`}>
+      <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 ${pwaMode ? 'mb-0 lg:mb-4' : 'mb-12'}`}>
         
         {/* Left Panel: Calculator Card */}
         <div className="lg:col-span-7">
@@ -740,7 +738,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
               </div>
 
               {/* Amount Input */}
-              <div className="mb-4">
+              <div className={pwaMode ? 'mb-3' : 'mb-4'}>
                 <label className="flex items-center justify-between text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase mb-2">
                   <span>{locale === 'es' ? 'Monto a Convertir' : 'Amount to Convert'}</span>
                   <span className="text-[8px] sm:text-[10px] whitespace-nowrap font-extrabold text-[#10B981] bg-[#10B981]/15 px-2.5 py-0.5 rounded-full border border-[#10B981]/25 animate-pulse">
@@ -757,7 +755,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setTimeout(() => setIsInputFocused(false), 200)}
                     placeholder="100"
-                    className="w-full h-14 pl-12 pr-24 bg-[var(--bg-secondary)]/85 border-2 border-[#10B981] shadow-[0_0_20px_rgba(16,185,129,0.2)] rounded-xl text-lg font-bold text-[var(--text-primary)] focus:outline-none focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 transition-all duration-300"
+                    className={`w-full ${pwaMode ? 'h-12' : 'h-14'} pl-12 pr-24 bg-[var(--bg-secondary)]/85 border-2 border-[#10B981] shadow-[0_0_20px_rgba(16,185,129,0.2)] rounded-xl text-lg font-bold text-[var(--text-primary)] focus:outline-none focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 transition-all duration-300`}
                   />
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center text-[var(--text-secondary)]/80 font-bold text-sm">
                     {isUsdToVes ? <DollarSign className="w-5 h-5" /> : <span className="text-xs">Bs.</span>}
@@ -777,7 +775,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
               </div>
 
               {/* Shortcut buttons */}
-              <div className="grid grid-cols-5 gap-1.5 mb-6 w-full">
+              <div className={`grid grid-cols-5 gap-1.5 w-full ${pwaMode ? 'mb-3' : 'mb-6'}`}>
                 {['1', '10', '50', '100', '500'].map((val) => (
                   <button
                     key={val}
@@ -795,7 +793,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
               </div>
 
               {/* Conversion Direction Selector */}
-              <div id="radar-direction-selector" className="flex items-center justify-between gap-3 mb-4 p-3 rounded-xl bg-white/[0.02] border border-glass-border">
+              <div id="radar-direction-selector" className={`flex items-center justify-between gap-3 p-3 rounded-xl bg-white/[0.02] border border-glass-border ${pwaMode ? 'mb-3' : 'mb-4'}`}>
                 <div className="flex-1 text-center">
                   <span className="block text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1">
                     {locale === 'es' ? 'Tengo' : 'From'}
@@ -825,7 +823,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
               </div>
 
               {/* Active Rate Selector */}
-              <div id="radar-rate-selector" className="mb-6">
+              <div id="radar-rate-selector" className={pwaMode ? 'mb-3' : 'mb-6'}>
                 <label className="block text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase mb-2">
                   {locale === 'es' ? 'Tasa de Referencia Activa' : 'Active Exchange Rate'}
                 </label>
