@@ -527,7 +527,7 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
         </div>
       )}
       {/* Header */}
-      <div className="text-center mb-12 flex flex-col items-center justify-center relative pt-8">
+      <div className={`text-center flex flex-col items-center justify-center relative pt-8 ${pwaMode ? 'mb-4' : 'mb-12'}`}>
         {/* Top Navigation / App Actions */}
         {!standalone && (
           <div className="absolute top-0 left-0 right-0 flex items-center justify-between">
@@ -631,11 +631,13 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
           </RainbowButton>
         </div>
 
-        <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
-          {locale === 'es' 
-            ? 'Calculadora de Dólar y Bolívar en tiempo real. Obtén valores exactos comparando el BCV oficial, el paralelo y el promedio P2P al instante.'
-            : 'Real-time Dollar & Bolivar calculator. Get instant conversion results across official BCV, Parallel average, and P2P exchange rates.'}
-        </p>
+        {!pwaMode && (
+          <p className="text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
+            {locale === 'es' 
+              ? 'Calculadora de Dólar y Bolívar en tiempo real. Obtén valores exactos comparando el BCV oficial, el paralelo y el promedio P2P al instante.'
+              : 'Real-time Dollar & Bolivar calculator. Get instant conversion results across official BCV, Parallel average, and P2P exchange rates.'}
+          </p>
+        )}
       </div>
 
       {/* Main Grid: Calculator & Rates Ticker */}
