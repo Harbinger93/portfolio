@@ -29,24 +29,24 @@ export default function Hero() {
       
       {/* Background effects from ReactBits - Conditionally loaded only on Desktop */}
       <div 
-        className="absolute inset-0 z-0 pointer-events-auto hidden md:block"
-        style={{ maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 25%)' }}
+        className="absolute inset-0 z-0 pointer-events-auto hidden md:block opacity-60"
+        style={{ maskImage: 'linear-gradient(to bottom, transparent 0%, transparent 40%, black 100%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, transparent 40%, black 100%)' }}
       >
         {isDesktop && (
           <Suspense fallback={null}>
             <ColorBends 
               className="absolute inset-0 w-full h-full z-0"
-              colors={['#3B82F6', '#1E3A8A', '#0F172A']}
-              speed={0.2}
+              colors={['#3B82F6']} // Single color for a subtler effect like the demo
+              speed={0.15} // Slower movement
               frequency={1.0}
-              noise={0.15}
-              bandWidth={6} /* Fixed: The snippet used 0.14 which made it invisible in the new version */
+              noise={0.1} // Less static noise
+              bandWidth={1.5} // Softer, wider bands instead of sharp lines
               rotation={90}
               iterations={1}
-              intensity={1.3}
+              intensity={1.0} // Reduced intensity
             />
             <DotField 
-              className="absolute inset-0 w-full h-full z-10 mix-blend-screen"
+              className="absolute inset-0 w-full h-full z-10 mix-blend-screen opacity-70"
             />
           </Suspense>
         )}
