@@ -47,7 +47,7 @@ export default function Hero() {
               className="absolute inset-0 w-full h-full z-10 mix-blend-screen"
               gradientFrom="rgba(59, 130, 246, 0.45)"
               gradientTo="rgba(96, 165, 250, 0.25)"
-              glowColor="#0F172A"
+              glowColor="transparent"
             />
           </Suspense>
         )}
