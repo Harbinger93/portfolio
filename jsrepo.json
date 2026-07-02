@@ -1,0 +1,11 @@
+{
+  "$schema": "https://jsrepo.dev/schema.json",
+  "paths": {
+    "components": "./src/components",
+    "ui": "./src/components/ui",
+    "hooks": "./src/hooks",
+    "utils": "./src/utils",
+    "lib": "./src/lib",
+    "component": "./src/components/ui"
+  }
+}

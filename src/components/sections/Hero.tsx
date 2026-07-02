@@ -1,13 +1,23 @@
+import React, { useState, useEffect, Suspense } from 'react';
 import { useI18n } from '../../i18n/context';
 import ScrollReveal from '../ui/ScrollReveal';
-import { BackgroundBeamsWithCollision } from '../ui/background-beams-with-collision';
-import { RainbowButton } from '../ui/rainbow-button';
-import { Backlight } from '../ui/backlight';
+const DotField = React.lazy(() => import('../ui/DotField'));
+const ColorBends = React.lazy(() => import('../ui/ColorBends'));
 import { ArrowUpRight } from 'lucide-react';
 import { AuroraText } from '../ui/aurora-text';
+import { RainbowButton } from '../ui/rainbow-button';
 
 export default function Hero() {
   const { t } = useI18n();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    // Only enable heavy WebGL animations on desktop to preserve mobile battery/performance
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 768);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
 
   const titleText = t('hero.title');
   const hasAmpersand = titleText.includes('&');
@@ -15,9 +25,23 @@ export default function Hero() {
   const titleLine2 = hasAmpersand ? `& ${titleText.split('&')[1].trim()}` : '';
 
   return (
-    <section id="home" className="w-full bg-[var(--bg-primary)]">
-      <BackgroundBeamsWithCollision className="relative z-10 w-full overflow-hidden min-h-[70vh] md:min-h-[75vh] flex items-end justify-center pt-24 pb-0 bg-transparent text-[var(--text-primary)] border-none">
-        <div className="max-w-7xl mx-auto px-6 w-full relative z-20 flex flex-col md:flex-row items-end justify-between gap-0 h-full">
+    <section id="home" className="w-full bg-[var(--bg-primary)] relative min-h-[70vh] md:min-h-[75vh] flex items-end justify-center pt-24 pb-0 overflow-hidden">
+      
+      {/* Background effects from ReactBits - Conditionally loaded only on Desktop */}
+      <div className="absolute inset-0 z-0 pointer-events-auto hidden md:block">
+        {isDesktop && (
+          <Suspense fallback={null}>
+            <ColorBends 
+              className="absolute inset-0 w-full h-full"
+            />
+            <DotField 
+              className="absolute inset-0 w-full h-full mix-blend-screen"
+            />
+          </Suspense>
+        )}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 w-full relative z-20 flex flex-col md:flex-row items-end justify-between gap-0 h-full">
         
         {/* Left Column: Text content */}
         <div className="flex-1 flex flex-col items-start text-left z-20 pb-4 md:pb-12 pt-10 md:pt-24">
@@ -93,22 +117,6 @@ export default function Hero() {
         <div className="flex-1 relative h-[350px] sm:h-[400px] md:h-[500px] lg:h-[620px] xl:h-[720px] w-full mt-4 md:mt-0 flex justify-center items-end self-end">
           <ScrollReveal className="relative z-20 w-full h-full flex justify-center items-end">
             <div className="group relative w-full h-full flex justify-center items-end">
-              {/* Hide the backlight effect on mobile to save GPU cycles */}
-              <div className="hidden md:flex absolute inset-0 justify-center items-end pointer-events-none select-none z-10 transition-opacity duration-500 opacity-80 group-hover:opacity-100">
-                <Backlight blur={12} className="w-full h-full flex justify-center items-end" glowClassName="w-full h-full flex justify-center items-end" color="var(--accent-primary)" opacity={0.25} glowOnly>
-                  <picture className="w-full h-full flex justify-center items-end">
-                    <source media="(max-width: 768px)" srcSet="/avatar-mobile.webp" />
-                    <img 
-                      src="/avatar.webp" 
-                      alt="" 
-                      width={700}
-                      height={925}
-                      className="object-contain h-full max-h-full object-bottom block scale-[0.97] origin-bottom"
-                    />
-                  </picture>
-                </Backlight>
-              </div>
-
               {/* Clean crisp foreground portrait image */}
               <picture className="relative z-20 h-full max-h-full drop-shadow-2xl flex justify-center items-end">
                 <source media="(max-width: 768px)" srcSet="/avatar-mobile.webp" />
@@ -128,7 +136,6 @@ export default function Hero() {
           <div className="absolute bottom-10 md:bottom-20 left-1/2 transform -translate-x-1/2 w-32 h-32 md:w-64 md:h-64 rounded-full bg-[var(--accent-primary)]/10 md:bg-[var(--accent-primary)]/20 md:blur-xl border border-[var(--glass-border)] z-10 md:shadow-inner md:mix-blend-overlay"></div>
         </div>
         </div>
-      </BackgroundBeamsWithCollision>
     </section>
   );
 }
