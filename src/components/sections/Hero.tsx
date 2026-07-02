@@ -31,22 +31,18 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 pointer-events-auto hidden md:block">
         {isDesktop && (
           <Suspense fallback={null}>
-            <div 
+            <ColorBends 
               className="absolute inset-0 w-full h-full z-0 opacity-80"
-              style={{ maskImage: 'linear-gradient(to bottom, transparent 0%, transparent 40%, black 100%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, transparent 40%, black 100%)' }}
-            >
-              <ColorBends 
-                className="absolute inset-0 w-full h-full"
-                colors={['#3B82F6']} // Single color for a subtler effect like the demo
-                speed={0.15} // Slower movement
-                frequency={1.0}
-                noise={0.1} // Less static noise
-                bandWidth={1.2} // Softer, wider bands instead of sharp lines
-                rotation={90}
-                iterations={1}
-                intensity={1.2} // Slightly higher intensity to compensate for the fade
-              />
-            </div>
+              color="#3B82F6"
+              speed={0.15}
+              frequency={1.0}
+              noise={0.1}
+              bandWidth={1.2}
+              rotation={90}
+              iterations={1}
+              intensity={1.2}
+              fadeTop={0.6}
+            />
             <DotField 
               className="absolute inset-0 w-full h-full z-10 mix-blend-screen"
             />

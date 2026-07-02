@@ -18,6 +18,8 @@ type ColorBendsProps = {
   iterations?: number;
   intensity?: number;
   bandWidth?: number;
+  color?: string;
+  fadeTop?: number;
 };
 
 const MAX_COLORS = 8 as const;
@@ -141,7 +143,9 @@ export default function ColorBends({
   noise = 0.15,
   iterations = 1,
   intensity = 1.5,
-  bandWidth = 6
+  bandWidth = 6,
+  color,
+  fadeTop
 }: ColorBendsProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -286,7 +290,8 @@ export default function ColorBends({
       return new THREE.Vector3(v[0] / 255, v[1] / 255, v[2] / 255);
     };
 
-    const arr = (colors || []).filter(Boolean).slice(0, MAX_COLORS).map(toVec3);
+    const activeColors = color ? [color] : colors;
+    const arr = (activeColors || []).filter(Boolean).slice(0, MAX_COLORS).map(toVec3);
     for (let i = 0; i < MAX_COLORS; i++) {
       const vec = (material.uniforms.uColors.value as THREE.Vector3[])[i];
       if (i < arr.length) vec.copy(arr[i]);
@@ -310,6 +315,7 @@ export default function ColorBends({
     intensity,
     bandWidth,
     colors,
+    color,
     transparent
   ]);
 
@@ -331,5 +337,13 @@ export default function ColorBends({
     };
   }, []);
 
-  return <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className}`} style={style} />;
+  const mergedStyle: React.CSSProperties = { ...style };
+  if (fadeTop !== undefined) {
+    const fadePercent = fadeTop * 100;
+    const maskStr = `linear-gradient(to bottom, transparent 0%, transparent ${100 - fadePercent}%, black 100%)`;
+    mergedStyle.maskImage = maskStr;
+    mergedStyle.WebkitMaskImage = maskStr;
+  }
+
+  return <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className}`} style={mergedStyle} />;
 }
