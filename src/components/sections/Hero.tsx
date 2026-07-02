@@ -28,22 +28,25 @@ export default function Hero() {
     <section id="home" className="w-full bg-[var(--bg-primary)] relative min-h-[70vh] md:min-h-[75vh] flex items-end justify-center pt-24 pb-0 overflow-hidden">
       
       {/* Background effects from ReactBits - Conditionally loaded only on Desktop */}
-      <div className="absolute inset-0 z-0 pointer-events-auto hidden md:block">
+      <div 
+        className="absolute inset-0 z-0 pointer-events-auto hidden md:block"
+        style={{ maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 25%)' }}
+      >
         {isDesktop && (
           <Suspense fallback={null}>
             <ColorBends 
-              className="absolute inset-0 w-full h-full"
-              colors={['#3B82F6', '#1E3A8A', '#0F172A']} // Using arrays for colors as requested by the component
+              className="absolute inset-0 w-full h-full z-0"
+              colors={['#3B82F6', '#1E3A8A', '#0F172A']}
               speed={0.2}
               frequency={1.0}
               noise={0.15}
-              bandWidth={0.14}
+              bandWidth={6} /* Fixed: The snippet used 0.14 which made it invisible in the new version */
               rotation={90}
               iterations={1}
               intensity={1.3}
             />
             <DotField 
-              className="absolute inset-0 w-full h-full mix-blend-screen"
+              className="absolute inset-0 w-full h-full z-10 mix-blend-screen"
             />
           </Suspense>
         )}
