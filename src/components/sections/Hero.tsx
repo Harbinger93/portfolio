@@ -33,6 +33,14 @@ export default function Hero() {
           <Suspense fallback={null}>
             <ColorBends 
               className="absolute inset-0 w-full h-full"
+              colors={['#3B82F6', '#1E3A8A', '#0F172A']} // Using arrays for colors as requested by the component
+              speed={0.2}
+              frequency={1.0}
+              noise={0.15}
+              bandWidth={0.14}
+              rotation={90}
+              iterations={1}
+              intensity={1.3}
             />
             <DotField 
               className="absolute inset-0 w-full h-full mix-blend-screen"
