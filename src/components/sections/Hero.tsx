@@ -34,14 +34,14 @@ export default function Hero() {
             <ColorBends 
               className="absolute inset-0 w-full h-full z-0 opacity-80"
               color="#3B82F6"
-              speed={0.15}
+              speed={0.2}
               frequency={1.0}
-              noise={0.1}
-              bandWidth={1.2}
+              noise={0.15}
+              bandWidth={0.14}
               rotation={90}
               iterations={1}
-              intensity={1.2}
-              fadeTop={0.6}
+              intensity={1.3}
+              fadeTop={0.75}
             />
             <DotField 
               className="absolute inset-0 w-full h-full z-10 mix-blend-screen"

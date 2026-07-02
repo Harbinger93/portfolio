@@ -185,7 +185,7 @@ export default function ColorBends({
         uNoise: { value: noise },
         uIterations: { value: iterations },
         uIntensity: { value: intensity },
-        uBandWidth: { value: bandWidth }
+        uBandWidth: { value: bandWidth < 1.0 ? bandWidth * 40 : bandWidth }
       },
       premultipliedAlpha: true,
       transparent: true
@@ -279,7 +279,7 @@ export default function ColorBends({
     material.uniforms.uNoise.value = noise;
     material.uniforms.uIterations.value = iterations;
     material.uniforms.uIntensity.value = intensity;
-    material.uniforms.uBandWidth.value = bandWidth;
+    material.uniforms.uBandWidth.value = bandWidth < 1.0 ? bandWidth * 42.8 : bandWidth;
 
     const toVec3 = (hex: string) => {
       const h = hex.replace('#', '').trim();
