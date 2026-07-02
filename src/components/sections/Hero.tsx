@@ -93,33 +93,39 @@ export default function Hero() {
         <div className="flex-1 relative h-[350px] sm:h-[400px] md:h-[500px] lg:h-[620px] xl:h-[720px] w-full mt-4 md:mt-0 flex justify-center items-end self-end">
           <ScrollReveal className="relative z-20 w-full h-full flex justify-center items-end">
             <div className="group relative w-full h-full flex justify-center items-end">
-              {/* Backlight glow positioned strictly behind the portrait */}
-              <div className="absolute inset-0 flex justify-center items-end pointer-events-none select-none z-10 transition-opacity duration-500 opacity-80 group-hover:opacity-100">
+              {/* Hide the backlight effect on mobile to save GPU cycles */}
+              <div className="hidden md:flex absolute inset-0 justify-center items-end pointer-events-none select-none z-10 transition-opacity duration-500 opacity-80 group-hover:opacity-100">
                 <Backlight blur={12} className="w-full h-full flex justify-center items-end" glowClassName="w-full h-full flex justify-center items-end" color="var(--accent-primary)" opacity={0.25} glowOnly>
-                  <img 
-                    src="/avatar.webp" 
-                    alt="" 
-                    width={700}
-                    height={925}
-                    className="object-contain h-full max-h-full object-bottom block scale-[0.97] origin-bottom"
-                  />
+                  <picture className="w-full h-full flex justify-center items-end">
+                    <source media="(max-width: 768px)" srcSet="/avatar-mobile.webp" />
+                    <img 
+                      src="/avatar.webp" 
+                      alt="" 
+                      width={700}
+                      height={925}
+                      className="object-contain h-full max-h-full object-bottom block scale-[0.97] origin-bottom"
+                    />
+                  </picture>
                 </Backlight>
               </div>
 
               {/* Clean crisp foreground portrait image */}
-              <img 
-                src="/avatar.webp" 
-                alt="Gabriel Vazquez" 
-                width={700}
-                height={925}
-                loading="eager"
-                fetchPriority="high"
-                className="relative z-20 object-contain h-full max-h-full drop-shadow-2xl object-bottom block"
-              />
+              <picture className="relative z-20 h-full max-h-full drop-shadow-2xl flex justify-center items-end">
+                <source media="(max-width: 768px)" srcSet="/avatar-mobile.webp" />
+                <img 
+                  src="/avatar.webp" 
+                  alt="Gabriel Vazquez" 
+                  width={700}
+                  height={925}
+                  loading="eager"
+                  fetchPriority="high"
+                  className="object-contain h-full max-h-full object-bottom block"
+                />
+              </picture>
             </div>
           </ScrollReveal>
           {/* Decorative sphere behind avatar */}
-          <div className="absolute bottom-10 md:bottom-20 left-1/2 transform -translate-x-1/2 w-32 h-32 md:w-64 md:h-64 rounded-full bg-[var(--accent-primary)]/20 blur-xl border border-[var(--glass-border)] z-10 shadow-inner mix-blend-overlay"></div>
+          <div className="absolute bottom-10 md:bottom-20 left-1/2 transform -translate-x-1/2 w-32 h-32 md:w-64 md:h-64 rounded-full bg-[var(--accent-primary)]/10 md:bg-[var(--accent-primary)]/20 md:blur-xl border border-[var(--glass-border)] z-10 md:shadow-inner md:mix-blend-overlay"></div>
         </div>
         </div>
       </BackgroundBeamsWithCollision>

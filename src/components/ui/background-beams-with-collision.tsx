@@ -71,7 +71,7 @@ export const BackgroundBeamsWithCollision = ({
         <div
           key={beam.id}
           className={cn(
-            "absolute top-0 w-px rounded-full bg-gradient-to-t from-indigo-500 via-purple-500 to-transparent pointer-events-none",
+            "hidden md:block absolute top-0 w-px rounded-full bg-gradient-to-t from-indigo-500 via-purple-500 to-transparent pointer-events-none",
             beam.className
           )}
           style={{
