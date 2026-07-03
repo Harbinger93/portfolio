@@ -55,17 +55,38 @@ export default function WhatsAppBubble() {
     return () => window.removeEventListener('open-whatsapp', handleOpenWa);
   }, []);
 
-  const onSubmit = (data: WaFormData) => {
+  const onSubmit = async (data: WaFormData) => {
     const sanitizedMessage = DOMPurify.sanitize(data.message);
 
-    let countryCode = '';
+    let countryCode = 'Desconocido';
     try {
       const parsed = parsePhoneNumber(data.phone);
-      if (parsed?.country) countryCode = ` (${parsed.country})`;
+      if (parsed?.country) {
+        countryCode = parsed.country;
+      }
     } catch (_) {}
 
+    // Guardar en Supabase y enviar emails usando la misma API del formulario de contacto principal
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: data.name,
+          email: data.email,
+          telefono: data.phone,
+          pais: countryCode,
+          mensaje: `(Vía WhatsApp Bubble) ${sanitizedMessage}`,
+          fecha: new Date().toLocaleString()
+        }),
+      });
+    } catch (error) {
+      console.error('Error al guardar contacto:', error);
+    }
+
+    // Redirigir a WhatsApp
     const text = encodeURIComponent(
-      `Hola Gabriel! Soy ${data.name}${countryCode} (${data.email}).\n\n${sanitizedMessage}\n\nTel: ${data.phone}`
+      `Hola Gabriel! Soy ${data.name}${countryCode !== 'Desconocido' ? ` (${countryCode})` : ''} (${data.email}).\n\n${sanitizedMessage}\n\nTel: ${data.phone}`
     );
     window.open(`https://wa.me/584120113404?text=${text}`, '_blank');
     reset();
