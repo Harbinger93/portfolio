@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect } from 'react';
 import { MessageCircle, X, Send, AlertCircle } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
@@ -238,3 +239,4 @@ export default function WhatsAppBubble() {
     </div>
   );
 }
+

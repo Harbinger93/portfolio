@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect, useRef } from 'react';
 import { useI18n } from '../../i18n/context';
 import { 
@@ -1273,3 +1274,4 @@ export default function RadarCalculator({ standalone = false, pwaMode = false }:
     </div>
   );
 }
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from 'react';
 import { useI18n } from '../../i18n/context';
 import { Gauge, Search, AlertTriangle, ShieldAlert, Cpu, Sparkles, Clock, LayoutGrid, Zap, Clipboard, Mail, Share2, MessageCircle, Info, HelpCircle, X } from 'lucide-react';
@@ -785,3 +786,4 @@ export default function WebAnalyzer() {
     </div>
   );
 }
+

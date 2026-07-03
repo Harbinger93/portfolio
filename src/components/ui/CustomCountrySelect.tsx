@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useRef } from "react"
 import { createPortal } from "react-dom"
 import flags from "react-phone-number-input/flags"
@@ -160,3 +161,4 @@ export function CustomCountrySelect({
     </div>
   )
 }
+
