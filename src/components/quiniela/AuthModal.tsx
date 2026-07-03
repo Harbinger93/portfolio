@@ -6,7 +6,7 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Checkbox } from '../ui/checkbox';
 import { toast } from 'sonner';
-import { User, Chrome, Lock, Mail, AtSign } from 'lucide-react';
+import { User, Chrome, Lock, Mail, AtSign, ShieldAlert } from 'lucide-react';
 
 export default function AuthModal({
   isOpen,
@@ -172,16 +172,25 @@ export default function AuthModal({
           </div>
 
           {!isLogin && (
-            <div className="flex items-start space-x-3 pt-2">
-              <Checkbox
-                id="terms"
-                checked={acceptedTerms}
-                onCheckedChange={(c) => setAcceptedTerms(c as boolean)}
-                className="mt-1 border-white/20 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
-              />
-              <Label htmlFor="terms" className="text-xs font-normal text-slate-400 leading-tight cursor-pointer">
-                Acepto los <button type="button" onClick={(e) => { e.preventDefault(); onOpenTerms?.(); }} className="text-blue-400 hover:text-blue-300 underline transition-colors">Términos y Condiciones de Uso – Plataforma Recreativa</button>. Entiendo que está prohibido apostar dinero.
-              </Label>
+            <div className="flex flex-col gap-3 pt-2">
+              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 flex items-start gap-3 shadow-inner">
+                <ShieldAlert className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
+                <p className="text-[12px] text-yellow-100/90 leading-relaxed font-medium">
+                  <strong className="text-yellow-400">Aviso Importante:</strong> Esta plataforma es 100% gratuita, recreativa y <strong className="text-yellow-400">sin fines de lucro</strong>. Queda terminantemente prohibido su uso para apuestas monetarias o juegos de azar.
+                </p>
+              </div>
+
+              <div className="flex items-start space-x-3">
+                <Checkbox
+                  id="terms"
+                  checked={acceptedTerms}
+                  onCheckedChange={(c) => setAcceptedTerms(c as boolean)}
+                  className="mt-1 border-white/20 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
+                />
+                <Label htmlFor="terms" className="text-xs font-normal text-slate-400 leading-tight cursor-pointer">
+                  Acepto los <button type="button" onClick={(e) => { e.preventDefault(); onOpenTerms?.(); }} className="text-blue-400 hover:text-blue-300 underline transition-colors">Términos y Condiciones de Uso – Plataforma Recreativa</button>. Entiendo que está prohibido apostar dinero.
+                </Label>
+              </div>
             </div>
           )}
 
