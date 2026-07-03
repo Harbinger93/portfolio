@@ -403,10 +403,16 @@ export default function TournamentBracket() {
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        className="flex gap-8 overflow-x-auto overflow-y-hidden pb-4 items-end custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile cursor-grab" 
+        className="flex gap-8 overflow-x-auto overflow-y-hidden pb-4 items-start md:items-end custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile mobile-no-rotate cursor-grab" 
         style={{ transform: 'rotateX(180deg)' }}
       >
-        <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 768px) { .hidden-scrollbar-mobile::-webkit-scrollbar { display: none; } .hidden-scrollbar-mobile { scrollbar-width: none; } }` }} />
+        <style dangerouslySetInnerHTML={{ __html: `
+          @media (max-width: 768px) { 
+            .hidden-scrollbar-mobile::-webkit-scrollbar { display: none; } 
+            .hidden-scrollbar-mobile { scrollbar-width: none; } 
+            .mobile-no-rotate { transform: none !important; }
+          }
+        ` }} />
         {groupedMatches.map(([seq, stageData]: [string, any], index) => {
           
           // Define distinct colors for the active bottom border of each column
@@ -419,7 +425,7 @@ export default function TournamentBracket() {
           const activeBorderClass = borderColors[index % borderColors.length];
 
           return (
-          <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-2 snap-center" style={{ transform: 'rotateX(180deg)' }}>
+          <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-2 snap-center mobile-no-rotate" style={{ transform: 'rotateX(180deg)' }}>
             
             {/* Sticky Column Header */}
             <div 
