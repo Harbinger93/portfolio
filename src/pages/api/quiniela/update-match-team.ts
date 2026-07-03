@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
+import { checkRateLimit, getIp } from '../../../lib/rate-limit';
 
 export const prerender = false;
 
@@ -8,6 +9,11 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    const ip = getIp(request);
+    const rl = checkRateLimit(ip, 20, 60000); // 20 peticiones por minuto
+    if (!rl.success) {
+      return new Response(JSON.stringify({ error: 'Too Many Requests' }), { status: 429 });
+    }
     const authHeader = request.headers.get('Authorization');
     if (!authHeader) return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401 });
     

@@ -1,6 +1,19 @@
 import fs from 'fs';
 import path from 'path';
 
+// Store in-memory para el Rate Limit del contacto
+const rateLimitStore = new Map();
+
+// Limpieza básica cada 2 minutos
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, record] of rateLimitStore.entries()) {
+    if (now > record.resetTime) {
+      rateLimitStore.delete(key);
+    }
+  }
+}, 120000);
+
 export default async function handler(req, res) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -19,6 +32,21 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
+
+  // Rate Limiting Básico (5 peticiones por minuto)
+  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.headers['x-real-ip'] || req.socket?.remoteAddress || 'unknown';
+  const now = Date.now();
+  const record = rateLimitStore.get(ip);
+  if (!record || now > record.resetTime) {
+    rateLimitStore.set(ip, { count: 1, resetTime: now + 60000 });
+  } else {
+    if (record.count >= 5) {
+      return res.status(429).json({ error: 'Too Many Requests. Intenta nuevamente más tarde.' });
+    }
+    record.count += 1;
+  }
+
+  // End of rate limit check
 
   try {
     const supabaseUrl = process.env.SUPABASE_URL;
