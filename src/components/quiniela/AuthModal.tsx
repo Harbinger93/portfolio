@@ -31,6 +31,11 @@ export default function AuthModal({
   };
 
   const handleGoogleLogin = async () => {
+    if (!isLogin && !acceptedTerms) {
+      toast.error('Debes aceptar los Términos y Condiciones para registrarte.');
+      return;
+    }
+    
     try {
       const { error } = await supabase.auth.signInWithOAuth({ 
         provider: 'google',
@@ -97,6 +102,29 @@ export default function AuthModal({
           </DialogDescription>
         </DialogHeader>
         
+        {!isLogin && (
+          <div className="flex flex-col gap-3 mb-2">
+            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 flex items-start gap-3 shadow-inner">
+              <ShieldAlert className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
+              <p className="text-[12px] text-yellow-100/90 leading-relaxed font-medium">
+                <strong className="text-yellow-400">Aviso Importante:</strong> Esta plataforma es 100% gratuita, recreativa y <strong className="text-yellow-400">sin fines de lucro</strong>. Queda terminantemente prohibido su uso para apuestas monetarias o juegos de azar.
+              </p>
+            </div>
+
+            <div className="flex items-start space-x-3 mb-2">
+              <Checkbox
+                id="terms"
+                checked={acceptedTerms}
+                onCheckedChange={(c) => setAcceptedTerms(c as boolean)}
+                className="mt-1 border-white/20 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
+              />
+              <Label htmlFor="terms" className="text-xs font-normal text-slate-400 leading-tight cursor-pointer">
+                Acepto los <button type="button" onClick={(e) => { e.preventDefault(); onOpenTerms?.(); }} className="text-blue-400 hover:text-blue-300 underline transition-colors">Términos y Condiciones de Uso – Plataforma Recreativa</button>. Entiendo que está prohibido apostar dinero.
+              </Label>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col gap-4">
           <Button 
             type="button" 
@@ -170,29 +198,6 @@ export default function AuthModal({
               <p className="text-[10px] text-slate-500 ml-1 mt-1">Mínimo 8 caracteres, 1 mayúscula y 1 número.</p>
             )}
           </div>
-
-          {!isLogin && (
-            <div className="flex flex-col gap-3 pt-2">
-              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 flex items-start gap-3 shadow-inner">
-                <ShieldAlert className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
-                <p className="text-[12px] text-yellow-100/90 leading-relaxed font-medium">
-                  <strong className="text-yellow-400">Aviso Importante:</strong> Esta plataforma es 100% gratuita, recreativa y <strong className="text-yellow-400">sin fines de lucro</strong>. Queda terminantemente prohibido su uso para apuestas monetarias o juegos de azar.
-                </p>
-              </div>
-
-              <div className="flex items-start space-x-3">
-                <Checkbox
-                  id="terms"
-                  checked={acceptedTerms}
-                  onCheckedChange={(c) => setAcceptedTerms(c as boolean)}
-                  className="mt-1 border-white/20 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
-                />
-                <Label htmlFor="terms" className="text-xs font-normal text-slate-400 leading-tight cursor-pointer">
-                  Acepto los <button type="button" onClick={(e) => { e.preventDefault(); onOpenTerms?.(); }} className="text-blue-400 hover:text-blue-300 underline transition-colors">Términos y Condiciones de Uso – Plataforma Recreativa</button>. Entiendo que está prohibido apostar dinero.
-                </Label>
-              </div>
-            </div>
-          )}
 
           <Button 
             type="submit" 
