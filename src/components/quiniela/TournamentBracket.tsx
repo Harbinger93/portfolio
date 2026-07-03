@@ -145,6 +145,31 @@ export default function TournamentBracket() {
     }
   }, [activeTab]);
 
+  // Ajuste dinámico de altura para móviles
+  useEffect(() => {
+    const handleResizeOrTabChange = () => {
+      const container = document.getElementById('bracket-scroll-container');
+      if (!container) return;
+
+      if (window.innerWidth >= 768) {
+        container.style.height = 'auto';
+      } else {
+        const activeCol = document.getElementById('stage-' + activeTab);
+        if (activeCol) {
+          const newHeight = activeCol.scrollHeight;
+          container.style.height = `${newHeight + 30}px`;
+          container.style.transition = 'height 0.3s ease-in-out';
+        }
+      }
+    };
+
+    // Ejecutar en el siguiente tick para asegurar que el DOM está renderizado
+    setTimeout(handleResizeOrTabChange, 50);
+
+    window.addEventListener('resize', handleResizeOrTabChange);
+    return () => window.removeEventListener('resize', handleResizeOrTabChange);
+  }, [activeTab, groupedMatches]);
+
   // Fetch Predicciones existentes
   const { data: serverPredictions, isLoading: predictionsLoading } = useQuery({
     queryKey: ['predictions', user?.id],
@@ -363,7 +388,7 @@ export default function TournamentBracket() {
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        className="flex gap-8 overflow-x-auto pb-4 items-end custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile cursor-grab" 
+        className="flex gap-8 overflow-x-auto overflow-y-hidden pb-4 items-end custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile cursor-grab" 
         style={{ transform: 'rotateX(180deg)' }}
       >
         <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 768px) { .hidden-scrollbar-mobile::-webkit-scrollbar { display: none; } .hidden-scrollbar-mobile { scrollbar-width: none; } }` }} />
