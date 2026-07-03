@@ -38,6 +38,14 @@ export default function TournamentBracket() {
   const [localPredictions, setLocalPredictions] = useState<Record<number, any>>({});
   const [isOffline, setIsOffline] = useState(typeof navigator !== 'undefined' ? !navigator.onLine : false);
   const [activeTab, setActiveTab] = useState<string>('0');
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleOnline = () => setIsOffline(false);
@@ -219,6 +227,23 @@ export default function TournamentBracket() {
     }), {}) || {}
   );
 
+  const groupedMatches = Object.entries(
+    (matches || []).reduce((acc: any, match) => {
+      const seq = match.stage?.sequence_order || 0;
+      if (!acc[seq]) acc[seq] = { name: match.stage?.display_name || 'Fase', matches: [] };
+      acc[seq].matches.push(match);
+      return acc;
+    }, {})
+  ).sort(([a], [b]) => Number(a) - Number(b));
+
+  const getMobileHeight = () => {
+    if (!isMobile) return 'auto';
+    const activeStage = groupedMatches.find(([seq]) => seq === activeTab);
+    if (!activeStage) return 'auto';
+    const matchCount = activeStage[1].matches.length;
+    return `${matchCount * 135 + 80}px`;
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto my-8 p-6 md:p-8 relative z-10">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 px-4 w-full max-w-[1400px] mx-auto">
@@ -277,16 +302,7 @@ export default function TournamentBracket() {
       {/* Tabs / Pestañas de Fases */}
       <div id="tabs-scroll-container" className="flex gap-2 overflow-x-auto mb-6 border-b border-white/10" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         <style dangerouslySetInnerHTML={{ __html: `#tabs-scroll-container::-webkit-scrollbar { display: none; }` }} />
-        {Object.entries(
-          (matches || []).reduce((acc: any, match) => {
-            const seq = match.stage?.sequence_order || 0;
-            if (!acc[seq]) acc[seq] = { name: match.stage?.display_name || 'Fase', matches: [] };
-            acc[seq].matches.push(match);
-            return acc;
-          }, {})
-        )
-        .sort(([a], [b]) => Number(a) - Number(b))
-        .map(([seq, stageData]: [string, any]) => (
+        {groupedMatches.map(([seq, stageData]: [string, any]) => (
           <button
             key={seq}
             id={`tab-btn-${seq}`}
@@ -312,18 +328,17 @@ export default function TournamentBracket() {
       </div>
 
       {/* Contenedor del Bracket - Estilo Árbol Conectado */}
-      <div id="bracket-scroll-container" className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile" style={{ transform: 'rotateX(180deg)' }}>
+      <div 
+        id="bracket-scroll-container" 
+        className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile transition-[height] duration-300 ease-in-out" 
+        style={{ 
+          transform: 'rotateX(180deg)',
+          height: getMobileHeight(),
+          overflowY: isMobile ? 'hidden' : 'visible'
+        }}
+      >
         <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 768px) { .hidden-scrollbar-mobile::-webkit-scrollbar { display: none; } .hidden-scrollbar-mobile { scrollbar-width: none; } }` }} />
-        {Object.entries(
-          (matches || []).reduce((acc: any, match) => {
-            const seq = match.stage?.sequence_order || 0;
-            if (!acc[seq]) acc[seq] = { name: match.stage?.display_name || 'Fase', matches: [] };
-            acc[seq].matches.push(match);
-            return acc;
-          }, {})
-        )
-        .sort(([a], [b]) => Number(a) - Number(b))
-        .map(([seq, stageData]: [string, any]) => (
+        {groupedMatches.map(([seq, stageData]: [string, any]) => (
           <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-6 snap-center" style={{ transform: 'rotateX(180deg)' }}>
             
             {/* Visual Connector Line (Except on last column) */}
