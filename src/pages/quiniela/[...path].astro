@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AppQuiniela from "../../components/quiniela/AppQuiniela";
+
+export function getStaticPaths() {
+  return [
+    { params: { path: undefined } },
+    { params: { path: 'admin' } }
+  ];
+}
+---
+
+<BaseLayout title="Quiniela Mundialista" description="Plataforma de Quiniela para la Fase Final del Mundial.">
+  <meta name="robots" content="noindex, nofollow" slot="head" />
+  
+  <div class="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+    <!-- Renderizamos la SPA en React en el cliente -->
+    <AppQuiniela client:only="react" />
+  </div>
+</BaseLayout>
