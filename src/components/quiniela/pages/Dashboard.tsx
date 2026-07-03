@@ -7,6 +7,7 @@ import TournamentBracket from '../TournamentBracket';
 import FAQ from '../FAQ';
 import TermsModal from '../TermsModal';
 import { Button } from '../../ui/button';
+import { RainbowButton } from '../../ui/rainbow-button';
 import { useI18n } from '../../../i18n/context';
 import { LogIn, LogOut, User, ShieldAlert, Wifi, WifiOff, ChevronDown, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -73,7 +74,7 @@ export default function Dashboard() {
     <div className="w-full min-h-screen pt-36 md:pt-28 pb-24 relative overflow-hidden bg-background text-foreground">
 
       {/* Header / Nav de Quiniela */}
-      <header className="absolute top-20 md:top-4 right-4 md:right-8 z-[60] flex items-center gap-4 py-4">
+      <header className="absolute top-20 md:top-4 right-4 md:right-8 z-40 flex items-center gap-4 py-4">
         <div className="flex items-center gap-4">
           {!isOnline && (
             <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 px-3 py-1.5 rounded-full text-xs font-medium">
@@ -145,7 +146,7 @@ export default function Dashboard() {
             <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent pointer-events-none" />
             <h2 className="text-3xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-br from-white to-slate-400">¡Bienvenido a la Quiniela!</h2>
             <p className="mb-8 text-muted-foreground text-lg">Debes iniciar sesión o registrarte para guardar tus predicciones.</p>
-            <Button onClick={() => setAuthModalOpen(true)} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-lg py-6 px-10 shadow-lg shadow-blue-500/25">Crear cuenta ahora</Button>
+            <RainbowButton onClick={() => setAuthModalOpen(true)} className="text-lg py-6 px-10">Crear cuenta ahora</RainbowButton>
           </div>
         )}
 
