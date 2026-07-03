@@ -186,7 +186,7 @@ export default function TournamentBracket() {
             </RainbowButton>
 
             <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-              <DialogContent className="sm:max-w-md bg-card text-card-foreground border-border rounded-2xl shadow-2xl p-6">
+              <DialogContent className="sm:max-w-md bg-zinc-950/90 backdrop-blur-xl text-slate-100 border-white/10 rounded-2xl shadow-2xl p-6">
                 <DialogHeader className="mb-2">
                   <DialogTitle className="text-2xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
                     {t('quiniela.confirmTitle')}
