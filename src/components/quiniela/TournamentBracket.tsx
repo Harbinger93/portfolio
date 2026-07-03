@@ -36,16 +36,7 @@ export default function TournamentBracket() {
   const queryClient = useQueryClient();
   const { t } = useI18n();
   const [localPredictions, setLocalPredictions] = useState<Record<number, any>>({});
-  const [isOffline, setIsOffline] = useState(typeof navigator !== 'undefined' ? !navigator.onLine : false);
   const [activeTab, setActiveTab] = useState<string>('0');
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   useEffect(() => {
     const handleOnline = () => setIsOffline(false);
@@ -236,14 +227,6 @@ export default function TournamentBracket() {
     }, {})
   ).sort(([a], [b]) => Number(a) - Number(b));
 
-  const getMobileHeight = () => {
-    if (!isMobile) return 'auto';
-    const activeStage = groupedMatches.find(([seq]) => seq === activeTab);
-    if (!activeStage) return 'auto';
-    const matchCount = activeStage[1].matches.length;
-    return `${matchCount * 135 + 80}px`;
-  };
-
   return (
     <div className="w-full max-w-6xl mx-auto my-8 p-6 md:p-8 relative z-10">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 px-4 w-full max-w-[1400px] mx-auto">
@@ -299,51 +282,39 @@ export default function TournamentBracket() {
         <p className="text-sm font-medium leading-relaxed">{t('quiniela.lockDisclaimer')}</p>
       </div>
 
-      {/* Tabs / Pestañas de Fases */}
-      <div id="tabs-scroll-container" className="flex gap-2 overflow-x-auto mb-6 border-b border-white/10" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-        <style dangerouslySetInnerHTML={{ __html: `#tabs-scroll-container::-webkit-scrollbar { display: none; }` }} />
-        {groupedMatches.map(([seq, stageData]: [string, any]) => (
-          <button
-            key={seq}
-            id={`tab-btn-${seq}`}
-            onClick={() => {
-              setActiveTab(seq);
-              const container = document.getElementById('bracket-scroll-container');
-              const el = document.getElementById('stage-' + seq);
-              if (container && el) {
-                // Al estar rotado 180deg, el offsetLeft se calcula normal, pero el scrollLeft es diferente en algunos browsers.
-                // En la mayoría, scrollLeft normal funciona.
-                container.scrollTo({ left: el.offsetLeft - container.offsetLeft, behavior: 'smooth' });
-              }
-            }}
-            className={`whitespace-nowrap px-6 py-3 rounded-t-lg font-bold transition-all ${
-              activeTab === seq 
-                ? 'bg-primary text-primary-foreground shadow-[0_-4px_15px_rgba(var(--primary),0.3)]' 
-                : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
-            }`}
-          >
-            {stageData.name}
-          </button>
-        ))}
-      </div>
-
       {/* Contenedor del Bracket - Estilo Árbol Conectado */}
       <div 
         id="bracket-scroll-container" 
-        className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile transition-[height] duration-300 ease-in-out" 
-        style={{ 
-          transform: 'rotateX(180deg)',
-          height: getMobileHeight(),
-          overflowY: isMobile ? 'hidden' : 'visible'
-        }}
+        className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile" 
+        style={{ transform: 'rotateX(180deg)' }}
       >
         <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 768px) { .hidden-scrollbar-mobile::-webkit-scrollbar { display: none; } .hidden-scrollbar-mobile { scrollbar-width: none; } }` }} />
-        {groupedMatches.map(([seq, stageData]: [string, any]) => (
-          <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-6 snap-center" style={{ transform: 'rotateX(180deg)' }}>
+        {groupedMatches.map(([seq, stageData]: [string, any], index) => {
+          
+          // Define distinct colors for the active bottom border of each column
+          const borderColors = [
+            'border-blue-500 shadow-[0_4px_15px_rgba(59,130,246,0.3)]',
+            'border-purple-500 shadow-[0_4px_15px_rgba(168,85,247,0.3)]',
+            'border-pink-500 shadow-[0_4px_15px_rgba(236,72,153,0.3)]',
+            'border-amber-500 shadow-[0_4px_15px_rgba(245,158,11,0.3)]'
+          ];
+          const activeBorderClass = borderColors[index % borderColors.length];
+
+          return (
+          <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-2 snap-center" style={{ transform: 'rotateX(180deg)' }}>
             
+            {/* Sticky Column Header */}
+            <div className={`sticky top-0 z-20 bg-background/95 backdrop-blur-sm py-3 px-4 rounded-xl text-center font-bold text-lg transition-all duration-300 border-b-2 ${
+              activeTab === seq 
+                ? `text-foreground ${activeBorderClass}` 
+                : 'text-muted-foreground border-transparent'
+            }`}>
+              {stageData.name}
+            </div>
+
             {/* Visual Connector Line (Except on last column) */}
             {Number(seq) < 4 && (
-              <div className="hidden md:block absolute -right-4 top-10 bottom-10 w-4 border-r-2 border-slate-700/30 rounded-r-3xl z-0" />
+              <div className="hidden md:block absolute -right-4 top-20 bottom-10 w-4 border-r-2 border-slate-700/30 rounded-r-3xl z-0" />
             )}
 
             <div className="flex flex-col justify-start gap-4 py-2 relative z-10 h-max">
@@ -451,7 +422,8 @@ export default function TournamentBracket() {
               })}
             </div>
           </div>
-        ))}
+        );
+      })}
       </div>
     </div>
   );
