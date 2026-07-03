@@ -70,10 +70,10 @@ export default function Dashboard() {
   const avatarUrl = user?.user_metadata?.avatar_url;
 
   return (
-    <div className="w-full min-h-screen pt-28 pb-24 relative overflow-hidden bg-background text-foreground">
+    <div className="w-full min-h-screen pt-36 md:pt-28 pb-24 relative overflow-hidden bg-background text-foreground">
 
       {/* Header / Nav de Quiniela */}
-      <header className="absolute top-0 right-8 z-[60] flex items-center gap-4 py-4">
+      <header className="absolute top-20 md:top-4 right-4 md:right-8 z-[60] flex items-center gap-4 py-4">
         <div className="flex items-center gap-4">
           {!isOnline && (
             <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 px-3 py-1.5 rounded-full text-xs font-medium">
