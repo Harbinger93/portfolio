@@ -145,31 +145,6 @@ export default function TournamentBracket() {
     }
   }, [activeTab]);
 
-  // Ajuste dinámico de altura para móviles
-  useEffect(() => {
-    const handleResizeOrTabChange = () => {
-      const container = document.getElementById('bracket-scroll-container');
-      if (!container) return;
-
-      if (window.innerWidth >= 768) {
-        container.style.height = 'auto';
-      } else {
-        const activeCol = document.getElementById('stage-' + activeTab);
-        if (activeCol) {
-          const newHeight = activeCol.scrollHeight;
-          container.style.height = `${newHeight + 30}px`;
-          container.style.transition = 'height 0.3s ease-in-out';
-        }
-      }
-    };
-
-    // Ejecutar en el siguiente tick para asegurar que el DOM está renderizado
-    setTimeout(handleResizeOrTabChange, 50);
-
-    window.addEventListener('resize', handleResizeOrTabChange);
-    return () => window.removeEventListener('resize', handleResizeOrTabChange);
-  }, [activeTab, matches]);
-
   // Fetch Predicciones existentes
   const { data: serverPredictions, isLoading: predictionsLoading } = useQuery({
     queryKey: ['predictions', user?.id],
@@ -404,13 +379,14 @@ export default function TournamentBracket() {
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
         className="flex gap-8 overflow-x-auto overflow-y-hidden pb-4 items-start md:items-end custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile mobile-no-rotate cursor-grab" 
-        style={{ transform: 'rotateX(180deg)' }}
+        style={{ transform: 'rotateX(180deg)', height: 'auto' }}
       >
         <style dangerouslySetInnerHTML={{ __html: `
           @media (max-width: 768px) { 
             .hidden-scrollbar-mobile::-webkit-scrollbar { display: none; } 
             .hidden-scrollbar-mobile { scrollbar-width: none; } 
             .mobile-no-rotate { transform: none !important; }
+            .mobile-column-scroll { max-height: 65vh; overflow-y: auto; overflow-x: hidden; }
           }
         ` }} />
         {groupedMatches.map(([seq, stageData]: [string, any], index) => {
@@ -420,12 +396,13 @@ export default function TournamentBracket() {
             'border-blue-500 shadow-[0_4px_15px_rgba(59,130,246,0.3)]',
             'border-purple-500 shadow-[0_4px_15px_rgba(168,85,247,0.3)]',
             'border-pink-500 shadow-[0_4px_15px_rgba(236,72,153,0.3)]',
-            'border-amber-500 shadow-[0_4px_15px_rgba(245,158,11,0.3)]'
+            'border-amber-500 shadow-[0_4px_15px_rgba(245,158,11,0.3)]',
+            'border-emerald-500 shadow-[0_4px_15px_rgba(16,185,129,0.3)]'
           ];
           const activeBorderClass = borderColors[index % borderColors.length];
 
           return (
-          <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-2 snap-center mobile-no-rotate" style={{ transform: 'rotateX(180deg)' }}>
+          <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-2 snap-center mobile-no-rotate mobile-column-scroll custom-purple-scrollbar" style={{ transform: 'rotateX(180deg)' }}>
             
             {/* Sticky Column Header */}
             <div 
