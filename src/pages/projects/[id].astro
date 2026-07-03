@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectDetail from '../../components/sections/ProjectDetail';
 import { projects } from '../../config/data';
-export const prerender = true;
+
 
 export async function getStaticPaths() {
   // Generate paths for all projects in the config data (either english or spanish list since IDs are identical)
@@ -13,6 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { id } = Astro.params;
+export const prerender = true;
 ---
 
 <BaseLayout>

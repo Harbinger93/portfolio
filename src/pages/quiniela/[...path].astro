@@ -1,5 +1,5 @@
 ---
-export const prerender = true;
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AppQuiniela from "../../components/quiniela/AppQuiniela";
 
@@ -9,6 +9,7 @@ export function getStaticPaths() {
     { params: { path: 'admin' } }
   ];
 }
+export const prerender = true;
 ---
 
 <BaseLayout title="Quiniela Mundialista" description="Plataforma de Quiniela para la Fase Final del Mundial.">
