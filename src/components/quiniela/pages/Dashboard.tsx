@@ -103,12 +103,12 @@ export default function Dashboard() {
 
               {/* Dropdown Menu */}
               {menuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-popover border border-border rounded-xl shadow-2xl overflow-hidden py-1 z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-zinc-950/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden py-1 z-50">
                   {isAdmin && (
                     <Link 
                       to="/admin"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2 px-4 py-3 text-sm text-yellow-600 dark:text-yellow-400 hover:bg-muted transition-colors"
+                      className="flex items-center gap-2 px-4 py-3 text-sm text-yellow-600 dark:text-yellow-400 hover:bg-white/5 transition-colors"
                     >
                       <ShieldAlert className="w-4 h-4" />
                       Panel Admin
@@ -119,7 +119,7 @@ export default function Dashboard() {
                       setMenuOpen(false);
                       supabase.auth.signOut();
                     }}
-                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-500 hover:bg-muted transition-colors text-left"
+                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-500 hover:bg-white/5 transition-colors text-left"
                   >
                     <LogOut className="w-4 h-4" />
                     Cerrar Sesión
@@ -152,7 +152,7 @@ export default function Dashboard() {
         {/* Podium y Leaderboard */}
         <div className="flex flex-col gap-12 w-full max-w-5xl mx-auto pt-4">
           <section className="w-full">
-            <h2 className="text-3xl font-black text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500 drop-shadow-sm">
+            <h2 className="text-3xl font-black text-center mb-16 text-[#00f2fe] drop-shadow-sm">
               {t('quiniela.globalLeaderboard')}
             </h2>
             <LeaderboardPodium profiles={profiles || []} />

@@ -172,7 +172,7 @@ export default function TournamentBracket() {
   return (
     <div className="w-full max-w-6xl mx-auto my-8 p-6 md:p-8 relative z-10">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 px-4 w-full max-w-[1400px] mx-auto">
-        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500 mb-6 md:mb-0 text-center md:text-left">
+        <h2 className="text-2xl font-bold text-[#00f2fe] mb-6 md:mb-0 text-center md:text-left">
           {t('quiniela.brackets')}
         </h2>
         {user ? (
@@ -197,7 +197,7 @@ export default function TournamentBracket() {
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="flex flex-col sm:flex-row sm:justify-center gap-3 mt-6">
-                  <Button type="button" variant="outline" onClick={() => setConfirmOpen(false)} className="w-full sm:w-auto text-muted-foreground border-border hover:bg-muted">
+                  <Button type="button" variant="outline" onClick={() => setConfirmOpen(false)} className="w-full sm:w-auto text-muted-foreground border-border hover:bg-muted/30">
                     {t('quiniela.cancel')}
                   </Button>
                   <Button type="button" onClick={handleSave} className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-lg shadow-primary/20">
@@ -225,7 +225,7 @@ export default function TournamentBracket() {
       </div>
 
       {/* Tabs / Pestañas de Fases */}
-      <div className="flex gap-2 overflow-x-auto pb-4 mb-6 scrollbar-hide border-b border-white/10 touch-pan-x">
+      <div className="flex gap-2 overflow-x-auto pb-4 mb-6 border-b border-white/10 custom-purple-scrollbar">
         {Object.entries(
           (matches || []).reduce((acc: any, match) => {
             const seq = match.stage?.sequence_order || 0;
@@ -254,7 +254,7 @@ export default function TournamentBracket() {
       </div>
 
       {/* Contenedor del Bracket - Estilo Árbol Conectado */}
-      <div className="flex gap-8 overflow-x-auto pb-8 touch-pan-x" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex gap-8 overflow-x-auto pb-8 custom-purple-scrollbar">
         {Object.entries(
           (matches || []).reduce((acc: any, match) => {
             const seq = match.stage?.sequence_order || 0;

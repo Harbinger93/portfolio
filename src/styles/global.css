@@ -661,6 +661,22 @@ html[data-magicui-theme-vt="active"] *::after {
   background: var(--accent-primary);
 }
 
+.custom-purple-scrollbar::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.custom-purple-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.custom-purple-scrollbar::-webkit-scrollbar-thumb {
+  background: #7c3aed;
+  border-radius: 4px;
+}
+.custom-purple-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6d28d9;
+}
+
 /* Custom CSS animations replacing Framer Motion */
 @keyframes border-beam {
   0% {
