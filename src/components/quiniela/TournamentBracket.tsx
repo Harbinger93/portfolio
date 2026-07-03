@@ -360,10 +360,9 @@ export default function TournamentBracket() {
                       {match.is_finished && <span className="ml-2 text-green-500 font-bold">({t('quiniela.finished')})</span>}
                     </div>
                     
-                    {/* Home Team Row */}
                     <div 
                       onClick={() => !isLocked && match.team_home_id && handleTeamClick(match.team_home_id)}
-                      className={`flex items-center justify-between p-1 px-2 rounded-lg transition-all ${!isLocked && isTie ? 'cursor-pointer hover:bg-white/5' : ''} ${currentPred.winner === match.team_home_id || match.winner_id === match.team_home_id ? 'ring-1 ring-primary bg-primary/10' : ''}`}
+                      className={`flex items-center justify-between p-1 px-2 rounded-lg transition-all ${!isLocked && isTie ? (currentPred.winner ? 'cursor-pointer hover:bg-white/5' : 'cursor-pointer ring-1 ring-green-500/40 bg-green-500/10 hover:bg-green-500/20') : ''} ${currentPred.winner === match.team_home_id || match.winner_id === match.team_home_id ? 'ring-1 ring-primary bg-primary/10' : ''}`}
                     >
                       <div className="flex items-center gap-2">
                         {match.team_home?.flag_url ? (
@@ -394,10 +393,9 @@ export default function TournamentBracket() {
                       </div>
                     </div>
 
-                    {/* Away Team Row */}
                     <div 
                       onClick={() => !isLocked && match.team_away_id && handleTeamClick(match.team_away_id)}
-                      className={`flex items-center justify-between p-1 px-2 rounded-lg transition-all ${!isLocked && isTie ? 'cursor-pointer hover:bg-white/5' : ''} ${currentPred.winner === match.team_away_id || match.winner_id === match.team_away_id ? 'ring-1 ring-primary bg-primary/10' : ''}`}
+                      className={`flex items-center justify-between p-1 px-2 rounded-lg transition-all ${!isLocked && isTie ? (currentPred.winner ? 'cursor-pointer hover:bg-white/5' : 'cursor-pointer ring-1 ring-green-500/40 bg-green-500/10 hover:bg-green-500/20') : ''} ${currentPred.winner === match.team_away_id || match.winner_id === match.team_away_id ? 'ring-1 ring-primary bg-primary/10' : ''}`}
                     >
                       <div className="flex items-center gap-2">
                         {match.team_away?.flag_url ? (
@@ -429,7 +427,7 @@ export default function TournamentBracket() {
                     </div>
 
                     {isTie && !currentPred.winner && (
-                      <div className="text-[10px] text-blue-400 text-center animate-pulse mt-1 font-medium">
+                      <div className="text-[10px] text-green-500 text-center animate-pulse mt-1 font-bold tracking-wide">
                         Haz clic en el equipo que avanza
                       </div>
                     )}
