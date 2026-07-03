@@ -6,7 +6,7 @@ import { Input } from '../../ui/input';
 import { toast } from 'sonner';
 import { Navigate, Link } from 'react-router-dom';
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter, DialogHeader } from '../../ui/dialog';
-import { ShieldAlert, Users, Trophy, Settings, ArrowLeft, Loader2, Save, Download, FileJson } from 'lucide-react';
+import { ShieldAlert, Users, Trophy, Settings, ArrowLeft, Loader2, Save, Download, FileJson, Trash2 } from 'lucide-react';
 import { useI18n } from '../../../i18n/context';
 
 export default function AdminPanel() {
@@ -80,6 +80,21 @@ export default function AdminPanel() {
       return data;
     },
     enabled: isAdmin === true
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: async (userId: string) => {
+      const { data, error } = await supabase.rpc('admin_delete_user', { target_user_id: userId });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      toast.success('Usuario eliminado correctamente');
+    },
+    onError: (err: any) => {
+      toast.error(`Error al eliminar usuario: ${err.message}`);
+    }
   });
 
   const exportCSV = () => {
@@ -463,14 +478,30 @@ export default function AdminPanel() {
                             <td className="px-6 py-4 text-center text-yellow-500 font-bold">{aciertos}</td>
                             <td className="px-6 py-4 text-right font-black text-xl text-primary">{user.total_points}</td>
                             <td className="px-6 py-4 text-center">
-                              <Button 
-                                variant="outline" 
-                                size="sm" 
-                                onClick={() => setSelectedUser(user)}
-                                className="text-xs font-bold bg-muted/50 hover:bg-primary/20 border-border"
-                              >
-                                Ver Detalles
-                              </Button>
+                              <div className="flex justify-center gap-2">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={() => setSelectedUser(user)}
+                                  className="text-xs font-bold bg-muted/50 hover:bg-primary/20 border-border"
+                                >
+                                  Ver Detalles
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={() => {
+                                    if(window.confirm(`¿Estás seguro de que deseas eliminar permanentemente al usuario ${user.username || user.email} y todas sus predicciones? Esta acción no se puede deshacer.`)) {
+                                      deleteUserMutation.mutate(user.id);
+                                    }
+                                  }}
+                                  disabled={deleteUserMutation.isPending || user.is_admin}
+                                  className="text-xs font-bold bg-red-500/10 hover:bg-red-500/30 text-red-500 border-red-500/20 px-2"
+                                  title="Eliminar usuario"
+                                >
+                                  {deleteUserMutation.isPending ? <Loader2 className="animate-spin w-4 h-4" /> : <Trash2 className="w-4 h-4" />}
+                                </Button>
+                              </div>
                             </td>
                           </tr>
                         );
