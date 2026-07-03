@@ -241,10 +241,12 @@ export default function TournamentBracket() {
   });
 
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [showMissingAlert, setShowMissingAlert] = useState(false);
 
   const handleSave = () => {
     saveMutation.mutate(localPredictions);
     setConfirmOpen(false);
+    setShowMissingAlert(false);
   };
 
   const updatePrediction = (matchId: number, home: number | '', away: number | '', winner?: string) => {
@@ -262,6 +264,19 @@ export default function TournamentBracket() {
       [p.match_id]: { match_id: p.match_id, home: p.pred_goals_home, away: p.pred_goals_away, winner: p.pred_winner_id }
     }), {}) || {}
   );
+
+  const availableMatchesToPredict = matches?.filter(m => {
+    const matchLimitTime = new Date(new Date(m.match_time).getTime() - 15 * 60000);
+    return m.team_home_id && m.team_away_id && !m.is_finished && matchLimitTime >= new Date();
+  }) || [];
+
+  const missingMatchesCount = availableMatchesToPredict.filter(m => {
+    const p = localPredictions[m.id];
+    if (!p) return true;
+    if (p.home === '' || p.away === '') return true;
+    if (p.home === p.away && !p.winner) return true;
+    return false;
+  }).length;
 
   const groupedMatches = Object.entries(
     (matches || []).reduce((acc: any, match) => {
@@ -281,7 +296,10 @@ export default function TournamentBracket() {
         {user ? (
           <>
             <Button
-              onClick={() => setConfirmOpen(true)}
+              onClick={() => {
+                setShowMissingAlert(true);
+                setConfirmOpen(true);
+              }}
               disabled={Object.keys(localPredictions).length === 0 || saveMutation.isPending || !hasUnsavedChanges}
               className="w-full md:w-auto px-8 py-6 rounded-full text-lg bg-[#25D366] hover:bg-[#128C7E] text-white font-bold shadow-[0_0_15px_rgba(37,211,102,0.5)] transition-all hover:scale-105"
             >
@@ -298,6 +316,11 @@ export default function TournamentBracket() {
                     {t('quiniela.confirmDesc1')} <br/><br/>
                     <strong className="text-foreground">{t('quiniela.confirmDesc2')}</strong> {t('quiniela.confirmDesc3')}
                   </DialogDescription>
+                  {missingMatchesCount > 0 && (
+                    <div className="mt-4 p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-left animate-pulse">
+                      ⚠️ Te faltan por predecir {missingMatchesCount} partido(s) disponible(s). Se han resaltado en rojo. Puedes guardar ahora y volver a editarlos después (hasta 15 min antes de que empiecen).
+                    </div>
+                  )}
                 </DialogHeader>
                 <DialogFooter className="flex flex-col sm:flex-row sm:justify-center gap-3 mt-6">
                   <Button type="button" variant="outline" onClick={() => setConfirmOpen(false)} className="w-full sm:w-auto text-muted-foreground border-border hover:bg-muted/30">
@@ -392,9 +415,11 @@ export default function TournamentBracket() {
                 const currentPred = localPredictions[match.id] || { home: '', away: '' };
                 const isTie = currentPred.home !== '' && currentPred.away !== '' && currentPred.home === currentPred.away;
                 const isAlreadySaved = serverPredictions?.some((p: any) => p.match_id === match.id);
-                // Bloqueado si el partido terminó, faltan 15 mins o menos para empezar, ya se guardó, o faltan equipos por definir
+                // Bloqueado si el partido terminó, faltan 15 mins o menos para empezar, o faltan equipos por definir
                 const matchLimitTime = new Date(new Date(match.match_time).getTime() - 15 * 60000);
-                const isLocked = !user || match.is_finished || matchLimitTime < new Date() || isAlreadySaved || !match.team_home_id || !match.team_away_id;
+                const isLocked = !user || match.is_finished || matchLimitTime < new Date() || !match.team_home_id || !match.team_away_id;
+                
+                const isMissing = showMissingAlert && !isLocked && (!currentPred || currentPred.home === '' || currentPred.away === '' || (currentPred.home === currentPred.away && !currentPred.winner));
 
                 // Lógica de clic para desempatar: si hay empate, al hacer clic en un equipo se elige como ganador
                 const handleTeamClick = (teamId: string) => {
@@ -404,7 +429,7 @@ export default function TournamentBracket() {
                 };
 
                 return (
-                  <div key={match.id} className="glass rounded-xl p-3 shadow-md flex flex-col gap-1 border border-border relative overflow-hidden bg-card/80 transition-all hover:border-primary/50">
+                  <div key={match.id} className={`glass rounded-xl p-3 shadow-md flex flex-col gap-1 border relative overflow-hidden bg-card/80 transition-all hover:border-primary/50 ${isMissing ? 'border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]' : 'border-border'}`}>
                     
                     <div className="text-[10px] font-medium text-muted-foreground text-center uppercase tracking-wider mb-1">
                       {localTime}
@@ -438,6 +463,7 @@ export default function TournamentBracket() {
                             const val = e.target.value === '' ? '' : parseInt(e.target.value);
                             const newWinner = val !== currentPred.away ? undefined : currentPred.winner;
                             updatePrediction(match.id, val, currentPred.away, newWinner);
+                            setShowMissingAlert(false);
                           }}
                           onClick={(e) => e.stopPropagation()}
                         />
@@ -471,6 +497,7 @@ export default function TournamentBracket() {
                             const val = e.target.value === '' ? '' : parseInt(e.target.value);
                             const newWinner = currentPred.home !== val ? undefined : currentPred.winner;
                             updatePrediction(match.id, currentPred.home, val, newWinner);
+                            setShowMissingAlert(false);
                           }}
                           onClick={(e) => e.stopPropagation()}
                         />
