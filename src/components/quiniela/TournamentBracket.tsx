@@ -36,6 +36,7 @@ export default function TournamentBracket() {
   const queryClient = useQueryClient();
   const { t } = useI18n();
   const [localPredictions, setLocalPredictions] = useState<Record<number, any>>({});
+  const [isOffline, setIsOffline] = useState(typeof navigator !== 'undefined' ? !navigator.onLine : false);
   const [activeTab, setActiveTab] = useState<string>('0');
 
   useEffect(() => {
