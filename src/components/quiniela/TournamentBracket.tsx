@@ -88,6 +88,20 @@ export default function TournamentBracket() {
     }
   }, [matches, activeTab]);
 
+  // Sincronizar el scroll de las pestañas cuando cambia activeTab
+  useEffect(() => {
+    if (activeTab !== '0') {
+      const tabEl = document.getElementById('tab-btn-' + activeTab);
+      const tabsContainer = document.getElementById('tabs-scroll-container');
+      if (tabEl && tabsContainer) {
+        tabsContainer.scrollTo({
+          left: tabEl.offsetLeft - tabsContainer.offsetLeft - 20,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [activeTab]);
+
   // Fetch Predicciones existentes
   const { data: serverPredictions, isLoading: predictionsLoading } = useQuery({
     queryKey: ['predictions', user?.id],
@@ -261,7 +275,8 @@ export default function TournamentBracket() {
       </div>
 
       {/* Tabs / Pestañas de Fases */}
-      <div className="flex gap-2 overflow-x-auto pb-4 mb-6 border-b border-white/10 custom-purple-scrollbar">
+      <div id="tabs-scroll-container" className="flex gap-2 overflow-x-auto mb-6 border-b border-white/10" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <style dangerouslySetInnerHTML={{ __html: `#tabs-scroll-container::-webkit-scrollbar { display: none; }` }} />
         {Object.entries(
           (matches || []).reduce((acc: any, match) => {
             const seq = match.stage?.sequence_order || 0;
@@ -274,9 +289,16 @@ export default function TournamentBracket() {
         .map(([seq, stageData]: [string, any]) => (
           <button
             key={seq}
+            id={`tab-btn-${seq}`}
             onClick={() => {
               setActiveTab(seq);
-              document.getElementById('stage-' + seq)?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+              const container = document.getElementById('bracket-scroll-container');
+              const el = document.getElementById('stage-' + seq);
+              if (container && el) {
+                // Al estar rotado 180deg, el offsetLeft se calcula normal, pero el scrollLeft es diferente en algunos browsers.
+                // En la mayoría, scrollLeft normal funciona.
+                container.scrollTo({ left: el.offsetLeft - container.offsetLeft, behavior: 'smooth' });
+              }
             }}
             className={`whitespace-nowrap px-6 py-3 rounded-t-lg font-bold transition-all ${
               activeTab === seq 
@@ -290,7 +312,8 @@ export default function TournamentBracket() {
       </div>
 
       {/* Contenedor del Bracket - Estilo Árbol Conectado */}
-      <div id="bracket-scroll-container" className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory" style={{ transform: 'rotateX(180deg)' }}>
+      <div id="bracket-scroll-container" className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile" style={{ transform: 'rotateX(180deg)' }}>
+        <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 768px) { .hidden-scrollbar-mobile::-webkit-scrollbar { display: none; } .hidden-scrollbar-mobile { scrollbar-width: none; } }` }} />
         {Object.entries(
           (matches || []).reduce((acc: any, match) => {
             const seq = match.stage?.sequence_order || 0;

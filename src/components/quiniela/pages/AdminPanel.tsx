@@ -502,53 +502,55 @@ export default function AdminPanel() {
                         if (!pred) return null;
                         
                         return (
-                          <div key={match.id} className="bg-card border border-border rounded-lg p-4 flex flex-col md:flex-row items-center gap-4 justify-between">
+                          <div key={match.id} className="bg-card border border-border rounded-lg p-4 flex flex-col gap-4">
                             
                             {/* Equipos (Real) */}
-                            <div className="flex items-center gap-4 w-full md:w-1/3">
+                            <div className="flex items-center gap-4 w-full justify-center">
                               <div className="flex flex-col items-end gap-1 flex-1">
                                 <span className="font-bold text-sm text-right leading-tight">{match.team_home?.name || match.team_home_id || '?'}</span>
                                 {match.team_home?.flag_url && <img src={match.team_home.flag_url} className="w-5 h-3 rounded-[1px]" />}
                               </div>
-                              <span className="font-black text-muted-foreground text-xs">VS</span>
+                              <span className="font-black text-muted-foreground text-xs px-2">VS</span>
                               <div className="flex flex-col items-start gap-1 flex-1">
                                 <span className="font-bold text-sm leading-tight">{match.team_away?.name || match.team_away_id || '?'}</span>
                                 {match.team_away?.flag_url && <img src={match.team_away.flag_url} className="w-5 h-3 rounded-[1px]" />}
                               </div>
                             </div>
                             
-                            {/* Predicción */}
-                            <div className="bg-muted/50 rounded-md px-4 py-2 flex flex-col items-center">
-                              <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-1">Predicción</span>
-                              <div className="flex gap-2 items-center font-black text-lg">
-                                <span>{pred.pred_goals_home}</span>
-                                <span>-</span>
-                                <span>{pred.pred_goals_away}</span>
+                            <div className="flex flex-row justify-around items-center w-full bg-muted/20 p-3 rounded-lg flex-wrap gap-3">
+                              {/* Predicción */}
+                              <div className="flex flex-col items-center">
+                                <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-1">Predicción</span>
+                                <div className="flex gap-2 items-center font-black text-lg bg-muted/50 px-3 py-1 rounded-md">
+                                  <span>{pred.pred_goals_home}</span>
+                                  <span>-</span>
+                                  <span>{pred.pred_goals_away}</span>
+                                </div>
                               </div>
-                            </div>
-                            
-                            {/* Resultado Final (Si existe) */}
-                            <div className={`rounded-md px-4 py-2 flex flex-col items-center ${match.is_finished ? 'bg-primary/10 border border-primary/20' : 'opacity-50'}`}>
-                              <span className="text-[10px] text-primary uppercase font-bold tracking-wider mb-1">Resultado Real</span>
-                              <div className="flex gap-2 items-center font-black text-lg">
-                                <span>{match.goals_home ?? '-'}</span>
-                                <span>-</span>
-                                <span>{match.goals_away ?? '-'}</span>
+                              
+                              {/* Resultado Final (Si existe) */}
+                              <div className="flex flex-col items-center">
+                                <span className={`text-[10px] uppercase font-bold tracking-wider mb-1 ${match.is_finished ? 'text-primary' : 'text-muted-foreground'}`}>Resultado Real</span>
+                                <div className={`flex gap-2 items-center font-black text-lg px-3 py-1 rounded-md ${match.is_finished ? 'bg-primary/10 border border-primary/20 text-primary' : 'opacity-50'}`}>
+                                  <span>{match.goals_home ?? '-'}</span>
+                                  <span>-</span>
+                                  <span>{match.goals_away ?? '-'}</span>
+                                </div>
                               </div>
-                            </div>
 
-                            {/* Puntos Obtenidos */}
-                            <div className="flex flex-col items-center justify-center min-w-[60px]">
-                              {match.is_finished ? (
-                                <>
-                                  <span className={`text-2xl font-black ${pred.points_earned === 3 ? 'text-green-500' : pred.points_earned === 1 ? 'text-yellow-500' : 'text-slate-500'}`}>
-                                    +{pred.points_earned}
-                                  </span>
-                                  <span className="text-[10px] text-muted-foreground">pts</span>
-                                </>
-                              ) : (
-                                <span className="text-xs text-muted-foreground italic">En espera</span>
-                              )}
+                              {/* Puntos Obtenidos */}
+                              <div className="flex flex-col items-center justify-center min-w-[60px]">
+                                {match.is_finished ? (
+                                  <>
+                                    <span className={`text-2xl font-black ${pred.points_earned === 3 ? 'text-green-500' : pred.points_earned === 1 ? 'text-yellow-500' : 'text-slate-500'}`}>
+                                      +{pred.points_earned}
+                                    </span>
+                                    <span className="text-[10px] text-muted-foreground">pts</span>
+                                  </>
+                                ) : (
+                                  <span className="text-xs text-muted-foreground italic mt-2">En espera</span>
+                                )}
+                              </div>
                             </div>
 
                           </div>
