@@ -5,6 +5,8 @@ import { loadEnv } from 'vite';
 import sentry from '@sentry/astro';
 import AstroPWA from '@vite-pwa/astro';
 
+import vercel from '@astrojs/vercel';
+
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 const apiKey = env.COTIZAVE_API_KEY;
 
@@ -66,6 +68,7 @@ export default defineConfig({
       }
     }),
   ],
+
   vite: {
     plugins: [
       tailwindcss(),
@@ -110,4 +113,6 @@ export default defineConfig({
       noExternal: ['react-phone-number-input', 'libphonenumber-js'],
     },
   },
+
+  adapter: vercel(),
 });

@@ -6,3 +6,4 @@ dist/
 *.log
 src/docs/
 docs/
+.vercel
