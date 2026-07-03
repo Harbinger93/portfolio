@@ -206,10 +206,15 @@ export default function TournamentBracket() {
   // Mutación para guardar (Batch Update)
   const saveMutation = useMutation({
     mutationFn: async (predictions: Record<number, any>) => {
-      // Filtrar predicciones incompletas
+      // Filtrar predicciones incompletas y partidos bloqueados
       const payload = Object.values(predictions).filter(
         p => p.home !== undefined && p.home !== null && p.home !== '' && p.away !== undefined && p.away !== null && p.away !== ''
-      );
+      ).filter(p => {
+        const match = matches?.find((m: any) => m.id === p.match_id);
+        if (!match || match.is_finished) return false;
+        const matchLimitTime = new Date(new Date(match.match_time).getTime() - 15 * 60000);
+        return matchLimitTime >= new Date(); // Solo enviar si el partido NO está bloqueado
+      });
       if (payload.length === 0) return;
       
       const { data: userData } = await supabase.auth.getUser();
