@@ -126,7 +126,7 @@ export default function AdminPanel() {
 
       const { data: { session } } = await supabase.auth.getSession();
       
-      const response = await fetch('/api/quiniela/recalculate', {
+      const response = await fetch('/q-api/quiniela/recalculate', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ export default function AdminPanel() {
     mutationFn: async (matchId: number) => {
       const { data: { session } } = await supabase.auth.getSession();
       
-      const response = await fetch('/api/quiniela/unfinalize', {
+      const response = await fetch('/q-api/quiniela/unfinalize', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ export default function AdminPanel() {
   const updateTeamMutation = useMutation({
     mutationFn: async ({ matchId, field, teamId }: { matchId: number, field: 'team_home_id' | 'team_away_id' | 'match_time', teamId: string }) => {
       const { data: { session } } = await supabase.auth.getSession();
-      const response = await fetch('/api/quiniela/update-match-team', {
+      const response = await fetch('/q-api/quiniela/update-match-team', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

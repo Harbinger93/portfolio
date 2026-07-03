@@ -176,8 +176,8 @@ export default function TournamentBracket() {
       },
       {
         root: container,
-        threshold: 0,
-        rootMargin: '0px -49% 0px -49%'
+        threshold: 0.5,
+        rootMargin: '0px -10% 0px -10%'
       }
     );
 

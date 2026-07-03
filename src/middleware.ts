@@ -10,7 +10,7 @@ export const onRequest = defineMiddleware((context, next) => {
   const { url, request } = context;
 
   // Solo aplicar rate limiting a las rutas de la API que pueden consumir recursos pesados
-  if (url.pathname.startsWith('/api/quiniela/')) {
+  if (url.pathname.startsWith('/q-api/quiniela/')) {
     // Obtener la IP en Vercel (x-forwarded-for) o el entorno local
     const ip = request.headers.get('x-forwarded-for') || context.clientAddress || 'unknown-ip';
     const now = Date.now();
