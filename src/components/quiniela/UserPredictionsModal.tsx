@@ -57,7 +57,7 @@ export default function UserPredictionsModal({ isOpen, onClose, userId, username
           </DialogTitle>
         </DialogHeader>
 
-        <div className="p-4 overflow-y-auto custom-scrollbar flex-1 flex flex-col gap-4">
+        <div className="p-4 overflow-y-auto overscroll-contain custom-scrollbar flex-1 flex flex-col gap-4" style={{ WebkitOverflowScrolling: 'touch' }}>
           {userMatches.length === 0 ? (
             <div className="text-center p-8 text-slate-500">
               No hay predicciones registradas aún.
