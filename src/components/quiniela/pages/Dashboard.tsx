@@ -6,6 +6,7 @@ import LeaderboardPodium from '../LeaderboardPodium';
 import TournamentBracket from '../TournamentBracket';
 import FAQ from '../FAQ';
 import TermsModal from '../TermsModal';
+import UserPredictionsModal from '../UserPredictionsModal';
 import { Button } from '../../ui/button';
 import { RainbowButton } from '../../ui/rainbow-button';
 import { useI18n } from '../../../i18n/context';
@@ -16,6 +17,7 @@ export default function Dashboard() {
   const { t } = useI18n();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [termsModalOpen, setTermsModalOpen] = useState(false);
+  const [predictionsModalOpen, setPredictionsModalOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -170,35 +172,49 @@ export default function Dashboard() {
                     <tr>
                       <th className="px-6 py-4 font-bold text-muted-foreground w-16 text-center">#</th>
                       <th className="px-6 py-4 font-bold text-muted-foreground">{t('quiniela.participant')}</th>
+                      <th className="px-6 py-4 font-bold text-muted-foreground text-center">Acciones</th>
                       <th className="px-6 py-4 font-bold text-muted-foreground text-right">{t('quiniela.totalPoints')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {profiles?.map((p: any, index: number) => (
-                      <tr key={p.id} className="hover:bg-muted/50 transition-colors">
-                        <td className="px-6 py-4 font-black text-center text-muted-foreground">
-                          {index + 1}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            {p.avatar_url ? (
-                              <img src={p.avatar_url} alt="Avatar" className="w-8 h-8 rounded-full border border-border object-cover" />
-                            ) : (
-                              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20">
-                                {(p.full_name || p.username || '?').charAt(0).toUpperCase()}
-                              </div>
+                    {profiles?.map((p: any, index: number) => {
+                      const isCurrentUser = user && user.id === p.id;
+                      return (
+                        <tr key={p.id} className={`transition-colors ${isCurrentUser ? 'bg-cyan-500/10 border-l-4 border-l-cyan-400 scale-[1.02] transform shadow-lg relative z-10' : 'hover:bg-muted/50'}`}>
+                          <td className="px-6 py-4 font-black text-center text-muted-foreground">
+                            {index + 1}
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-3">
+                              {p.avatar_url ? (
+                                <img src={p.avatar_url} alt="Avatar" className="w-8 h-8 rounded-full border border-border object-cover" />
+                              ) : (
+                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20">
+                                  {(p.full_name || p.username || '?').charAt(0).toUpperCase()}
+                                </div>
+                              )}
+                              <span className={`font-semibold ${isCurrentUser ? 'text-cyan-400' : 'text-foreground'}`}>{p.full_name || p.username}</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-center">
+                            {isCurrentUser && (
+                              <button
+                                onClick={() => setPredictionsModalOpen(true)}
+                                className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-white font-bold text-xs rounded-full shadow-md transition-all"
+                              >
+                                Ver predicciones
+                              </button>
                             )}
-                            <span className="font-semibold text-foreground">{p.full_name || p.username}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-right font-black text-primary text-lg">
-                          {p.total_points}
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                          <td className={`px-6 py-4 text-right font-black text-lg ${isCurrentUser ? 'text-cyan-400' : 'text-primary'}`}>
+                            {p.total_points}
+                          </td>
+                        </tr>
+                      );
+                    })}
                     {(!profiles || profiles.length === 0) && (
                       <tr>
-                        <td colSpan={3} className="px-6 py-8 text-center text-muted-foreground">
+                        <td colSpan={4} className="px-6 py-8 text-center text-muted-foreground">
                           {t('quiniela.noScores')}
                         </td>
                       </tr>
@@ -242,6 +258,16 @@ export default function Dashboard() {
         isOpen={termsModalOpen}
         onClose={() => setTermsModalOpen(false)}
       />
+
+      {user && (
+        <UserPredictionsModal
+          isOpen={predictionsModalOpen}
+          onClose={() => setPredictionsModalOpen(false)}
+          userId={user.id}
+          username={user.user_metadata?.username || user.email?.split('@')[0]}
+          totalPoints={profiles?.find((p: any) => p.id === user.id)?.total_points || 0}
+        />
+      )}
     </div>
   );
 }
