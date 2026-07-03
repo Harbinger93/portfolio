@@ -60,6 +60,32 @@ export default function TournamentBracket() {
     return () => authListener.subscription.unsubscribe();
   }, []);
 
+  // Intersection Observer for horizontal scroll tracking
+  useEffect(() => {
+    const container = document.getElementById('bracket-scroll-container');
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const seq = entry.target.id.replace('stage-', '');
+            setActiveTab(seq);
+          }
+        });
+      },
+      {
+        root: container,
+        threshold: 0.6,
+      }
+    );
+
+    const columns = document.querySelectorAll('.stage-column');
+    columns.forEach((col) => observer.observe(col));
+
+    return () => observer.disconnect();
+  }, [matches]);
+
   // Fetch Partidos (Caché por 2 minutos)
   const { data: matches, isLoading: matchesLoading } = useQuery({
     queryKey: ['matches'],
@@ -254,7 +280,7 @@ export default function TournamentBracket() {
       </div>
 
       {/* Contenedor del Bracket - Estilo Árbol Conectado */}
-      <div className="flex gap-8 overflow-x-auto pb-8 custom-purple-scrollbar">
+      <div id="bracket-scroll-container" className="flex gap-8 overflow-x-auto pb-8 custom-purple-scrollbar snap-x snap-mandatory">
         {Object.entries(
           (matches || []).reduce((acc: any, match) => {
             const seq = match.stage?.sequence_order || 0;
@@ -265,7 +291,7 @@ export default function TournamentBracket() {
         )
         .sort(([a], [b]) => Number(a) - Number(b))
         .map(([seq, stageData]: [string, any]) => (
-          <div key={seq} id={`stage-${seq}`} className="flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-2">
+          <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-2 snap-center">
             
             {/* Visual Connector Line (Except on last column) */}
             {Number(seq) < 4 && (
@@ -284,7 +310,7 @@ export default function TournamentBracket() {
                 const isAlreadySaved = serverPredictions?.some((p: any) => p.match_id === match.id);
                 // Bloqueado si el partido terminó, faltan 15 mins o menos para empezar, ya se guardó, o faltan equipos por definir
                 const matchLimitTime = new Date(new Date(match.match_time).getTime() - 15 * 60000);
-                const isLocked = match.is_finished || matchLimitTime < new Date() || isAlreadySaved || !match.team_home_id || !match.team_away_id;
+                const isLocked = !user || match.is_finished || matchLimitTime < new Date() || isAlreadySaved || !match.team_home_id || !match.team_away_id;
 
                 // Lógica de clic para desempatar: si hay empate, al hacer clic en un equipo se elige como ganador
                 const handleTeamClick = (teamId: string) => {
