@@ -60,31 +60,7 @@ export default function TournamentBracket() {
     return () => authListener.subscription.unsubscribe();
   }, []);
 
-  // Intersection Observer for horizontal scroll tracking
-  useEffect(() => {
-    const container = document.getElementById('bracket-scroll-container');
-    if (!container) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            const seq = entry.target.id.replace('stage-', '');
-            setActiveTab(seq);
-          }
-        });
-      },
-      {
-        root: container,
-        threshold: 0.6,
-      }
-    );
-
-    const columns = document.querySelectorAll('.stage-column');
-    columns.forEach((col) => observer.observe(col));
-
-    return () => observer.disconnect();
-  }, [matches]);
 
   // Fetch Partidos (Caché por 2 minutos)
   const { data: matches, isLoading: matchesLoading } = useQuery({
@@ -118,6 +94,32 @@ export default function TournamentBracket() {
     },
     enabled: !!user,
   });
+
+  // Intersection Observer for horizontal scroll tracking
+  useEffect(() => {
+    const container = document.getElementById('bracket-scroll-container');
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const seq = entry.target.id.replace('stage-', '');
+            setActiveTab(seq);
+          }
+        });
+      },
+      {
+        root: container,
+        threshold: 0.6,
+      }
+    );
+
+    const columns = document.querySelectorAll('.stage-column');
+    columns.forEach((col) => observer.observe(col));
+
+    return () => observer.disconnect();
+  }, [matches]);
 
   // Cargar predicciones del servidor en estado local
   useEffect(() => {
