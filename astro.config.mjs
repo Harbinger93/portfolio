@@ -70,6 +70,7 @@ export default defineConfig({
   ],
 
   vite: {
+    envPrefix: ['VITE_', 'PUBLIC_'],
     plugins: [
       tailwindcss(),
       {
