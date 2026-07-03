@@ -70,7 +70,10 @@ export default defineConfig({
   ],
 
   vite: {
-    envPrefix: ['VITE_', 'PUBLIC_'],
+    define: {
+      'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(env.VITE_SUPABASE_URL || env.PUBLIC_SUPABASE_URL),
+      'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(env.VITE_SUPABASE_ANON_KEY || env.PUBLIC_SUPABASE_ANON_KEY)
+    },
     plugins: [
       tailwindcss(),
       {
