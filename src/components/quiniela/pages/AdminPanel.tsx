@@ -5,7 +5,7 @@ import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { toast } from 'sonner';
 import { Navigate, Link } from 'react-router-dom';
-import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter, DialogHeader } from '../ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter, DialogHeader } from '../../ui/dialog';
 import { ShieldAlert, Users, Trophy, Settings, ArrowLeft, Loader2, Save, Download, FileJson } from 'lucide-react';
 import { useI18n } from '../../../i18n/context';
 
