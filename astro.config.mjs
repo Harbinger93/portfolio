@@ -11,6 +11,7 @@ const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 const apiKey = env.COTIZAVE_API_KEY;
 
 export default defineConfig({
+  output: 'server',
   integrations: [
     react(),
     sentry({
