@@ -89,7 +89,7 @@ export default function AdminPanel() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      queryClient.invalidateQueries({ queryKey: ['admin_users'] });
       toast.success('Usuario eliminado correctamente');
     },
     onError: (err: any) => {
