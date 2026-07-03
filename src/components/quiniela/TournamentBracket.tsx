@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../../lib/quiniela/supabase';
 import { Button } from '../ui/button';
@@ -38,6 +38,44 @@ export default function TournamentBracket() {
   const [localPredictions, setLocalPredictions] = useState<Record<number, any>>({});
   const [isOffline, setIsOffline] = useState(typeof navigator !== 'undefined' ? !navigator.onLine : false);
   const [activeTab, setActiveTab] = useState<string>('0');
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    isDown.current = true;
+    scrollRef.current.classList.add('cursor-grabbing');
+    scrollRef.current.classList.remove('cursor-grab');
+    startX.current = e.pageX - scrollRef.current.offsetLeft;
+    scrollLeft.current = scrollRef.current.scrollLeft;
+  };
+
+  const handleMouseLeave = () => {
+    isDown.current = false;
+    if (scrollRef.current) {
+      scrollRef.current.classList.remove('cursor-grabbing');
+      scrollRef.current.classList.add('cursor-grab');
+    }
+  };
+
+  const handleMouseUp = () => {
+    isDown.current = false;
+    if (scrollRef.current) {
+      scrollRef.current.classList.remove('cursor-grabbing');
+      scrollRef.current.classList.add('cursor-grab');
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDown.current || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX.current) * 2;
+    scrollRef.current.scrollLeft = scrollLeft.current - walk;
+  };
 
   useEffect(() => {
     const handleOnline = () => setIsOffline(false);
@@ -286,7 +324,12 @@ export default function TournamentBracket() {
       {/* Contenedor del Bracket - Estilo Árbol Conectado */}
       <div 
         id="bracket-scroll-container" 
-        className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile" 
+        ref={scrollRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile cursor-grab" 
         style={{ transform: 'rotateX(180deg)' }}
       >
         <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 768px) { .hidden-scrollbar-mobile::-webkit-scrollbar { display: none; } .hidden-scrollbar-mobile { scrollbar-width: none; } }` }} />
@@ -305,7 +348,18 @@ export default function TournamentBracket() {
           <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-2 snap-center" style={{ transform: 'rotateX(180deg)' }}>
             
             {/* Sticky Column Header */}
-            <div className={`sticky top-0 z-20 bg-background/95 backdrop-blur-sm py-3 px-4 rounded-xl text-center font-bold text-lg transition-all duration-300 border-b-2 ${
+            <div 
+              onClick={() => {
+                setActiveTab(seq);
+                const container = scrollRef.current || document.getElementById('bracket-scroll-container');
+                const el = document.getElementById('stage-' + seq);
+                if (container && el) {
+                  // Alinear al centro considerando el padding del contenedor
+                  const scrollPos = el.offsetLeft - container.offsetLeft - (container.clientWidth / 2) + (el.clientWidth / 2);
+                  container.scrollTo({ left: scrollPos, behavior: 'smooth' });
+                }
+              }}
+              className={`cursor-pointer sticky top-0 z-20 bg-background/95 backdrop-blur-sm py-3 px-4 rounded-xl text-center font-bold text-lg transition-all duration-300 border-b-2 ${
               activeTab === seq 
                 ? `text-foreground ${activeBorderClass}` 
                 : 'text-muted-foreground border-transparent'
