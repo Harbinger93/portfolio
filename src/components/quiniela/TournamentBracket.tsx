@@ -168,7 +168,7 @@ export default function TournamentBracket() {
 
     window.addEventListener('resize', handleResizeOrTabChange);
     return () => window.removeEventListener('resize', handleResizeOrTabChange);
-  }, [activeTab, groupedMatches]);
+  }, [activeTab, matches]);
 
   // Fetch Predicciones existentes
   const { data: serverPredictions, isLoading: predictionsLoading } = useQuery({
@@ -185,32 +185,47 @@ export default function TournamentBracket() {
     enabled: !!user,
   });
 
-  // Intersection Observer for horizontal scroll tracking
+  // Scroll listener for horizontal scroll tracking (replaces IntersectionObserver to prevent infinite loops)
   useEffect(() => {
     const container = document.getElementById('bracket-scroll-container');
     if (!container) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const seq = entry.target.id.replace('stage-', '');
-            setActiveTab(seq);
+    let timeoutId: any = null;
+
+    const handleScroll = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      
+      timeoutId = setTimeout(() => {
+        let closestSeq = activeTab;
+        let minDistance = Infinity;
+        
+        // Calculate the center of the visible area of the container
+        const containerCenter = container.scrollLeft + container.clientWidth / 2;
+        
+        const columns = document.querySelectorAll('.stage-column');
+        columns.forEach((col: any) => {
+          // Calculate the center of the column relative to the container's scrollable area
+          const colCenter = col.offsetLeft + (col.clientWidth / 2) - container.offsetLeft;
+          const distance = Math.abs(containerCenter - colCenter);
+          
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestSeq = col.id.replace('stage-', '');
           }
         });
-      },
-      {
-        root: container,
-        threshold: 0.1,
-        rootMargin: '0px -10% 0px -10%'
-      }
-    );
+        
+        if (closestSeq !== activeTab) {
+          setActiveTab(closestSeq);
+        }
+      }, 50); // Debounce
+    };
 
-    const columns = document.querySelectorAll('.stage-column');
-    columns.forEach((col) => observer.observe(col));
-
-    return () => observer.disconnect();
-  }, [matches]);
+    container.addEventListener('scroll', handleScroll);
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, [activeTab, matches]);
 
   // Cargar predicciones del servidor en estado local
   useEffect(() => {
