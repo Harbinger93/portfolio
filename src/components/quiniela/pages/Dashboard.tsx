@@ -168,7 +168,7 @@ export default function Dashboard() {
               </div>
               <div className="max-h-[400px] overflow-y-auto custom-scrollbar">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-muted/80 sticky top-0 z-10 shadow-sm backdrop-blur-md">
+                  <thead className="bg-muted/80 sticky top-0 z-20 shadow-sm backdrop-blur-md">
                     <tr>
                       <th className="px-6 py-4 font-bold text-muted-foreground w-16 text-center">#</th>
                       <th className="px-6 py-4 font-bold text-muted-foreground">{t('quiniela.participant')}</th>

@@ -176,7 +176,7 @@ export default function TournamentBracket() {
       },
       {
         root: container,
-        threshold: 0.5,
+        threshold: 0.1,
         rootMargin: '0px -10% 0px -10%'
       }
     );
@@ -363,7 +363,7 @@ export default function TournamentBracket() {
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile cursor-grab" 
+        className="flex gap-8 overflow-x-auto pb-4 items-end custom-purple-scrollbar snap-x snap-mandatory hidden-scrollbar-mobile cursor-grab" 
         style={{ transform: 'rotateX(180deg)' }}
       >
         <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 768px) { .hidden-scrollbar-mobile::-webkit-scrollbar { display: none; } .hidden-scrollbar-mobile { scrollbar-width: none; } }` }} />
