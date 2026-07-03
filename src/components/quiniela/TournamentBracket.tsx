@@ -43,10 +43,12 @@ export default function TournamentBracket() {
   const isDown = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
+  const isDragging = useRef(false);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return;
     isDown.current = true;
+    isDragging.current = false;
     scrollRef.current.classList.add('cursor-grabbing');
     scrollRef.current.classList.remove('cursor-grab');
     startX.current = e.pageX - scrollRef.current.offsetLeft;
@@ -74,6 +76,9 @@ export default function TournamentBracket() {
     e.preventDefault();
     const x = e.pageX - scrollRef.current.offsetLeft;
     const walk = (x - startX.current) * 2;
+    if (Math.abs(walk) > 5) {
+      isDragging.current = true;
+    }
     scrollRef.current.scrollLeft = scrollLeft.current - walk;
   };
 
@@ -163,7 +168,7 @@ export default function TournamentBracket() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
             const seq = entry.target.id.replace('stage-', '');
             setActiveTab(seq);
           }
@@ -171,7 +176,8 @@ export default function TournamentBracket() {
       },
       {
         root: container,
-        threshold: 0.6,
+        threshold: 0.5,
+        rootMargin: '0px -10% 0px -10%'
       }
     );
 
@@ -349,7 +355,11 @@ export default function TournamentBracket() {
             
             {/* Sticky Column Header */}
             <div 
-              onClick={() => {
+              onClick={(e) => {
+                if (isDragging.current) {
+                  e.stopPropagation();
+                  return;
+                }
                 setActiveTab(seq);
                 const container = scrollRef.current || document.getElementById('bracket-scroll-container');
                 const el = document.getElementById('stage-' + seq);
