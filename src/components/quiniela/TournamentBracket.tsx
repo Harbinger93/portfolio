@@ -80,6 +80,14 @@ export default function TournamentBracket() {
     }
   });
 
+  // Inicializar pestaña activa
+  useEffect(() => {
+    if (matches && matches.length > 0 && activeTab === '0') {
+      const minSeq = Math.min(...matches.map(m => m.stage?.sequence_order || 1));
+      setActiveTab(minSeq.toString());
+    }
+  }, [matches, activeTab]);
+
   // Fetch Predicciones existentes
   const { data: serverPredictions, isLoading: predictionsLoading } = useQuery({
     queryKey: ['predictions', user?.id],
@@ -282,7 +290,7 @@ export default function TournamentBracket() {
       </div>
 
       {/* Contenedor del Bracket - Estilo Árbol Conectado */}
-      <div id="bracket-scroll-container" className="flex gap-8 overflow-x-auto pb-8 custom-purple-scrollbar snap-x snap-mandatory">
+      <div id="bracket-scroll-container" className="flex gap-8 overflow-x-auto pb-4 custom-purple-scrollbar snap-x snap-mandatory" style={{ transform: 'rotateX(180deg)' }}>
         {Object.entries(
           (matches || []).reduce((acc: any, match) => {
             const seq = match.stage?.sequence_order || 0;
@@ -293,7 +301,7 @@ export default function TournamentBracket() {
         )
         .sort(([a], [b]) => Number(a) - Number(b))
         .map(([seq, stageData]: [string, any]) => (
-          <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-2 snap-center">
+          <div key={seq} id={`stage-${seq}`} className="stage-column flex flex-col min-w-[280px] max-w-[320px] gap-3 shrink-0 relative pt-6 snap-center" style={{ transform: 'rotateX(180deg)' }}>
             
             {/* Visual Connector Line (Except on last column) */}
             {Number(seq) < 4 && (
