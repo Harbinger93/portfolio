@@ -168,7 +168,7 @@ export default function TournamentBracket() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+          if (entry.isIntersecting) {
             const seq = entry.target.id.replace('stage-', '');
             setActiveTab(seq);
           }
@@ -176,8 +176,8 @@ export default function TournamentBracket() {
       },
       {
         root: container,
-        threshold: 0.5,
-        rootMargin: '0px -10% 0px -10%'
+        threshold: 0,
+        rootMargin: '0px -49% 0px -49%'
       }
     );
 
