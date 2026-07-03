@@ -5,6 +5,7 @@ import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { toast } from 'sonner';
 import { Navigate, Link } from 'react-router-dom';
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter, DialogHeader } from '../ui/dialog';
 import { ShieldAlert, Users, Trophy, Settings, ArrowLeft, Loader2, Save, Download, FileJson } from 'lucide-react';
 import { useI18n } from '../../../i18n/context';
 
@@ -15,6 +16,7 @@ export default function AdminPanel() {
   const [loadingAuth, setLoadingAuth] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('matches');
   const [currentView, setCurrentView] = useState<'matches' | 'users' | 'config'>('matches');
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   // Verificar Admin
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function AdminPanel() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('*, predictions(id, points_earned, match_id)')
+        .select('*, predictions(id, points_earned, match_id, pred_goals_home, pred_goals_away, pred_winner_id)')
         .order('total_points', { ascending: false });
       if (error) throw error;
       return data;
@@ -441,6 +443,7 @@ export default function AdminPanel() {
                         <th className="px-6 py-4 font-medium text-center">Plenos (3pts)</th>
                         <th className="px-6 py-4 font-medium text-center">Aciertos (1pt)</th>
                         <th className="px-6 py-4 font-medium text-right">Puntos Totales</th>
+                        <th className="px-6 py-4 font-medium text-center">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -459,6 +462,16 @@ export default function AdminPanel() {
                             <td className="px-6 py-4 text-center text-green-500 font-bold">{plenos}</td>
                             <td className="px-6 py-4 text-center text-yellow-500 font-bold">{aciertos}</td>
                             <td className="px-6 py-4 text-right font-black text-xl text-primary">{user.total_points}</td>
+                            <td className="px-6 py-4 text-center">
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => setSelectedUser(user)}
+                                className="text-xs font-bold bg-muted/50 hover:bg-primary/20 border-border"
+                              >
+                                Ver Detalles
+                              </Button>
+                            </td>
                           </tr>
                         );
                       })}
@@ -467,6 +480,88 @@ export default function AdminPanel() {
                 </div>
               )}
             </div>
+
+            {/* Modal de Predicciones del Usuario */}
+            <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
+              <DialogContent className="max-w-3xl max-h-[85vh] bg-zinc-950/95 backdrop-blur-xl border-white/10 overflow-hidden flex flex-col p-0 rounded-2xl shadow-2xl">
+                <div className="p-6 border-b border-white/10 bg-muted/30">
+                  <DialogTitle className="text-xl font-bold">
+                    Predicciones de: <span className="text-primary">{selectedUser?.username || selectedUser?.full_name || selectedUser?.email}</span>
+                  </DialogTitle>
+                  <p className="text-sm text-muted-foreground mt-1">Total Puntos: {selectedUser?.total_points} pts</p>
+                </div>
+                
+                <div className="overflow-y-auto p-6 space-y-4 custom-purple-scrollbar">
+                  {selectedUser?.predictions?.length === 0 ? (
+                    <div className="text-center text-muted-foreground py-8">Este usuario aún no ha guardado predicciones.</div>
+                  ) : (
+                    matches?.filter((m: any) => selectedUser?.predictions?.some((p: any) => p.match_id === m.id))
+                      .sort((a: any, b: any) => new Date(a.match_time).getTime() - new Date(b.match_time).getTime())
+                      .map((match: any) => {
+                        const pred = selectedUser.predictions.find((p: any) => p.match_id === match.id);
+                        if (!pred) return null;
+                        
+                        return (
+                          <div key={match.id} className="bg-card border border-border rounded-lg p-4 flex flex-col md:flex-row items-center gap-4 justify-between">
+                            
+                            {/* Equipos (Real) */}
+                            <div className="flex items-center gap-4 w-full md:w-1/3">
+                              <div className="flex flex-col items-end gap-1 flex-1">
+                                <span className="font-bold text-sm text-right leading-tight">{match.team_home?.name || match.team_home_id || '?'}</span>
+                                {match.team_home?.flag_url && <img src={match.team_home.flag_url} className="w-5 h-3 rounded-[1px]" />}
+                              </div>
+                              <span className="font-black text-muted-foreground text-xs">VS</span>
+                              <div className="flex flex-col items-start gap-1 flex-1">
+                                <span className="font-bold text-sm leading-tight">{match.team_away?.name || match.team_away_id || '?'}</span>
+                                {match.team_away?.flag_url && <img src={match.team_away.flag_url} className="w-5 h-3 rounded-[1px]" />}
+                              </div>
+                            </div>
+                            
+                            {/* Predicción */}
+                            <div className="bg-muted/50 rounded-md px-4 py-2 flex flex-col items-center">
+                              <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-1">Predicción</span>
+                              <div className="flex gap-2 items-center font-black text-lg">
+                                <span>{pred.pred_goals_home}</span>
+                                <span>-</span>
+                                <span>{pred.pred_goals_away}</span>
+                              </div>
+                            </div>
+                            
+                            {/* Resultado Final (Si existe) */}
+                            <div className={`rounded-md px-4 py-2 flex flex-col items-center ${match.is_finished ? 'bg-primary/10 border border-primary/20' : 'opacity-50'}`}>
+                              <span className="text-[10px] text-primary uppercase font-bold tracking-wider mb-1">Resultado Real</span>
+                              <div className="flex gap-2 items-center font-black text-lg">
+                                <span>{match.goals_home ?? '-'}</span>
+                                <span>-</span>
+                                <span>{match.goals_away ?? '-'}</span>
+                              </div>
+                            </div>
+
+                            {/* Puntos Obtenidos */}
+                            <div className="flex flex-col items-center justify-center min-w-[60px]">
+                              {match.is_finished ? (
+                                <>
+                                  <span className={`text-2xl font-black ${pred.points_earned === 3 ? 'text-green-500' : pred.points_earned === 1 ? 'text-yellow-500' : 'text-slate-500'}`}>
+                                    +{pred.points_earned}
+                                  </span>
+                                  <span className="text-[10px] text-muted-foreground">pts</span>
+                                </>
+                              ) : (
+                                <span className="text-xs text-muted-foreground italic">En espera</span>
+                              )}
+                            </div>
+
+                          </div>
+                        );
+                      })
+                  )}
+                </div>
+                
+                <div className="p-4 border-t border-white/10 bg-muted/30 flex justify-end">
+                  <Button variant="outline" onClick={() => setSelectedUser(null)}>Cerrar</Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         )}
 
