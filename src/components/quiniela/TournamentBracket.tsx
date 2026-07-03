@@ -213,13 +213,13 @@ export default function TournamentBracket() {
         </h2>
         {user ? (
           <>
-            <RainbowButton
+            <Button
               onClick={() => setConfirmOpen(true)}
               disabled={Object.keys(localPredictions).length === 0 || saveMutation.isPending || !hasUnsavedChanges}
-              className="w-full md:w-auto"
+              className="w-full md:w-auto bg-[#25D366] hover:bg-[#128C7E] text-white font-bold shadow-[0_0_15px_rgba(37,211,102,0.5)] transition-all hover:scale-105"
             >
               {saveMutation.isPending ? t('quiniela.saving') : hasUnsavedChanges ? t('quiniela.saveButton') : t('quiniela.savedButton')}
-            </RainbowButton>
+            </Button>
 
             <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
               <DialogContent className="sm:max-w-md bg-zinc-950/90 backdrop-blur-xl text-slate-100 border-white/10 rounded-2xl shadow-2xl p-6">
