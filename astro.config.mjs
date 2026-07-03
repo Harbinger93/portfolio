@@ -50,7 +50,7 @@ export default defineConfig({
         background_color: '#090d16',
         display: 'standalone',
         start_url: '/pwa/radar/',
-        scope: '/',
+        scope: '/pwa/radar/',
         icons: [
           {
             src: '/radar-icon.png',
