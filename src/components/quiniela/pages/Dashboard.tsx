@@ -59,6 +59,26 @@ export default function Dashboard() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const queryClient = useQueryClient();
+
+  // Escuchar cambios en tiempo real en perfiles (puntos)
+  useEffect(() => {
+    const channel = supabase
+      .channel('public:profiles')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'profiles' },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   // Fetch Leaderboard (Caché agresivo)
   const { data: profiles } = useQuery({
     queryKey: ['leaderboard'],
