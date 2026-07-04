@@ -63,7 +63,6 @@ export default function Dashboard() {
       const { data, error } = await supabase
         .from('profiles')
         .select('id, username, full_name, avatar_url, total_points')
-        .eq('is_admin', false)
         .order('total_points', { ascending: false });
       if (error) throw error;
       return data;
