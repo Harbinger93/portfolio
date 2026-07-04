@@ -10,7 +10,7 @@ import UserPredictionsModal from '../UserPredictionsModal';
 import { Button } from '../../ui/button';
 import { RainbowButton } from '../../ui/rainbow-button';
 import { useI18n } from '../../../i18n/context';
-import { LogIn, LogOut, User, ShieldAlert, Wifi, WifiOff, ChevronDown, Trophy } from 'lucide-react';
+import { LogIn, LogOut, User, ShieldAlert, Wifi, WifiOff, ChevronDown, Trophy, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
@@ -184,9 +184,18 @@ export default function Dashboard() {
             
             {/* Tabla de posiciones con scroll */}
             <div className="mt-12 glass border border-border bg-card/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-w-4xl mx-auto">
-              <div className="bg-muted/50 p-4 border-b border-border flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-yellow-500" />
-                <h3 className="font-bold text-foreground">{t('quiniela.leaderboardTableTitle')}</h3>
+              <div className="bg-muted/50 p-4 border-b border-border flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-yellow-500" />
+                  <h3 className="font-bold text-foreground">{t('quiniela.leaderboardTableTitle')}</h3>
+                </div>
+                <button
+                  onClick={() => queryClient.invalidateQueries({ queryKey: ['leaderboard'] })}
+                  className="flex items-center gap-2 text-xs font-semibold text-cyan-400 hover:text-cyan-300 bg-cyan-950/30 hover:bg-cyan-900/50 px-3 py-1.5 rounded-full transition-all border border-cyan-800/50"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  Refrescar
+                </button>
               </div>
               <div className="max-h-[400px] overflow-y-auto custom-scrollbar">
                 <table className="w-full text-left text-sm">
