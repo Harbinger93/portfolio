@@ -18,6 +18,9 @@ export default function Dashboard() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [termsModalOpen, setTermsModalOpen] = useState(false);
   const [predictionsModalOpen, setPredictionsModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState('');
+  const [selectedUsername, setSelectedUsername] = useState('');
+  const [selectedTotalPoints, setSelectedTotalPoints] = useState(0);
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -196,14 +199,17 @@ export default function Dashboard() {
                             </div>
                           </td>
                           <td className="px-6 py-4 text-center">
-                            {isCurrentUser && (
-                              <button
-                                onClick={() => setPredictionsModalOpen(true)}
-                                className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-white font-bold text-xs rounded-full shadow-md transition-all"
-                              >
-                                Ver predicciones
-                              </button>
-                            )}
+                            <button
+                              onClick={() => {
+                                setSelectedUserId(p.id);
+                                setSelectedUsername(p.full_name || p.username || 'Usuario');
+                                setSelectedTotalPoints(p.total_points);
+                                setPredictionsModalOpen(true);
+                              }}
+                              className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-white font-bold text-xs rounded-full shadow-md transition-all"
+                            >
+                              Ver predicciones
+                            </button>
                           </td>
                           <td className={`px-6 py-4 text-right font-black text-lg ${isCurrentUser ? 'text-cyan-400' : 'text-primary'}`}>
                             {p.total_points}
@@ -258,15 +264,13 @@ export default function Dashboard() {
         onClose={() => setTermsModalOpen(false)}
       />
 
-      {user && (
-        <UserPredictionsModal
-          isOpen={predictionsModalOpen}
-          onClose={() => setPredictionsModalOpen(false)}
-          userId={user.id}
-          username={user.user_metadata?.username || user.email?.split('@')[0]}
-          totalPoints={profiles?.find((p: any) => p.id === user.id)?.total_points || 0}
-        />
-      )}
+      <UserPredictionsModal
+        isOpen={predictionsModalOpen}
+        onClose={() => setPredictionsModalOpen(false)}
+        userId={selectedUserId}
+        username={selectedUsername}
+        totalPoints={selectedTotalPoints}
+      />
     </div>
   );
 }
