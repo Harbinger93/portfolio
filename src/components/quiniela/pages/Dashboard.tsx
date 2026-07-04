@@ -199,17 +199,19 @@ export default function Dashboard() {
                             </div>
                           </td>
                           <td className="px-6 py-4 text-center">
-                            <button
-                              onClick={() => {
-                                setSelectedUserId(p.id);
-                                setSelectedUsername(p.full_name || p.username || 'Usuario');
-                                setSelectedTotalPoints(p.total_points);
-                                setPredictionsModalOpen(true);
-                              }}
-                              className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-white font-bold text-xs rounded-full shadow-md transition-all"
-                            >
-                              Ver predicciones
-                            </button>
+                            {isCurrentUser && (
+                              <button
+                                onClick={() => {
+                                  setSelectedUserId(p.id);
+                                  setSelectedUsername(p.full_name || p.username || 'Usuario');
+                                  setSelectedTotalPoints(p.total_points);
+                                  setPredictionsModalOpen(true);
+                                }}
+                                className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-white font-bold text-xs rounded-full shadow-md transition-all"
+                              >
+                                Ver predicciones
+                              </button>
+                            )}
                           </td>
                           <td className={`px-6 py-4 text-right font-black text-lg ${isCurrentUser ? 'text-cyan-400' : 'text-primary'}`}>
                             {p.total_points}
