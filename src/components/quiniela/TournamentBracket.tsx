@@ -126,8 +126,14 @@ export default function TournamentBracket() {
   // Inicializar pestaña activa
   useEffect(() => {
     if (matches && matches.length > 0 && activeTab === '0') {
-      const minSeq = Math.min(...matches.map(m => m.stage?.sequence_order || 1));
-      setActiveTab(minSeq.toString());
+      const unfinishedMatches = matches.filter(m => !m.is_finished);
+      if (unfinishedMatches.length > 0) {
+        const minActiveSeq = Math.min(...unfinishedMatches.map(m => m.stage?.sequence_order || 1));
+        setActiveTab(minActiveSeq.toString());
+      } else {
+        const maxSeq = Math.max(...matches.map(m => m.stage?.sequence_order || 1));
+        setActiveTab(maxSeq.toString());
+      }
     }
   }, [matches, activeTab]);
 
