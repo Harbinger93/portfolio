@@ -85,7 +85,7 @@ export default function Dashboard() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, username, full_name, avatar_url, total_points')
+        .select('id, username, full_name, avatar_url, total_points, predictions(points_earned)')
         .order('total_points', { ascending: false });
       if (error) throw error;
       return data;
@@ -203,6 +203,8 @@ export default function Dashboard() {
                     <tr>
                       <th className="px-6 py-4 font-bold text-muted-foreground w-16 text-center">#</th>
                       <th className="px-6 py-4 font-bold text-muted-foreground">{t('quiniela.participant')}</th>
+                      <th className="px-4 py-4 font-bold text-muted-foreground text-center">Exactos</th>
+                      <th className="px-4 py-4 font-bold text-muted-foreground text-center">Parciales</th>
                       <th className="px-6 py-4 font-bold text-muted-foreground text-center">Acciones</th>
                       <th className="px-6 py-4 font-bold text-muted-foreground text-right">{t('quiniela.totalPoints')}</th>
                     </tr>
@@ -210,6 +212,8 @@ export default function Dashboard() {
                   <tbody className="divide-y divide-border">
                     {profiles?.map((p: any, index: number) => {
                       const isCurrentUser = user && user.id === p.id;
+                      const exacts = p.predictions?.filter((pr: any) => pr.points_earned >= 3).length || 0;
+                      const partials = p.predictions?.filter((pr: any) => pr.points_earned === 1 || pr.points_earned === 2).length || 0;
                       return (
                         <tr key={p.id} className={`transition-colors ${isCurrentUser ? 'bg-cyan-500/10 border-l-4 border-l-cyan-400 scale-[1.02] transform shadow-lg relative z-10' : 'hover:bg-muted/50'}`}>
                           <td className="px-6 py-4 font-black text-center text-muted-foreground">
@@ -226,6 +230,12 @@ export default function Dashboard() {
                               )}
                               <span className={`font-semibold ${isCurrentUser ? 'text-cyan-400' : 'text-foreground'}`}>{p.full_name || p.username}</span>
                             </div>
+                          </td>
+                          <td className="px-4 py-4 text-center font-bold text-emerald-400/90">
+                            {exacts}
+                          </td>
+                          <td className="px-4 py-4 text-center font-bold text-sky-400/90">
+                            {partials}
                           </td>
                           <td className="px-6 py-4 text-center">
                             {isCurrentUser && (
