@@ -238,7 +238,6 @@ export default function Dashboard() {
                             {partials}
                           </td>
                           <td className="px-6 py-4 text-center">
-                            {isCurrentUser && (
                               <button
                                 onClick={() => {
                                   setSelectedUserId(p.id);
@@ -250,7 +249,6 @@ export default function Dashboard() {
                               >
                                 Ver predicciones
                               </button>
-                            )}
                           </td>
                           <td className={`px-6 py-4 text-right font-black text-lg ${isCurrentUser ? 'text-cyan-400' : 'text-primary'}`}>
                             {p.total_points}
@@ -260,7 +258,7 @@ export default function Dashboard() {
                     })}
                     {(!profiles || profiles.length === 0) && (
                       <tr>
-                        <td colSpan={4} className="px-6 py-8 text-center text-muted-foreground">
+                        <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground">
                           {t('quiniela.noScores')}
                         </td>
                       </tr>
