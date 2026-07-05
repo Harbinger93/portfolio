@@ -197,7 +197,7 @@ export default function Dashboard() {
                   Refrescar
                 </button>
               </div>
-              <div className="max-h-[400px] overflow-y-auto custom-scrollbar">
+              <div className="max-h-[400px] overflow-y-auto overscroll-contain custom-scrollbar">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-muted/80 sticky top-0 z-20 shadow-sm backdrop-blur-md">
                     <tr>

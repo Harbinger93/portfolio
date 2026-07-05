@@ -49,7 +49,7 @@ export default function UserPredictionsModal({ isOpen, onClose, userId, username
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-[#0f0f13] text-foreground border-border/10 p-0 overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
+      <DialogContent className="sm:max-w-[425px] bg-[#0f0f13] text-foreground border-border/10 p-0 overflow-hidden overscroll-contain shadow-2xl flex flex-col max-h-[85vh]">
         <DialogHeader className="p-6 border-b border-white/10 pb-4 bg-background/50 backdrop-blur-md">
           <DialogTitle className="text-xl font-bold text-white flex flex-col gap-1">
             <span>Predicciones de: {username}</span>
